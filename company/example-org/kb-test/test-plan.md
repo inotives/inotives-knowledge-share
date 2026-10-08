@@ -53,14 +53,16 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-3 | OpenKnowledge moves work to a branch or opens a PR | Look for a new branch or PR after P1-1 | Either, or neither | Observed **[V]**: neither |
 | P1-4 | `validate-docs` runs on a PR | Open a PR, read the checks | The check runs and reports | Observed **[V]**: passed in 16s |
 | P1-5 | The owner cannot approve their own PR | Approve as `inotives` | Blocked | Observed **[V]**: approval refused |
-| P1-5b | The owner cannot merge before any approval | Open a PR as `inotives`, then run `gh pr merge` with no approval | Blocked by the ruleset | Pending |
+| P1-5b | The owner cannot merge before any approval | Open a PR as `inotives`, then run `gh pr merge` with no approval | Blocked by the ruleset | Observed **[V]**: refused, `base branch policy prohibits the merge` |
+| P1-5c | An admin cannot override the ruleset | Run `gh pr merge --admin` on a low-stakes PR with no approval. Run by the owner, because it tries to override a review rule | Refused, since the ruleset has no bypass actors **[?]**. If it merges, "no bypass" does not hold | Pending |
 | P1-6 | A contributor's approval satisfies the rule | Approve as `inotivesgames`, then merge as `inotives` | Merge allowed | Observed **[V]**: merged as `b15c96e` |
 | P1-7 | A non-admin cannot push to `main` | Push directly to `main` as `inotivesgames` | Rejected | Observed **[V]**: rejected |
 | P1-8 | Editor on a feature branch | Switch to a branch, write, run `ok sync` | Pushes the branch, no `main` change | Observed **[V]**: branch not pushed, sync still targeted `main` and switched itself off. Plain git push of the branch worked |
 | P1-9 | Where the editor commits | After P1-8, run `git log origin/main..main` | Nothing, if the editor respects the checked-out branch | Observed **[V]**: an `Auto-save` commit sat on local `main` |
 | P1-10 | Editor after a branch switch | Switch branches under a running server, then edit a page it already had open | The edit reaches disk | Observed **[V]**: five edits reported applied but never reached disk. A server restart fixed it |
-| P1-11 | A failing check blocks the merge once it is required | Add `validate-docs` (job `check`) as a required status check. As `inotives-inoai`, open a PR with broken frontmatter | CI fails and the merge is blocked even after approval | Pending |
-| P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Pending |
+| P1-11 | A failing check blocks the merge once it is required | Add `validate-docs` (job `check`) as a required status check. As `inotives-inoai`, open a PR with broken frontmatter | CI fails and the merge is blocked even after approval | Observed **[V]**: approved but `BLOCKED`, merge refused |
+| P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Observed **[V]**: CI passed, merged as `4713188` |
+| P1-13 | An approval survives a later push | After approval, push a content change to the same PR | Whether the approval stands depends on `dismiss_stale_reviews_on_push` | Observed **[V]**: approval stood, because the setting is off |
 
 ## Phase 2: code owners
 
@@ -92,7 +94,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | ID | Case | Steps | Expected | Status |
 | --- | --- | --- | --- | --- |
 | X-1 | `_scratch/` is searchable in OpenKnowledge, writable by agents, and ignored by Git | Write and search a scratch note | Indexed, not tracked | Pending |
-| X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Pending |
+| X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Observed **[V]** for invalid frontmatter: refused with four errors. Broken link not tested |
 | X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Pending |
 
 ## Confirmation reruns
