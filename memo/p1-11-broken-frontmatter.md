@@ -1,8 +1,12 @@
 ---
 title: P1-11 Broken Frontmatter Probe
-description: Deliberately invalid page to test that a required CI check blocks the merge.
-status: wip
+description: Probe page used to test that a required CI check blocks the merge, then fixed to test that the merge is allowed.
+type: note
+status: draft
+owner: inotives.inoai
+created_at: 2026-10-08
+created_by: inotives.inoai
 ---
 # P1-11 Broken Frontmatter Probe
 
-This page is missing `type`, `owner` and `created_at`, and its status is not an allowed value.
+This page first had invalid frontmatter, to test that a required CI check blocks the merge. The frontmatter is now valid.
