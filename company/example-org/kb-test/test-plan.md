@@ -40,11 +40,13 @@ This page lists what we test and what each result means. Evidence for every resu
 | P1-1 | Ruleset blocks the editor's push | Write a page, run `ok sync` | Push rejected | Observed **[V]** |
 | P1-2 | The user is told it failed | Read the CLI output after P1-1 | A clear error | Observed **[V]**: the CLI printed success. UI not checked **[?]** |
 | P1-3 | OpenKnowledge moves work to a branch or opens a PR | Look for a new branch or PR after P1-1 | Either, or neither | Observed **[V]**: neither |
-| P1-4 | `validate-docs` runs on a PR | Open a PR, read the checks | The check runs and reports | Pending |
-| P1-5 | The owner cannot approve their own PR | Approve and merge as `inotives` | Blocked | Pending |
-| P1-6 | A contributor's approval satisfies the rule | Approve as `inotivesgames`, then merge as `inotives` | Merge allowed | Pending |
-| P1-7 | A non-admin cannot push to `main` | Push directly to `main` as `inotivesgames` | Rejected | Pending |
-| P1-8 | Editor on a feature branch | Switch to a branch, write, run `ok sync` | Pushes the branch, no `main` change | Pending |
+| P1-4 | `validate-docs` runs on a PR | Open a PR, read the checks | The check runs and reports | Observed **[V]**: passed in 16s |
+| P1-5 | The owner cannot approve their own PR | Approve and merge as `inotives` | Blocked | Observed **[V]**: approval refused. Merge before approval not run |
+| P1-6 | A contributor's approval satisfies the rule | Approve as `inotivesgames`, then merge as `inotives` | Merge allowed | Observed **[V]**: merged as `b15c96e` |
+| P1-7 | A non-admin cannot push to `main` | Push directly to `main` as `inotivesgames` | Rejected | Observed **[V]**: rejected |
+| P1-8 | Editor on a feature branch | Switch to a branch, write, run `ok sync` | Pushes the branch, no `main` change | Observed **[V]**: branch not pushed, sync still targeted `main` and switched itself off. Plain git push of the branch worked |
+| P1-9 | Where the editor commits | After P1-8, run `git log origin/main..main` | Nothing, if the editor respects the checked-out branch | Observed **[V]**: an `Auto-save` commit sat on local `main` |
+| P1-10 | Editor after a branch switch | Switch branches under a running server, then edit a page it already had open | The edit reaches disk | Observed **[V]**: five edits reported applied but never reached disk. A server restart fixed it |
 
 ## Phase 2: code owners
 
