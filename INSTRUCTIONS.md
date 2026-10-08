@@ -118,7 +118,7 @@ What the test showed about these rules, with the evidence, is in the [Phase 1 su
 gh api -X PUT repos/<owner>/<repo>/collaborators/<username> -f permission=push
 ```
 
-The person accepts the invitation by email, or with `gh api -X PATCH user/repository_invitations/<id>`. Write access lets them push branches and open pull requests, and it does not let them push to `main` directly. Whether a contributor can also merge an approved pull request was not tested: in our run only the owner merged **[not run]**.
+The person accepts the invitation by email, or with `gh api -X PATCH user/repository_invitations/<id>`. Write access lets them push branches and open pull requests, and it does not let them push to `main` directly. A contributor with write access can also merge their own pull request once it has an approval and a passing check. We saw this in case P1-15.
 
 ### 1.6 Check that the protection works
 
@@ -127,7 +127,7 @@ Open a pull request and see the `check` job run. Then try a direct push to `main
 ### 1.7 Not set up yet
 
 - **`CODEOWNERS`.** Planned for Phase 2 of the [test plan](./company/example-org/kb-test/test-plan.md). Until then, nobody is requested automatically as reviewer.
-- **Automatic deletion of merged branches.** Off in our test. The API setting is `delete_branch_on_merge` **[not run]**.
+- **Automatic deletion of merged branches.** Off by default. We turned it on after the Phase 1 tests with `gh api -X PATCH repos/<owner>/<repo> -F delete_branch_on_merge=true`. The setting reads back as `true`. Whether it actually deletes a branch on merge is not yet seen: the next merged pull request will show it.
 
 ---
 

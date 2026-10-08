@@ -49,7 +49,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | --- | --- | --- | --- | --- |
 | P1-1 | Ruleset blocks the editor's push | Write a page, run `ok sync` | Push rejected | Observed **[V]** |
 | P1-2 | The user is told it failed | Read the CLI output after P1-1 | A clear error | Observed **[V]**: the CLI printed success. UI not checked **[?]** |
-| P1-2b | The editor UI shows the failure | After a deliberately rejected sync, open the page with `ok open <doc>` and read what the UI shows. Done by the owner, because the UI cannot be driven from the CLI | A visible error. If nothing is shown, checking `git status` becomes mandatory in the contract | Pending |
+| P1-2b | The editor UI shows the failure | After a deliberately rejected sync, open the page with `ok open <doc>` and read what the UI shows. Done by the owner, because the UI cannot be driven from the CLI | A visible error. If nothing is shown, checking `git status` becomes mandatory in the contract | Observed **[V]**: the button spun for about 1 second, then returned to `! Sync paused`. No error, banner or reason. The tooltip said only `sync paused`. Whether clicking the button shows details was not checked |
 | P1-3 | OpenKnowledge moves work to a branch or opens a PR | Look for a new branch or PR after P1-1 | Either, or neither | Observed **[V]**: neither |
 | P1-4 | `validate-docs` runs on a PR | Open a PR, read the checks | The check runs and reports | Observed **[V]**: passed in 16s |
 | P1-5 | The owner cannot approve their own PR | Approve as `inotives` | Blocked | Observed **[V]**: approval refused |
@@ -64,6 +64,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Observed **[V]**: CI passed, merged as `4713188` |
 | P1-13 | An approval survives a later push | After approval, push a content change to the same PR | Whether the approval stands depends on `dismiss_stale_reviews_on_push` | Observed **[V]**: approval stood, because the setting is off |
 | P1-14 | Dismiss stale approvals on push | Turn on `dismiss_stale_reviews_on_push`, approve a PR, then push another commit | The approval is dismissed and the PR needs a new review | Observed **[V]**: approval became `DISMISSED`, PR `REVIEW_REQUIRED` and `BLOCKED`. The state before the push was not captured, so repeat with both reads |
+| P1-15 | A contributor merges their own approved PR | A non-admin author gets one approval and a passing check, then runs `gh pr merge` | Merge allowed, if write access is enough | Observed **[V]**: `inotives-inoai` merged PR 8 as `5b5dda0` after `inotivesgames` approved |
 
 ## Phase 2: code owners
 
