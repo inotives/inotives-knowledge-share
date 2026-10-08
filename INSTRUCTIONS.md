@@ -127,7 +127,7 @@ Open a pull request and see the `check` job run. Then try a direct push to `main
 ### 1.7 Not set up yet
 
 - **`CODEOWNERS`.** Planned for Phase 2 of the [test plan](./company/example-org/kb-test/test-plan.md). Until then, nobody is requested automatically as reviewer.
-- **Automatic deletion of merged branches.** Off by default. We turned it on after the Phase 1 tests with `gh api -X PATCH repos/<owner>/<repo> -F delete_branch_on_merge=true`. The setting reads back as `true`. Whether it actually deletes a branch on merge is not yet seen: the next merged pull request will show it.
+- **Automatic deletion of merged branches.** Off by default. We turned it on after the Phase 1 tests with `gh api -X PATCH repos/<owner>/<repo> -F delete_branch_on_merge=true`. The setting reads back as `true`. It works: the branch of the next merged pull request was deleted automatically.
 
 ---
 
