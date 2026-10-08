@@ -11,3 +11,7 @@ ai_assisted: true
 # Baseline Sync Test
 
 Written through the OpenKnowledge MCP `write` tool with no ruleset on the repository. If this page reaches `main` on GitHub without anyone running `git push`, the editor syncs on its own.
+
+## Phase 1 check
+
+Appended after the ruleset on `main` went active. If `ok sync` publishes this directly to `main`, the ruleset does not protect the editor's path.
