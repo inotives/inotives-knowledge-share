@@ -54,7 +54,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-4 | `validate-docs` runs on a PR | Open a PR, read the checks | The check runs and reports | Observed **[V]**: passed in 16s |
 | P1-5 | The owner cannot approve their own PR | Approve as `inotives` | Blocked | Observed **[V]**: approval refused |
 | P1-5b | The owner cannot merge before any approval | Open a PR as `inotives`, then run `gh pr merge` with no approval | Blocked by the ruleset | Observed **[V]**: refused, `base branch policy prohibits the merge` |
-| P1-5c | An admin cannot override the ruleset | Run `gh pr merge --admin` on a low-stakes PR with no approval. Run by the owner, because it tries to override a review rule | Refused, since the ruleset has no bypass actors **[?]**. If it merges, "no bypass" does not hold | Pending |
+| P1-5c | An admin cannot override the ruleset | Run `gh pr merge --admin` on a low-stakes PR with no approval. Run by the owner, because it tries to override a review rule | Refused, since the ruleset has no bypass actors **[?]**. If it merges, "no bypass" does not hold | Observed **[V]**: refused, `At least 1 approving review is required by reviewers with write access` |
 | P1-6 | A contributor's approval satisfies the rule | Approve as `inotivesgames`, then merge as `inotives` | Merge allowed | Observed **[V]**: merged as `b15c96e` |
 | P1-7 | A non-admin cannot push to `main` | Push directly to `main` as `inotivesgames` | Rejected | Observed **[V]**: rejected |
 | P1-8 | Editor on a feature branch | Switch to a branch, write, run `ok sync` | Pushes the branch, no `main` change | Observed **[V]**: branch not pushed, sync still targeted `main` and switched itself off. Plain git push of the branch worked |
@@ -63,6 +63,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-11 | A failing check blocks the merge once it is required | Add `validate-docs` (job `check`) as a required status check. As `inotives-inoai`, open a PR with broken frontmatter | CI fails and the merge is blocked even after approval | Observed **[V]**: approved but `BLOCKED`, merge refused |
 | P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Observed **[V]**: CI passed, merged as `4713188` |
 | P1-13 | An approval survives a later push | After approval, push a content change to the same PR | Whether the approval stands depends on `dismiss_stale_reviews_on_push` | Observed **[V]**: approval stood, because the setting is off |
+| P1-14 | Dismiss stale approvals on push | Turn on `dismiss_stale_reviews_on_push`, approve a PR, then push another commit | The approval is dismissed and the PR needs a new review | Observed **[V]**: approval became `DISMISSED`, PR `REVIEW_REQUIRED` and `BLOCKED`. The state before the push was not captured, so repeat with both reads |
 
 ## Phase 2: code owners
 
