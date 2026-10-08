@@ -34,26 +34,28 @@ The ruleset `phase-1-protect-main` (id `24690905`) grew in three steps during th
 
 ## Results by theme
 
-### The editor and sync (P0-1 to P0-4, P1-1 to P1-3, P1-8 to P1-10)
+### The editor and sync (P0-1 to P0-4, P1-1 to P1-3, P1-2b, P1-8 to P1-10)
 
 | Observation | Case |
 | --- | --- |
 | Nothing reaches GitHub on its own. Timed auto-sync was off. A manual `ok sync` on an unprotected `main` pushed straight to it | P0-3, P0-4 |
 | Under the ruleset the push was rejected with `GH013`. The CLI still printed success. The error was only in a server log | P1-1, P1-2 |
 | OpenKnowledge did not create a branch or a pull request | P1-3 |
+| The editor UI showed a spinner for about a second after the rejected sync, then returned to `! Sync paused`, with no error and no reason. The tooltip said only `sync paused`. Auto-sync was already off before any rejection, so the UI shows the same state either way | P1-2b (new result, recorded after the summary was first written) |
 | With a feature branch checked out, `ok sync` still committed to local `main`, tried `main -> main`, was rejected and switched itself off | P1-8, P1-9 |
 | After branch switches under a running server, five edits were logged as applied but never reached disk. A server restart fixed it | P1-10 |
 | Plain `git commit` and `git push` of a feature branch worked | P1-8 |
 
-### Review and merge rules (P1-4 to P1-7, P1-5b, P1-5c, P1-6)
+### Review and merge rules (P1-4 to P1-7, P1-5b, P1-5c, P1-6, P1-15)
 
 | Observation | Case |
 | --- | --- |
 | `validate-docs` runs on a pull request | P1-4 |
 | The owner cannot approve their own pull request | P1-5 |
 | The owner cannot merge before any approval | P1-5b |
-| The owner cannot override with `gh pr merge --admin`: `At least 1 approving review is required by reviewers with write access` | P1-5c (new result, added to the plan in this pull request) |
+| The owner cannot override with `gh pr merge --admin`: `At least 1 approving review is required by reviewers with write access` | P1-5c (new result, added to the plan with this summary) |
 | A contributor's approval satisfies the rule and the owner can then merge | P1-6 |
+| A write-access, non-admin author can merge their own approved pull request: `inotives-inoai` merged pull request 8 after `inotivesgames` approved | P1-15 (new result, recorded after the summary was first written) |
 | A non-admin cannot push to `main` | P1-7 |
 
 ### CI as a control (P1-11, P1-12, X-2 in part)
@@ -68,7 +70,7 @@ The ruleset `phase-1-protect-main` (id `24690905`) grew in three steps during th
 | Observation | Case |
 | --- | --- |
 | With the default setting, an approval survived a later push, so approved content could change before merging | P1-13 |
-| With `dismiss_stale_reviews_on_push` on, a new push turned the approval into `DISMISSED`, and the pull request went back to `REVIEW_REQUIRED` and `BLOCKED` | P1-14 (new result, added to the plan in this pull request). The state before the push was not captured. The approval existed before the push, so the sequence fits, but this is the weakest result in the phase |
+| With `dismiss_stale_reviews_on_push` on, a new push turned the approval into `DISMISSED`, and the pull request went back to `REVIEW_REQUIRED` and `BLOCKED` | P1-14 (new result, added to the plan with this summary). The state before the push was not captured. The approval existed before the push, so the sequence fits, but this is the weakest result in the phase |
 
 ## Decisions made
 
@@ -76,6 +78,7 @@ The ruleset `phase-1-protect-main` (id `24690905`) grew in three steps during th
 2. Dismiss approvals on every new push. Approved content must not change unreviewed.
 3. Keep no bypass actors. Admin rights confer no merge shortcut, so any emergency override has to be added deliberately.
 4. Publish with git, not `ok sync`.
+5. Turn on automatic deletion of merged branches. Confirmed: the branch of pull request 10 was gone after its merge.
 
 ## Changes the contract needs
 
@@ -93,7 +96,7 @@ None of these is in `AGENTS.md` yet.
 
 | Item | Why it is open | Owner |
 | --- | --- | --- |
-| P1-2b: what the editor UI shows after a rejected sync | The UI cannot be driven from the CLI | `inotives` |
+| Whether clicking the `! Sync paused` button shows details | P1-2b only looked at the button's appearance, not what clicking it opens | Optional, `inotives` |
 | P1-14 repeat with both states captured | The "before" state was missed | Next run |
 | `require_extra_approval_for_unattributed_changes: true` appeared in the ruleset read-back although it was never set | Its effect is unknown | To investigate |
 | `require_last_push_approval` is `false` and untested | A possible extra control on top of dismissal | To decide |
@@ -103,16 +106,19 @@ None of these is in `AGENTS.md` yet.
 | The private vault research note quoted a 30s pull and 60s push interval | This run did not show it | Correct the note |
 | Enterprise behaviour | Free accounts cannot show SSO or organisation rulesets | Phase 4 |
 
-## Housekeeping to settle
+## Housekeeping
 
-- Pull request 6 (the P1-5c probe) is open and unmerged.
-- Seven test branches remain on GitHub: five belong to merged pull requests, one belongs to the open pull request 6, and one holds the P1-8 probe.
-- `memo/baseline-sync-test.md` and `memo/p1-11-broken-frontmatter.md` are probe pages on `main`. Keep them as evidence or remove them before the pilot.
-- Local `main` in the owner's clone is one commit ahead of `origin/main` (the stranded auto-save from P1-9).
+Done after the summary was first written:
+
+- Pull request 6 (the P1-5c probe) was closed without merging.
+- All test branches were deleted. GitHub now has only `main`.
+- The probe pages `memo/baseline-sync-test.md` and `memo/p1-11-broken-frontmatter.md` were removed by pull request 8. The reports mention them as plain text, so nothing links to a missing page.
+- The owner's clone was reset to `origin/main`, which dropped the stranded auto-save from P1-9. The contributors' clones were tidied too.
+- Automatic deletion of merged branches is on and works, as seen on pull request 10.
 
 ## Limits of Phase 1
 
 - One person operated all three accounts, so approvals prove the rule mechanics, not independent review.
 - The repository is public and on free accounts. Behaviour on GitHub Enterprise is untested.
 - Every case ran once.
-- The editor UI was never opened, so what a user sees after a failed sync is unknown.
+- The editor UI was checked for the sync button only. What clicking it shows, and anything else the UI offers, was not looked at.

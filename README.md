@@ -6,10 +6,19 @@ description: A public test bed for a team knowledge base built on OpenKnowledge 
 
 A **public test bed** for a team knowledge base where people and their AI agents write together. The stack is deliberately small:
 
-- **[OpenKnowledge](https://github.com/inkeep/open-knowledge)** is the editor and the AI control panel (markdown files plus MCP tools for agents).
+- **[OpenKnowledge](https://github.com/inkeep/open-knowledge)** gives agents read, write and search tools over the markdown (MCP), plus an optional web editor. In our tests we publish with git, not with its sync button.
 - **GitHub** is the only host. Review, history and access control all come from it.
 
 > **Dummy content only.** Nothing in this repository is real company or client material. It exists so the workflow can be tested in the open on free GitHub accounts, before the real knowledge base is set up on GitHub Enterprise.
+
+## Start here
+
+| Read | For |
+| --- | --- |
+| [INSTRUCTIONS.md](./INSTRUCTIONS.md) | Set up from scratch, start the tools, and the daily workflow |
+| [AGENTS.md](./AGENTS.md) | The contract for people and agents |
+| [Test plan](./company/example-org/kb-test/test-plan.md) | Every test case, with steps, expected result and status |
+| [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) | What Phase 1 showed, the decisions it led to, and what is still open |
 
 ## What we want to achieve
 
@@ -23,23 +32,23 @@ flowchart LR
         A["Contributor A<br/>+ agent"]
         B["Contributor B<br/>+ agent"]
     end
-    OK["OpenKnowledge<br/>editor and MCP tools"]
+    OK["OpenKnowledge<br/>read, write and search tools"]
     S["_scratch/handle/<br/>local, gitignored,<br/>free writes"]
     BR["Branch<br/>handle/topic"]
     PR["Pull request"]
-    CI["CI: frontmatter,<br/>links, secret scan"]
-    R["Code owner<br/>review"]
+    CI["Required check:<br/>frontmatter, links,<br/>secret scan"]
+    R["Review by someone<br/>other than the author"]
     M[("main<br/>curated knowledge")]
 
     A --> OK
     B --> OK
     OK --> S
     S -->|"promote:<br/>move into a curated folder"| BR
-    BR --> PR
+    BR -->|"git push"| PR
     PR --> CI
     CI --> R
     R -->|"merge"| M
-    M -->|"sync and search"| OK
+    M -->|"git pull"| OK
 ```
 
 ## How the repository is organised
@@ -90,17 +99,17 @@ stateDiagram-v2
 
 ## What we are testing
 
-The contract makes promises that depend on how GitHub and OpenKnowledge behave. The first three are the ones that could change the design.
+The contract makes promises that depend on how GitHub and OpenKnowledge behave. Each question links to its cases in the [test plan](./company/example-org/kb-test/test-plan.md). Answers are from one run on free accounts with one person operating all three, so none is **Confirmed** yet.
 
-| # | Question | Why it matters |
+| # | Question | Status |
 | --- | --- | --- |
-| 1 | Does OpenKnowledge's timed sync bypass or break a protected `main`? | If the editor pushes straight to `main`, pull-request review does not hold |
-| 2 | Can an approver's own pull request be merged (bypass or second approver)? | A one-approver pilot needs a workable answer |
-| 3 | Do code owners resolve, by work email and by `@username`? | Required review depends on it |
-| 4 | Is `_scratch/` indexed by OpenKnowledge, and can agents write to it, while Git ignores it? | Drafts must be searchable but never pushed |
-| 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | The checks are the only automation |
-| 6 | What happens when two contributors edit the same page? | Conflicts must be visible and never auto-resolved |
-| 7 | Does it still work on GitHub Enterprise, where org rulesets and SSO apply? | Free accounts cannot show this |
+| 1 | Does OpenKnowledge's sync bypass or break a protected `main`? | **Answered.** Timed sync was off by default. A manual `ok sync` pushed straight to an unprotected `main`, was rejected under the ruleset, and printed success anyway. We publish with git instead |
+| 2 | Can an approver's own pull request be merged (bypass or second approver)? | **Answered.** Authors cannot approve their own pull request and admins cannot override with `--admin`. A second person must approve, and a write-access author can then merge |
+| 3 | Do code owners resolve, by work email and by `@username`? | Pending (Phase 2) |
+| 4 | Is `_scratch/` indexed by OpenKnowledge, and can agents write to it, while Git ignores it? | Pending (case X-1) |
+| 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook refused invalid frontmatter. Broken links and a planted secret are not tested |
+| 6 | What happens when two contributors edit the same page? | Pending (Phase 3) |
+| 7 | Does it still work on GitHub Enterprise, where org rulesets and SSO apply? | Pending (Phase 4). Free accounts cannot show this |
 
 ## Test phases
 
@@ -108,8 +117,8 @@ Each phase adds one control, so any change in behaviour can be traced to it. Res
 
 ```mermaid
 flowchart LR
-    P0["Phase 0<br/>Baseline<br/>no protection,<br/>no CODEOWNERS"]
-    P1["Phase 1<br/>Ruleset on main<br/>PR + 1 approval"]
+    P0["Phase 0<br/>Baseline<br/>no protection"]
+    P1["Phase 1<br/>Ruleset on main<br/>review, required check,<br/>stale approvals dismissed"]
     P2["Phase 2<br/>CODEOWNERS<br/>code-owner review"]
     P3["Phase 3<br/>Two contributors<br/>collisions, conflicts"]
     P4["Phase 4<br/>Smoke test on<br/>GitHub Enterprise"]
@@ -117,39 +126,43 @@ flowchart LR
     P0 --> P1 --> P2 --> P3 --> P4
 
     style P0 fill:#e8f4ee,stroke:#2f7d57
+    style P1 fill:#e8f4ee,stroke:#2f7d57
+    style P2 fill:#fff4e5,stroke:#c77700
 ```
 
-**Phase 0 is the current state.** The repository has the contract, the folders and the CI checks, but no ruleset and no `CODEOWNERS`. This shows what OpenKnowledge and GitHub do by default, which is the baseline every later phase is compared with.
+Phases 0 and 1 are done (green). **Phase 2 is next** (amber). `main` is protected by a ruleset: pull request and 1 approval, a required `validate-docs` check, approvals dismissed on every new push, no bypass actors. The ruleset is in [.github/ruleset-main.json](./.github/ruleset-main.json). There is no `CODEOWNERS` file yet.
 
 ## Accounts used in the test
 
 ```mermaid
 flowchart TB
-    OWNER["Owner and approver<br/>personal account<br/>admin on the repo"]
-    T1["Contributor<br/>throwaway account 1<br/>write access"]
-    T2["Contributor<br/>throwaway account 2<br/>added for Phase 3"]
+    OWNER["Owner<br/>personal account<br/>admin on the repo"]
+    T1["Contributor 1<br/>throwaway account<br/>write access"]
+    T2["Contributor 2<br/>throwaway account<br/>write access"]
     REPO[("inotives-knowledge-share")]
 
-    OWNER -->|"owns, sets ruleset"| REPO
-    T1 -->|"branch + pull request"| REPO
-    T2 -->|"branch + pull request"| REPO
-    OWNER -.->|"reviews and approves"| T1
-    OWNER -.->|"reviews and approves"| T2
+    OWNER -->|"owns, sets the ruleset,<br/>merges approved pull requests"| REPO
+    T1 -->|"branch, pull request,<br/>approves"| REPO
+    T2 -->|"branch, pull request"| REPO
 ```
 
-Each account has its own SSH key and its own clone, so every action is attributable to one identity.
+Each account has its own SSH key and its own clone, so every action is attributable to one identity. One person operates all three, so approvals prove how the rules work, not that independent review happens.
 
 ## Status
 
-- Phase 0 is being set up. No test has been run yet, so this repository makes no claims about how the workflow behaves.
-- Findings will be added here as they are confirmed, not before.
+- **Done:** Phase 0 and Phase 1. Every Phase 1 case is observed. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) for the evidence and the open items.
+- **Main finding:** GitHub's controls held, including for the admin. OpenKnowledge's sync did not fit the contract, so pages are written with its tools and published with git.
+- **Next:** Phase 2, code owners.
+- Findings are added here only when they are observed, not before.
 
 ## Using this repository
 
+The full steps are in [INSTRUCTIONS.md](./INSTRUCTIONS.md). In short:
+
 1. Read [AGENTS.md](./AGENTS.md). It is the contract for people and agents.
-2. `git config user.email "<verified address>"` and `git config user.name "<name>"`.
+2. `git config user.email '<verified address>'` and `git config user.name '<name>'`.
 3. `git config core.hooksPath .githooks` to enable the local pre-commit check.
 4. `ok init` to set up OpenKnowledge and the agent tool config. Generated files are gitignored.
-5. Work in `_scratch/<handle>/`, then promote to a curated folder by pull request.
+5. Work in `_scratch/<handle>/`, then promote to a curated folder by pull request. Publish with `git push` and `gh pr create`, never with the editor's sync.
 
 Do not store passwords, tokens, keys or any real company or personal data here. This repository is public.
