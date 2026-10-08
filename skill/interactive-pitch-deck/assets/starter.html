@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>REPLACE Deck Name</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<style>
+  /* ---------- tokens ---------- */
+  :root {
+    --ground:#FBFCFC; --surface:#FFFFFF; --surface-2:#EFF4F4;
+    --line:#D3DDDE; --line-soft:#E6EDED;
+    --ink:#0F1B1D; --ink-2:#3D4F52; --ink-3:#6A7C7F;
+    --accent:#0E6E77; --accent-soft:#D9ECEE;
+    --good:#1F7A4D; --good-bg:#DDF0E6;
+    --warn:#9A6B12; --warn-bg:#F6EBD3;
+    --risk:#A33B2E; --risk-bg:#F6DEDA;
+    --s1:#0E6E77; --s2:#3E8E96; --s3:#1D7FB8; --s4:#6B4FC4; --s5:#3B2B80;   /* stage ramp */
+    --font-display:"Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  html, body { margin:0; background:var(--ground); }
+  .reveal-viewport { background:var(--ground); }
+  .reveal { font-family:var(--font-body); color:var(--ink); font-size:22px; }
+  .reveal .slides section { text-align:left; }
+  .reveal.has-dark-background .controls, .reveal.has-dark-background .progress { color:#7FD0D8; }
+
+  /* ---------- layout ---------- */
+  .slide-wrap { width:1280px; height:720px; box-sizing:border-box; padding:44px 56px 26px; display:flex; flex-direction:column; }
+  .eyebrow { font-family:var(--font-mono); font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:10px; }
+  .reveal h1 { font-family:var(--font-display); font-size:46px; line-height:1.1; font-weight:700; letter-spacing:-.015em; color:var(--ink); margin:0 0 16px; text-transform:none; }
+  .reveal p { margin:0 0 12px; line-height:1.4; }
+  .lead { font-family:var(--font-display); font-size:28px; line-height:1.35; color:var(--ink-2); max-width:940px; }
+  .body { flex:1; display:flex; flex-direction:column; justify-content:flex-start; padding-top:14px; }
+  .foot { margin-top:auto; padding-top:8px; font-size:13px; color:var(--ink-3); display:flex; justify-content:space-between; }
+  .ex-tag { display:inline-block; font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; background:var(--warn-bg); color:var(--warn); padding:3px 10px; border-radius:999px; margin-left:12px; vertical-align:middle; }
+  code { font-family:var(--font-mono); font-size:.84em; background:var(--surface-2); padding:1px 6px; border-radius:4px; }
+  button { font-family:var(--font-body); cursor:pointer; }
+
+  /* ---------- cards ---------- */
+  .grid { display:grid; gap:18px; } .g2 { grid-template-columns:1fr 1fr; } .g3 { grid-template-columns:repeat(3,1fr); }
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px 22px; }
+  .card h3 { font-size:24px; margin:0 0 6px; text-transform:none; } .card p { font-size:21px; color:var(--ink-2); margin:0; }
+  .card.risk { border-color:var(--risk); background:var(--risk-bg); } .card.accent { border-color:var(--accent); background:var(--accent-soft); }
+  .big { font-family:var(--font-display); font-size:38px; font-weight:700; line-height:1.15; margin:0 0 8px; }
+  .tall .card { min-height:240px; }
+
+  /* ---------- dark / bright hero backgrounds ---------- */
+  .dark h1, .bright h1 { color:#fff; } .dark .eyebrow { color:#7FD0D8; } .bright .eyebrow { color:#BFE6EA; }
+  .dark .foot, .bright .foot { color:#8CA3A6; }
+  .pcard { background:#172628; border:1px solid #294044; border-radius:16px; padding:18px 20px 20px; }
+  .pcard h3 { color:#fff; font-size:25px; margin:10px 0 4px; } .pcard p { color:#AEC2C5; font-size:19px; margin:0; }
+
+  /* ---------- phase tabs over a dimmable diagram ---------- */
+  .nd { transition:opacity .45s; } .nd.dim { opacity:.22; }
+  .tabs { display:flex; gap:12px; margin-top:12px; }
+  .tab { flex:1; text-align:left; background:rgba(255,255,255,.1); border:2px solid rgba(255,255,255,.35); border-radius:14px; padding:10px 16px; color:#fff; font-size:20px; font-weight:700; transition:all .25s; }
+  .tab small { display:block; font-size:14px; font-weight:500; color:#BFD9EE; }
+  .tab:hover { background:rgba(255,255,255,.2); }
+  .tab.act { background:#fff; color:#0B2540; border-color:#fff; transform:translateY(-3px); } .tab.act small { color:#3D4F52; }
+  .cap2 { margin-top:12px; display:grid; grid-template-columns:1.25fr 1fr; gap:16px; }
+  .cap2 > div { border-radius:14px; padding:10px 18px; font-size:18px; line-height:1.35; color:#fff; }
+  .cap2 .a { background:rgba(255,255,255,.12); } .cap2 .b { background:rgba(63,191,138,.22); border:1px solid rgba(63,191,138,.6); }
+  .cap2 b { display:block; font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:3px; color:#BFD9EE; }
+
+  /* ---------- step explorer ---------- */
+  .s2 { display:grid; grid-template-columns:330px 1fr; gap:30px; flex:1; margin-top:4px; }
+  .steps { display:flex; flex-direction:column; gap:10px; }
+  .stp { display:flex; align-items:center; gap:14px; text-align:left; background:#fff; border:2px solid var(--line); border-radius:14px; padding:13px 16px; font-size:21px; font-weight:700; color:var(--ink); transition:all .25s; }
+  .stp i { font-style:normal; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface-2); color:var(--ink-3); font-family:var(--font-mono); font-size:15px; flex:none; transition:all .25s; }
+  .stp small { display:block; font-size:14px; font-weight:500; color:var(--ink-3); }
+  .stp:hover { border-color:var(--c); }
+  .stp.act { border-color:var(--c); background:var(--c); color:#fff; transform:translateX(8px); box-shadow:0 8px 24px rgba(15,27,29,.18); } .stp.act i { background:#fff; color:var(--c); } .stp.act small { color:rgba(255,255,255,.85); }
+  .det { background:#fff; border:2px solid var(--c, var(--line)); border-radius:18px; padding:22px 26px; display:flex; flex-direction:column; gap:14px; transition:border-color .3s; }
+  .det h2 { font-family:var(--font-display); font-size:32px; margin:0; color:var(--c); text-transform:none; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .pane { border-radius:14px; padding:14px 16px; } .pane.a { background:var(--accent-soft); } .pane.b { background:#EDE7FA; }
+  .pane b { display:block; font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:5px; }
+  .pane p { font-size:19px; margin:0; line-height:1.35; }
+  .code { background:#0F1B1D; color:#E8F0F1; border-radius:12px; padding:14px 18px; font-family:var(--font-mono); font-size:16px; line-height:1.6; }
+  .dots { display:flex; gap:8px; margin-top:auto; align-items:center; }
+  .dots span { width:34px; height:6px; border-radius:3px; background:var(--line); transition:background .3s; } .dots span.on { background:var(--c); }
+
+  /* ---------- the ask ---------- */
+  .ask2 { display:flex; gap:18px; align-items:center; background:#101C1E; color:#fff; border-radius:18px; padding:20px 24px; border:1px solid #294044; position:relative; }
+  .ask2 i { font-style:normal; width:54px; height:54px; border-radius:50%; background:#0E6E77; font-family:var(--font-display); font-weight:700; font-size:28px; display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 0 0 5px rgba(127,208,216,.2); }
+  .ask2 b { display:block; font-size:27px; line-height:1.15; } .ask2 span { display:block; font-size:19px; color:#AEC2C5; margin-top:3px; }
+
+  /* ---------- motion ---------- */
+  .reveal .fragment { transition:all .45s cubic-bezier(.2,.7,.2,1); }
+  .reveal .fragment.fade-up { transform:translateY(24px); } .reveal .fragment.fade-up.visible { transform:none; }
+  @keyframes pulse { 0%,100% { stroke-width:3; stroke-opacity:1; } 50% { stroke-width:10; stroke-opacity:.25; } } .pulse { animation:pulse 1.9s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1 · title (gradient) -->
+<section data-background-gradient="linear-gradient(135deg,#0A4A51 0%,#0E6E77 55%,#1D7FB8 100%)">
+  <div class="slide-wrap bright" style="justify-content:center">
+    <div class="eyebrow">Proposal · REPLACE Team</div>
+    <h1 style="font-size:64px;max-width:1000px">REPLACE the one-line promise</h1>
+    <p class="lead" style="color:#E3F3F5">REPLACE one sentence on what this is the first step toward.</p>
+    <div style="margin-top:22px"><span class="ex-tag" style="margin-left:0">Draft for discussion</span></div>
+  </div>
+</section>
+
+<!-- 2 · the problem (dark, cards reveal one by one) -->
+<section data-background-color="#101C1E">
+  <div class="slide-wrap dark">
+    <div class="eyebrow">1 · The problem</div>
+    <h1 style="font-size:48px">REPLACE a sharp problem statement</h1>
+    <div class="body"><div class="grid g3" style="gap:22px">
+      <div class="pcard fragment fade-up"><h3>REPLACE pain 1</h3><p>One short line.</p></div>
+      <div class="pcard fragment fade-up"><h3>REPLACE pain 2</h3><p>One short line.</p></div>
+      <div class="pcard fragment fade-up"><h3>REPLACE pain 3</h3><p>One short line.</p></div>
+    </div></div>
+    <div class="foot"><span>Source: REPLACE</span><span>2</span></div>
+  </div>
+</section>
+
+<!-- 3 · phase tabs over a dimmable diagram -->
+<section data-background-gradient="linear-gradient(135deg,#0B2540 0%,#12456E 60%,#1D7FB8 100%)">
+  <div class="slide-wrap dark">
+    <div class="eyebrow">2 · The picture</div>
+    <h1 style="font-size:40px;margin-bottom:4px">REPLACE title</h1>
+    <svg viewBox="0 0 1168 150" style="width:1168px;height:150px" id="dg">
+      <g class="nd" data-ph="1 2 3"><rect x="0" y="20" width="260" height="100" rx="14" fill="rgba(255,255,255,.14)" stroke="#fff"/><text x="20" y="62" font-size="20" font-weight="700" fill="#fff">Piece A</text><text x="20" y="88" font-size="14" fill="#CFE3F5">built now</text></g>
+      <g class="nd" data-ph="2 3"><rect x="300" y="20" width="260" height="100" rx="14" fill="rgba(29,127,184,.3)" stroke="#6FB6E8" stroke-dasharray="8 6"/><text x="320" y="62" font-size="20" font-weight="700" fill="#fff">Piece B</text><text x="320" y="88" font-size="14" fill="#CFE3F5">next</text></g>
+      <g class="nd" data-ph="3"><rect x="600" y="20" width="260" height="100" rx="14" fill="rgba(255,255,255,.22)" stroke="#F2D9A0" stroke-width="3"/><text x="620" y="62" font-size="20" font-weight="700" fill="#fff">Piece C</text><text x="620" y="88" font-size="14" fill="#CFE3F5">the goal</text></g>
+    </svg>
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-p="1">Now<small>REPLACE</small></button>
+      <button class="tab" type="button" data-p="2">Next<small>REPLACE</small></button>
+      <button class="tab" type="button" data-p="3">Goal<small>REPLACE</small></button>
+    </div>
+    <div class="cap2"><div class="a"><b id="c-h">Now</b><span id="c-t"></span></div><div class="b"><b>Your part</b><span id="c-y"></span></div></div>
+    <!-- one invisible fragment per step AFTER the first: the right-arrow key advances the tabs -->
+    <span class="fragment ptrig" data-fragment-index="1" style="position:absolute;opacity:0;pointer-events:none"></span>
+    <span class="fragment ptrig" data-fragment-index="2" style="position:absolute;opacity:0;pointer-events:none"></span>
+    <div class="foot"><span>Direction, not a commitment. Click a tab, or use →.</span><span>3</span></div>
+  </div>
+</section>
+
+<!-- 4 · step explorer (list on the left, detail on the right) -->
+<section>
+  <div class="slide-wrap">
+    <div class="eyebrow">3 · How it works</div>
+    <h1>REPLACE how you will work with it</h1>
+    <div class="s2" id="s2">
+      <div class="steps">
+        <button class="stp" type="button" data-s="0" style="--c:#A33B2E"><i>1</i><span>Step one<small>REPLACE</small></span></button>
+        <button class="stp" type="button" data-s="1" style="--c:#1D7FB8"><i>2</i><span>Step two<small>REPLACE</small></span></button>
+        <button class="stp" type="button" data-s="2" style="--c:#1F7A4D"><i>3</i><span>Step three<small>REPLACE</small></span></button>
+      </div>
+      <div class="det" id="det" style="--c:#A33B2E">
+        <h2 id="d-t"></h2>
+        <div class="row2"><div class="pane a"><b>You</b><p id="d-you"></p></div><div class="pane b"><b>Your agent</b><p id="d-ag"></p></div></div>
+        <div class="code" id="d-code"></div>
+        <div class="dots" id="dots"><span></span><span></span><span></span></div>
+      </div>
+      <span class="fragment strig" data-fragment-index="1" style="position:absolute;opacity:0;pointer-events:none"></span>
+      <span class="fragment strig" data-fragment-index="2" style="position:absolute;opacity:0;pointer-events:none"></span>
+    </div>
+    <div class="foot"><span>Source: REPLACE. Draft.</span><span>4</span></div>
+  </div>
+</section>
+
+<!-- 5 · the ask -->
+<section data-background-color="#101C1E">
+  <div class="slide-wrap dark">
+    <div class="eyebrow">4 · The ask</div>
+    <h1>To start, we need two things</h1>
+    <div class="body"><div class="grid g2" style="gap:22px">
+      <div class="ask2 fragment fade-up"><i>✓</i><div><b>REPLACE ask one</b><span>REPLACE why</span></div></div>
+      <div class="ask2 fragment fade-up"><i>2</i><div><b>REPLACE ask two</b><span>REPLACE why</span></div></div>
+    </div></div>
+    <div class="foot"><span>Draft. No cost or time figures are claimed.</span><span>5</span></div>
+  </div>
+</section>
+
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0,
+    controls: true, progress: true, slideNumber: false,
+    hash: false, center: false,
+    transition: 'slide', backgroundTransition: 'fade', fragments: true, overview: true
+  });
+
+  /* Three-way sync used by every stepped interaction:
+     click a button -> setFn(i);  press → (hidden fragments) -> setFn(1 + shown);  initial -> setFn(0). */
+  function bindSteps(buttons, trigClass, setFn) {
+    buttons.forEach(function (b, i) { b.addEventListener('click', function () { setFn(i); b.blur(); }); });
+    function sync(e) { if (e.fragment.classList.contains(trigClass)) setFn(document.querySelectorAll('.' + trigClass + '.visible').length); }
+    Reveal.on('fragmentshown', sync); Reveal.on('fragmenthidden', sync);
+  }
+
+  /* ---- slide 3: phase tabs dim parts of the diagram ---- */
+  var PH = [
+    { h: 'Now',  t: 'REPLACE what exists today.',            y: 'REPLACE what the audience does.' },
+    { h: 'Next', t: 'REPLACE what comes next.',               y: 'REPLACE.' },
+    { h: 'Goal', t: 'REPLACE the end state.',                 y: 'REPLACE.' }
+  ];
+  var nds = document.querySelectorAll('#dg .nd'), tabs = Array.prototype.slice.call(document.querySelectorAll('#tabs .tab')), phCur = -1;
+  function setPhase(i) {
+    if (i === phCur) return; phCur = i; var p = i + 1;
+    nds.forEach(function (n) { n.classList.toggle('dim', (' ' + n.getAttribute('data-ph') + ' ').indexOf(' ' + p + ' ') < 0); });
+    tabs.forEach(function (b, k) { b.classList.toggle('act', k === i); });
+    document.getElementById('c-h').textContent = PH[i].h; document.getElementById('c-t').textContent = PH[i].t; document.getElementById('c-y').textContent = PH[i].y;
+  }
+  bindSteps(tabs, 'ptrig', setPhase); setPhase(0);
+
+  /* ---- slide 4: step explorer ---- */
+  var DATA = [
+    { t: '1 · Step one',   c: '#A33B2E', you: 'REPLACE.', ag: 'REPLACE.', code: 'REPLACE a real path, command or field' },
+    { t: '2 · Step two',   c: '#1D7FB8', you: 'REPLACE.', ag: 'REPLACE.', code: 'REPLACE' },
+    { t: '3 · Step three', c: '#1F7A4D', you: 'REPLACE.', ag: 'REPLACE.', code: 'REPLACE' }
+  ];
+  var det = document.getElementById('det'), sb = Array.prototype.slice.call(document.querySelectorAll('#s2 .stp')), dots = document.querySelectorAll('#dots span'), sCur = -1;
+  function setStep(i) {
+    if (i === sCur) return; sCur = i; var d = DATA[i];
+    det.style.setProperty('--c', d.c);
+    document.getElementById('d-t').textContent = d.t; document.getElementById('d-you').textContent = d.you; document.getElementById('d-ag').textContent = d.ag;
+    document.getElementById('d-code').textContent = d.code;
+    sb.forEach(function (b, k) { b.classList.toggle('act', k === i); });
+    dots.forEach(function (s, k) { s.classList.toggle('on', k <= i); s.style.setProperty('--c', d.c); });
+  }
+  bindSteps(sb, 'strig', setStep); setStep(0);
+})();
+</script>
+</body>
+</html>

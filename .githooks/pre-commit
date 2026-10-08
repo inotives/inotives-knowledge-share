@@ -1,0 +1,18 @@
+#!/bin/sh
+# Local stand-in for CI. Enable once per clone:  git config core.hooksPath .githooks
+set -e
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+echo "pre-commit: checking frontmatter, links and skills"
+python3 -I .github/scripts/check_docs.py
+
+echo "pre-commit: scanning staged changes for secrets"
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --no-banner --redact
+elif command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+  docker run --rm -v "$ROOT:/repo" zricethezav/gitleaks:latest \
+    protect --source /repo --staged --no-banner --redact
+else
+  echo "pre-commit: WARNING gitleaks and docker are not available; secret scan skipped" >&2
+fi

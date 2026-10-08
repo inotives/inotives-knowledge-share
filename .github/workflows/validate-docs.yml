@@ -1,0 +1,24 @@
+name: validate-docs
+
+# Runs on every pull request. No path filter on purpose: a required check that
+# is skipped by a path filter never reports, and GitHub then blocks the merge.
+on:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check frontmatter, links and skills
+        run: python .github/scripts/check_docs.py
+      - name: Scan for secrets
+        # Unpinned image; pin a version once the approved-actions policy is known.
+        run: |
+          docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest \
+            detect --source /repo --no-banner --redact --verbose

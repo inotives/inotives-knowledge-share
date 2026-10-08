@@ -1,0 +1,14 @@
+# .okignore -- paths excluded from the OpenKnowledge document index.
+# Evaluated together with .gitignore (gitignore syntax).
+#
+# _scratch/ is gitignored, which would also hide it from OpenKnowledge.
+# Re-include it so personal scratch notes can be edited and searched in OK.
+!_scratch/
+!_scratch/*/
+!_scratch/**
+
+# Claude Code entry file; not a knowledge page
+CLAUDE.md
+
+# GitHub pull request template; not a knowledge page
+.github/pull_request_template.md

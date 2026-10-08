@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Personal scratch workspaces (_scratch/): only the folder exists in git.
+# Each person works in _scratch/<handle>/ ; nothing in it is shared or reviewed.
+_scratch/*
+!_scratch/.gitkeep
+
+# Per-machine agent and OpenKnowledge state
+.ok/local
+.claude/settings.local.json
+
+# Never commit credentials
+.env
+.env.*
+
+# Generated per-machine agent projections; restored by `ok init`
+.claude/
+.codex/
+.opencode/
+.cursor/
+.pi/
+.github/skills/
+opencode.json
+.mcp.json
