@@ -108,7 +108,7 @@ The contract makes promises that depend on how GitHub and OpenKnowledge behave. 
 | 3 | Do code owners resolve, by work email and by `@username`? | **Answered.** Both resolve, and a path rule replaces `*`. CODEOWNERS applies from `main`, so its own pull request is not covered. A nonexistent owner fails silently, so `validate-docs` now checks owners. A sole owner does not block their own pull request |
 | 4 | Is `_scratch/` indexed by OpenKnowledge, and can agents write to it, while Git ignores it? | Pending (case X-1) |
 | 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook refused invalid frontmatter. Broken links and a planted secret are not tested |
-| 6 | What happens when two contributors edit the same page? | **Partly answered.** Edits on different lines merged cleanly. Same-line edits are not tested yet (P3-2) |
+| 6 | What happens when two contributors edit the same page? | **Answered for text.** Edits on different lines merged cleanly. Same-line edits gave a visible conflict that was never auto-resolved. Attribution matched the account, but `ai_assisted` is not checked. Agent edits with and without OpenKnowledge are not compared yet (P3-4) |
 | 7 | Does it still work on GitHub Enterprise, where org rulesets and SSO apply? | Pending (Phase 4). Free accounts cannot show this |
 
 ## Test phases
@@ -154,7 +154,7 @@ Each account has its own SSH key and its own clone, so every action is attributa
 - **Done:** Phases 0 to 2. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./company/example-org/kb-test/results/2026-10-09-phase-2-summary.md) for the evidence and the open items.
 - **Main finding:** GitHub's controls held, including for the admin. OpenKnowledge's sync did not fit the contract, so pages are written with its tools and published with git.
 - **Phase 2 finding:** a mistyped code owner fails silently and removes review for its path. A CI check on `codeowners/errors` now catches it.
-- **In progress:** Phase 3. P3-1 (different lines) is observed. P3-2 (same lines) is next.
+- **In progress:** Phase 3. P3-1 to P3-3 are observed. See the [Phase 3 report](./company/example-org/kb-test/results/2026-10-09-phase-3-two-contributors.md). P3-4 (agent edits with and without OpenKnowledge) is next.
 - Findings are added here only when they are observed, not before.
 
 ## Using this repository
