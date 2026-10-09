@@ -17,7 +17,7 @@ tags: []
 
 - An order is one checkout by one customer.
 - An order has one or more items.
-- Refunds are tracked in a separate table.
+- Refunds are tracked in the refunds table, one row per refund.
 
 ## Section B: customers
 
