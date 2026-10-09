@@ -2,22 +2,11 @@
   "name": "protect-main",
   "target": "branch",
   "enforcement": "active",
-  "conditions": {
-    "ref_name": {
-      "include": [
-        "~DEFAULT_BRANCH"
-      ],
-      "exclude": []
-    }
-  },
+  "conditions": { "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] } },
   "bypass_actors": [],
   "rules": [
-    {
-      "type": "deletion"
-    },
-    {
-      "type": "non_fast_forward"
-    },
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
     {
       "type": "pull_request",
       "parameters": {
@@ -27,11 +16,7 @@
         "require_last_push_approval": false,
         "required_review_thread_resolution": false,
         "require_extra_approval_for_unattributed_changes": true,
-        "allowed_merge_methods": [
-          "merge",
-          "squash",
-          "rebase"
-        ],
+        "allowed_merge_methods": ["merge", "squash", "rebase"],
         "required_reviewers": []
       }
     },
@@ -39,11 +24,7 @@
       "type": "required_status_checks",
       "parameters": {
         "strict_required_status_checks_policy": false,
-        "required_status_checks": [
-          {
-            "context": "check"
-          }
-        ]
+        "required_status_checks": [ { "context": "check" } ]
       }
     }
   ]
