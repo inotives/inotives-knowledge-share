@@ -166,3 +166,5 @@ The full steps are in [INSTRUCTIONS.md](./INSTRUCTIONS.md). In short:
 5. Work in `_scratch/<handle>/`, then promote to a curated folder by pull request. Publish with `git push` and `gh pr create`, never with the editor's sync.
 
 Do not store passwords, tokens, keys or any real company or personal data here. This repository is public.
+
+<!-- P2-7 probe -->
