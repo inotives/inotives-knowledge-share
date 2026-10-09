@@ -79,7 +79,7 @@ None of these is in `AGENTS.md` yet. They follow the seven from the [Phase 1 sum
 | Owners as teams | Cannot be tested on a personal repository | Phase 4 |
 | Why a sole owner does not block their own pull request | Two cases support it. GitHub does not document it | To confirm **[?]** |
 | `GITHUB_TOKEN` on a private repository | Tested only on a public one | Phase 4 |
-| P1-14 repeat with both states captured | Pull request 24 showed an approval going to `DISMISSED` after a push, but a failing check was also blocking it | Next run |
+| P1-14 repeat with both states captured | Done in P3-2: pull request 31 showed `APPROVED` before the push and `DISMISSED` after. See the [Phase 3 report](./2026-10-09-phase-3-two-contributors.md) | Closed |
 | `require_extra_approval_for_unattributed_changes: true` | Read back from the live ruleset. Its effect is unknown | To investigate |
 | `require_last_push_approval` | `false`, untested | To decide |
 | `AGENTS.md` changes (seven from Phase 1, four above) | Not written | After Phase 3 |
