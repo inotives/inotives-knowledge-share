@@ -126,7 +126,6 @@ Open a pull request and see the `check` job run. Then try a direct push to `main
 
 ### 1.7 Not set up yet
 
-- **`CODEOWNERS`.** Planned for Phase 2 of the [test plan](./company/example-org/kb-test/test-plan.md). Until then, nobody is requested automatically as reviewer.
 - **Automatic deletion of merged branches.** Off by default. We turned it on after the Phase 1 tests with `gh api -X PATCH repos/<owner>/<repo> -F delete_branch_on_merge=true`. The setting reads back as `true`. It works: the branch of the next merged pull request was deleted automatically.
 
 ---
@@ -400,5 +399,5 @@ gh pr review <number> --approve          # or --request-changes --body '<why>'
 ## What has and has not been tested
 
 - **Tested:** the whole flow above on free GitHub accounts, in a public repository with dummy content, with one person operating three accounts. Branch protection, review, the required check, approval dismissal and the hook all behaved as described. See the [test plan](./company/example-org/kb-test/test-plan.md) and the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md).
-- **Not tested yet:** `CODEOWNERS`, two contributors editing the same page, the editor UI beyond the sync button, the Claude desktop app and claude.ai, and GitHub Enterprise.
+- **Not tested yet:** owners as teams, two contributors editing the same page, the editor UI beyond the sync button, the Claude desktop app and claude.ai, and GitHub Enterprise.
 - **Known weak spot:** the editor's sync. Nothing here depends on it.

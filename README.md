@@ -105,10 +105,10 @@ The contract makes promises that depend on how GitHub and OpenKnowledge behave. 
 | --- | --- | --- |
 | 1 | Does OpenKnowledge's sync bypass or break a protected `main`? | **Answered.** Timed sync was off by default. A manual `ok sync` pushed straight to an unprotected `main`, was rejected under the ruleset, and printed success anyway. We publish with git instead |
 | 2 | Can an approver's own pull request be merged (bypass or second approver)? | **Answered.** Authors cannot approve their own pull request and admins cannot override with `--admin`. A second person must approve, and a write-access author can then merge |
-| 3 | Do code owners resolve, by work email and by `@username`? | Pending (Phase 2) |
+| 3 | Do code owners resolve, by work email and by `@username`? | **Answered.** Both resolve, and a path rule replaces `*`. CODEOWNERS applies from `main`, so its own pull request is not covered. A nonexistent owner fails silently, so `validate-docs` now checks owners. A sole owner does not block their own pull request |
 | 4 | Is `_scratch/` indexed by OpenKnowledge, and can agents write to it, while Git ignores it? | Pending (case X-1) |
 | 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook refused invalid frontmatter. Broken links and a planted secret are not tested |
-| 6 | What happens when two contributors edit the same page? | Pending (Phase 3) |
+| 6 | What happens when two contributors edit the same page? | **Partly answered.** Edits on different lines merged cleanly. Same-line edits are not tested yet (P3-2) |
 | 7 | Does it still work on GitHub Enterprise, where org rulesets and SSO apply? | Pending (Phase 4). Free accounts cannot show this |
 
 ## Test phases
@@ -127,10 +127,11 @@ flowchart LR
 
     style P0 fill:#e8f4ee,stroke:#2f7d57
     style P1 fill:#e8f4ee,stroke:#2f7d57
-    style P2 fill:#fff4e5,stroke:#c77700
+    style P2 fill:#e8f4ee,stroke:#2f7d57
+    style P3 fill:#fff4e5,stroke:#c77700
 ```
 
-Phases 0 and 1 are done (green). **Phase 2 is next** (amber). `main` is protected by a ruleset: pull request and 1 approval, a required `validate-docs` check, approvals dismissed on every new push, no bypass actors. The ruleset is in [.github/ruleset-main.json](./.github/ruleset-main.json). There is no `CODEOWNERS` file yet.
+Phases 0 to 2 are done (green). **Phase 3 is in progress** (amber). `main` is protected by a ruleset: pull request and 1 approval, code-owner review, a required `validate-docs` check, approvals dismissed on every new push, no bypass actors. The ruleset is in [.github/ruleset-main.json](./.github/ruleset-main.json). `.github/CODEOWNERS` names two owners for everything.
 
 ## Accounts used in the test
 
@@ -150,9 +151,10 @@ Each account has its own SSH key and its own clone, so every action is attributa
 
 ## Status
 
-- **Done:** Phase 0 and Phase 1. Every Phase 1 case is observed. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) for the evidence and the open items.
+- **Done:** Phases 0 to 2. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./company/example-org/kb-test/results/2026-10-09-phase-2-summary.md) for the evidence and the open items.
 - **Main finding:** GitHub's controls held, including for the admin. OpenKnowledge's sync did not fit the contract, so pages are written with its tools and published with git.
-- **Next:** Phase 2, code owners.
+- **Phase 2 finding:** a mistyped code owner fails silently and removes review for its path. A CI check on `codeowners/errors` now catches it.
+- **In progress:** Phase 3. P3-1 (different lines) is observed. P3-2 (same lines) is next.
 - Findings are added here only when they are observed, not before.
 
 ## Using this repository
