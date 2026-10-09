@@ -70,14 +70,14 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 
 | ID | Case | Steps | Expected | Status |
 | --- | --- | --- | --- | --- |
-| P2-0 | Prerequisite: the throwaway emails are verified on their accounts | Owner checks Settings, Emails, for `inotivesgames` and `inotives-inoai` and records the result | Both verified. If not, P2-2 can show only the failure case | Pending |
-| P2-1 | Owner by `@username` resolves | Add `CODEOWNERS`, open a PR | Owner is requested as reviewer | Pending |
-| P2-2 | Owner by work email resolves | Use a verified email instead | Resolves only if the email is verified on the account **[?]** | Pending |
-| P2-3 | Path-specific rule, last match wins | Add a rule for `/skill/` | Contributor owns that path | Pending |
-| P2-4 | Code-owner review is enforced | Turn on `require_code_owner_review` | Merge blocked without owner approval | Pending |
-| P2-5 | A nonexistent owner | Add a line with an account that does not exist | GitHub flags an error on the file. Whether it blocks a PR is unknown **[?]** | Pending |
-| P2-6 | The owner authors a PR on a path only they own | With `* @inotives` and code-owner review required, `inotives` opens a PR | Nobody can satisfy the rule, so the PR deadlocks **[?]** | Pending |
-| P2-7 | A second code owner resolves P2-6 | Add `@inotivesgames` as a second owner of the same path, then repeat P2-6 | The second owner's approval satisfies the rule **[?]** | Pending |
+| P2-0 | Prerequisite: the throwaway emails are verified on their accounts | Owner checks Settings, Emails, for `inotivesgames` and `inotives-inoai` and records the result | Both verified. If not, P2-2 can show only the failure case | Observed **[V]**: both emails verified, checked by the owner on the GitHub pages |
+| P2-1 | Owner by `@username` resolves | Add `CODEOWNERS`, open a PR | Owner is requested as reviewer | Observed **[V]**: PR 12 got no reviewer, because GitHub reads CODEOWNERS from the base branch and `main` had none. After merge, PR 13 requested `inotives`. The file must be on `main` before it applies |
+| P2-2 | Owner by work email resolves | Use a verified email instead | Resolves only if the email is verified on the account **[?]** | Observed **[V]**: PR 15 requested `inotivesgames` from `/memo/ inotives.games@gmail.com`, not `inotives`. The path rule replaced `*`. The failure case (unverified email) was not tested |
+| P2-3 | Path-specific rule, last match wins | Add a rule for `/skill/` | Contributor owns that path | Partly observed **[V]**: the `/memo/` rule from P2-2 overrode `*` (last match wins). The `/skill/` rule itself was not run |
+| P2-4 | Code-owner review is enforced | Turn on `require_code_owner_review` | Merge blocked without owner approval | Observed **[V]**: with the setting on, PR 15 went from `CLEAN` to `BLOCKED` although `inotives` had approved. Approval by the owner `inotivesgames` made it `CLEAN` |
+| P2-5 | A nonexistent owner | Add a line with an account that does not exist | GitHub flags an error on the file. Whether it blocks a PR is unknown **[?]** | Observed **[V]**: the codeowners errors API reports `Unknown owner` for the line. The PR 16 that added it passed CI and merged. A PR touching the path (17) got no reviewer and went `CLEAN` after one ordinary approval. The line also replaced `*` for that path |
+| P2-6 | The owner authors a PR on a path only they own | With `* @inotives` and code-owner review required, `inotives` opens a PR | Nobody can satisfy the rule, so the PR deadlocks **[?]** | Observed **[V]**: **no deadlock.** PR 19 by the sole owner `inotives` went `CLEAN` after approval by `inotivesgames`, who is not an owner. When the author is the only owner, the code-owner rule seems to be waived **[?]** |
+| P2-7 | A second code owner resolves P2-6 | Add `@inotivesgames` as a second owner of the same path, then repeat P2-6 | The second owner's approval satisfies the rule **[?]** | Observed **[V]** in a reframed form: with `* @inotives @inotivesgames`, PR 21 by `inotives` requested `inotivesgames`. An approval from non-owner `inotives-inoai` left it `BLOCKED`. The approval from `inotivesgames` made it `CLEAN` |
 
 ## Phase 3: two contributors
 
