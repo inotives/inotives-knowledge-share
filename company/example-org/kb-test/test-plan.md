@@ -63,7 +63,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-11 | A failing check blocks the merge once it is required | Add `validate-docs` (job `check`) as a required status check. As `inotives-inoai`, open a PR with broken frontmatter | CI fails and the merge is blocked even after approval | Observed **[V]**: approved but `BLOCKED`, merge refused |
 | P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Observed **[V]**: CI passed, merged as `4713188` |
 | P1-13 | An approval survives a later push | After approval, push a content change to the same PR | Whether the approval stands depends on `dismiss_stale_reviews_on_push` | Observed **[V]**: approval stood, because the setting is off |
-| P1-14 | Dismiss stale approvals on push | Turn on `dismiss_stale_reviews_on_push`, approve a PR, then push another commit | The approval is dismissed and the PR needs a new review | Observed **[V]**: approval became `DISMISSED`, PR `REVIEW_REQUIRED` and `BLOCKED`. The state before the push was not captured, so repeat with both reads |
+| P1-14 | Dismiss stale approvals on push | Turn on `dismiss_stale_reviews_on_push`, approve a PR, then push another commit | The approval is dismissed and the PR needs a new review | Observed **[V]**: approval became `DISMISSED`, PR `REVIEW_REQUIRED` and `BLOCKED`. The state before the push was not captured, so repeat with both reads. Seen again on PR 24 in P2-8: `APPROVED` before the push, `DISMISSED` after, but a failing check was also blocking it |
 | P1-15 | A contributor merges their own approved PR | A non-admin author gets one approval and a passing check, then runs `gh pr merge` | Merge allowed, if write access is enough | Observed **[V]**: `inotives-inoai` merged PR 8 as `5b5dda0` after `inotivesgames` approved |
 
 ## Phase 2: code owners
@@ -86,7 +86,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 
 | ID | Case | Steps | Expected | Status |
 | --- | --- | --- | --- | --- |
-| P3-1 | Same page, different lines | Both edit one page on separate branches | Clean merge, facts may still disagree | Pending |
+| P3-1 | Same page, different lines | Both edit one page on separate branches | Clean merge, facts may still disagree | Observed **[V]**: pull requests 27 (`inotivesgames`, Section A) and 28 (`inotives-inoai`, Section B) both merged without conflict, as `d05192f` and `9fcab2d`. The second stayed `MERGEABLE` after the first landed, and the ruleset does not require an up-to-date branch. The two edits did not contradict each other, so "facts may disagree" is untested |
 | P3-2 | Same lines | Both edit the same lines | Conflict is visible, never auto-resolved | Pending |
 | P3-3 | Attribution in history | Compare commit author, `created_by` and `ai_assisted` | Author matches the account **[?]** | Pending |
 | P3-4 | Agent edit with and without OpenKnowledge | One agent edits a page with plain files and git, another through the OpenKnowledge tools. Compare what each catches: broken links, orphan pages, frontmatter, attribution | Shows what OpenKnowledge adds beyond Git | Pending |
