@@ -3,3 +3,6 @@
 
 # P2-2 probe: owner by verified email
 /memo/ inotives.games@gmail.com
+
+# P2-5 probe: owner account that does not exist
+/concept/ @inotives-no-such-user-xyz
