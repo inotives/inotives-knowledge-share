@@ -23,7 +23,7 @@ tags: []
 
 - A customer is one account.
 - An active customer has ordered in the last 90 days.
-- Guest checkouts have no customer id.
+- Guest checkouts have an empty customer id and are not counted as customers.
 
 ## Section C: reports
 
