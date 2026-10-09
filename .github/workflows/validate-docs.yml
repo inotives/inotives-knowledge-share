@@ -8,6 +8,8 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,6 +19,15 @@ jobs:
           python-version: "3.12"
       - name: Check frontmatter, links and skills
         run: python .github/scripts/check_docs.py
+      - name: Check CODEOWNERS owners exist
+        # GitHub accepts an unknown owner silently and the path then loses its
+        # code-owner review. This step fails the check instead.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          errs=$(gh api "repos/${{ github.repository }}/codeowners/errors?ref=${{ github.event.pull_request.head.sha }}" --jq '.errors')
+          echo "$errs"
+          [ "$(echo "$errs" | jq length)" = "0" ]
       - name: Scan for secrets
         # Unpinned image; pin a version once the approved-actions policy is known.
         run: |
