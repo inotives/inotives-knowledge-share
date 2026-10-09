@@ -27,6 +27,6 @@ tags: []
 
 ## Section C: reports
 
-- The daily report runs at 07:00.
+- The daily report runs at 07:00, after late rows land.
 - It reads the orders table.
 - Late rows appear in the next day's report.
