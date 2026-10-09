@@ -3,3 +3,6 @@
 
 # P2-2 probe: owner by verified email
 /memo/ inotives.games@gmail.com
+
+# P2-8b probe: real account without write access, CI must fail
+/concept/ @octocat
