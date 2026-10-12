@@ -23,9 +23,9 @@ workflow/<workflow-name>/
   resources/      # optional
 ```
 
-Lowercase kebab-case folder names.
+Lowercase kebab-case folder names. Every workflow is a folder, never a single loose file, so it matches skills and can carry `resources/`. A workflow sits directly under `workflow/` and is not grouped into subfolders.
 
-**A workflow folder has no README of its own.** Every other folder needs one, because a README is how a folder says what it is for and what its rules are. For a workflow, `workflow.md` does exactly that: it states the objective, the ordered steps, the hand-offs and the skills it invokes. A second file would only repeat it and drift out of date. The docs check therefore skips `workflow/<name>/` and everything inside it, including `resources/`. This page is the README for the `workflow/` folder itself.
+**A workflow folder has no README of its own.** Every other folder needs one, because a README is how a folder says what it is for and what its rules are. For a workflow, `workflow.md` does exactly that: it states the objective, the ordered steps, the hand-offs and the skills it invokes. A second file would only repeat it and drift out of date. The docs check therefore fails a workflow folder without a `workflow.md`, and skips the README rule for `workflow/<name>/` and everything inside it, including `resources/`. This page is the README for the `workflow/` folder itself.
 
 ## Frontmatter for this folder
 
