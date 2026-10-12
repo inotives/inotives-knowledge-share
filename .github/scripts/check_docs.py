@@ -3,7 +3,10 @@
 
 Curated folders: concept, company, workflow, memo, generated_output (README only).
 skill/<name>/SKILL.md is checked separately: name must equal the folder, description required.
-_scratch/ is never checked. README.md files need only title and description.
+_scratch/ holds personal notes that are never checked; only its own README.md is, and it must exist.
+README.md files need only title and description.
+Every folder under a curated folder needs a README.md, except inside a skill or a workflow.
+A top-level folder that is not in TOP_LEVEL fails: a new one is the owner's decision.
 A page must not contain a personal local path such as /Users/<name>/ or /home/<name>/;
 write ~/ or a repo-relative path instead. Fenced code blocks are checked too.
 Standard library only.
@@ -14,6 +17,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CURATED = ["concept", "company", "workflow", "memo", "generated_output"]
+# Every top-level folder that may exist. Hidden folders (.github, .ok, ...) are always allowed.
+# Adding a new top-level folder changes the contract's folder list, so it is the owner's decision.
+TOP_LEVEL = set(CURATED) | {"skill", "_scratch"}
 REQUIRED = ["title", "description", "type", "status", "owner", "created_at"]
 LIGHT = ["title", "description"]
 TYPES = {"note", "research", "decision", "spec", "runbook", "playbook", "skill",
@@ -40,10 +46,56 @@ def frontmatter(text):
     return fields
 
 
+def unknown_top_level_folders():
+    """A top-level folder that is not in TOP_LEVEL escapes every check above, so it fails."""
+    return [
+        f"{p.name}/: unknown top-level folder; a new one needs the owner's decision, "
+        "then add it to TOP_LEVEL in .github/scripts/check_docs.py"
+        for p in sorted(ROOT.iterdir())
+        if p.is_dir() and not p.name.startswith(".") and p.name not in TOP_LEVEL
+    ]
+
+
+def folders_without_readme():
+    """Every folder under a curated folder (and skill/) needs a README.md.
+
+    Hidden folders such as .ok are skipped. A folder inside a skill or a workflow
+    is described by its SKILL.md or workflow.md, so it needs no README.
+    """
+    problems = []
+    scratch = ROOT / "_scratch"
+    if scratch.is_dir() and not (scratch / "README.md").exists():
+        problems.append("_scratch: folder has no README.md; create it from the folder-readme "
+                        "template (see workflow/new-folder/workflow.md)")
+    for top in CURATED + ["skill"]:
+        base = ROOT / top
+        if not base.is_dir():
+            continue
+        for folder in [base] + sorted(p for p in base.rglob("*") if p.is_dir()):
+            rel = folder.relative_to(ROOT)
+            if any(part.startswith(".") for part in rel.parts):
+                continue
+            inside_skill_or_workflow = False
+            probe = folder
+            while probe != ROOT:
+                if (probe / "SKILL.md").exists() or (probe / "workflow.md").exists():
+                    inside_skill_or_workflow = True
+                    break
+                probe = probe.parent
+            if not inside_skill_or_workflow and not (folder / "README.md").exists():
+                problems.append(
+                    f"{rel}: folder has no README.md; create it from the folder-readme "
+                    "template (see workflow/new-folder/workflow.md)")
+    return problems
+
+
 def main():
     errors = []
     files = [p for d in CURATED for p in (ROOT / d).rglob("*.md")
              if ".ok" not in p.parts]
+    scratch_readme = ROOT / "_scratch" / "README.md"
+    if scratch_readme.exists():
+        files.append(scratch_readme)
     for path in sorted(files):
         rel = path.relative_to(ROOT)
         text = path.read_text(encoding="utf-8")
@@ -90,6 +142,8 @@ def main():
             errors.append(f"{rel}/SKILL.md: 'name' must equal folder name '{folder.name}'")
         if not fm.get("description"):
             errors.append(f"{rel}/SKILL.md: missing 'description'")
+    errors.extend(unknown_top_level_folders())
+    errors.extend(folders_without_readme())
     for e in errors:
         print(e)
     print(f"checked {len(files)} files and {len(skills)} skills, {len(errors)} problems")

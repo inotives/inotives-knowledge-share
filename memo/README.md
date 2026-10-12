@@ -12,7 +12,7 @@ Shared captures that need review but are not yet canonical. A memo is a staging 
 
 | Goes here | Does not go here (put it in) |
 | --- | --- |
-| Shared notes, research and decisions that are not yet settled | Personal drafts: `_scratch/<handle>/` |
+| Shared notes, research and decisions that are not yet settled | Personal drafts: `_scratch/` |
 | Meeting notes, internal or external: [meetings](./meetings/README.md) | Notes of a client meeting, or notes that hold a client's material: `company/<name>/<project>/meetings/` |
 | | Stable reference or glossary: [concept](../concept/README.md) |
 | | Anything about one client or project: [company](../company/README.md) |
@@ -31,7 +31,7 @@ A change needs a pull request, a passing `validate-docs` check, and one approval
 
 ## How to add a page
 
-1. Draft in `_scratch/<handle>/`.
+1. Draft in `_scratch/`.
 2. Branch `<handle>/<topic>`.
 3. Move the page here and fill the frontmatter.
 4. Open a pull request and mark it ready for review.

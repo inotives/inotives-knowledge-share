@@ -12,7 +12,7 @@ Every command here was run during the test unless it is marked **[not run]**. Re
 
 ```mermaid
 flowchart LR
-    S["_scratch/handle/<br/>draft, local only"] --> B["branch<br/>handle/topic"]
+    S["_scratch/<br/>draft, local only"] --> B["branch<br/>handle/topic"]
     B --> W["write the page<br/>OpenKnowledge tools"]
     W --> C["git commit<br/>hook checks it"]
     C --> P["git push<br/>never ok sync"]
@@ -73,8 +73,8 @@ The copy must contain:
 | `.github/pull_request_template.md` | The pull request checklist |
 | `.github/ruleset-main.json` | The branch protection rules, used in step 1.4 |
 | `.githooks/pre-commit` | The same checks plus a secret scan, run on your machine |
-| `.gitignore`, `.okignore` | `_scratch/` content stays out of git. `.okignore` is meant to keep it searchable in OpenKnowledge, which has not been tested yet (case X-1) |
-| `_scratch/.gitkeep`, `memo/`, `concept/`, `company/`, `skill/`, `workflow/`, `generated_output/` | The folders, each with a `README.md` |
+| `.gitignore`, `.okignore` | `_scratch/` content stays out of git. `.okignore` keeps it searchable in OpenKnowledge, which case X-1 confirmed |
+| `_scratch/.gitkeep`, `_scratch/README.md`, `memo/`, `concept/`, `company/`, `skill/`, `workflow/`, `generated_output/` | The folders, each with a `README.md` |
 
 ### 1.3 First push
 
@@ -186,13 +186,11 @@ The files it generates (`.claude/`, `.mcp.json`, and others) are gitignored and 
 
 **Keep semantic search off.** OpenKnowledge has an optional `search.semantic` setting. When it is on, OpenKnowledge sends the text of your pages to an outside embedding provider to build its search index (the default points at OpenAI's API), and sends each search query too. That includes `_scratch/` notes and any client material in `company/`. It is **off by default**: do not turn it on, and do not add an embedding API key. A person's own OpenKnowledge settings can switch it on for their machine, and nothing in this repository stops that, so check that `search.semantic.enabled` reads `false`. Agents are told the same in [AGENTS.md](./AGENTS.md#rules-for-agents). Whether to allow it later, with an approved provider, is open for the real rollout.
 
-### 2.5 Create your scratch folder
+### 2.5 Know your scratch folder
 
-```bash
-mkdir -p _scratch/<your-handle>
-```
+`_scratch/` already exists in your clone. Arrange it however you like: you do not need a folder of your own, because each clone belongs to one person.
 
-Everything in `_scratch/` stays on your machine. It is never committed, reviewed or backed up.
+Everything in `_scratch/` stays on your machine. It is never committed, reviewed or backed up, and nothing in it is scanned for secrets. Read [_scratch/README.md](./_scratch/README.md) for the folder's rules.
 
 ### 2.6 Log in for pull requests
 
@@ -269,7 +267,7 @@ If the server was started on a different branch, restart it.
 
 ### 4.2 Draft in scratch
 
-Write rough notes in `_scratch/<your-handle>/`. Let the agent draft there. Nothing in it is checked or shared, so write freely.
+Write rough notes in `_scratch/`. Let the agent draft there. Nothing in it is checked or shared, so write freely, but give each note a `title` and a `description`. The rest of the frontmatter is added when you promote it.
 
 ### 4.3 Start a branch for what you want to share
 
@@ -282,6 +280,8 @@ One branch per task, named `<handle>/<topic>`. Keep it short-lived. Restart the 
 ### 4.4 Write the page
 
 Move the draft into a curated folder (`memo/`, `concept/`, `company/<name>/<project>/`, `skill/`, `workflow/`) and fill in the frontmatter. Ask Claude to do it, or use the OpenKnowledge tools yourself.
+
+If the page needs a new folder, create the folder's `README.md` first, from the `folder-readme` template, by following [Add a new folder](./workflow/new-folder/workflow.md). Every folder needs a README, and the docs check fails without one.
 
 Every curated page needs `title`, `description`, `type`, `status`, `owner` and `created_at`. Set `ai_assisted: true` when an agent wrote most of it, and `created_by` to your handle. The full table is in [AGENTS.md](./AGENTS.md#frontmatter). Link to other pages instead of copying their content.
 

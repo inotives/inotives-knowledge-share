@@ -14,7 +14,7 @@ A record of team meetings, internal or external (a vendor, partner or prospect c
 | --- | --- |
 | Notes from any meeting, internal or external | Notes of a meeting with a client, or any notes that hold a client's material: `company/<name>/<project>/meetings/`, because client material stays in that client's folder |
 | | A decision that others must rely on: its own `decision` page in [company](../../company/README.md) or [concept](../../concept/README.md), linked from the meeting note |
-| | Personal notes: `_scratch/<handle>/` |
+| | Personal notes: `_scratch/` |
 
 ## Layout and naming
 
@@ -44,7 +44,7 @@ The note-taker owns the page. Others propose changes by pull request instead of 
 
 ## How to add a meeting
 
-1. Draft in `_scratch/<handle>/`.
+1. Draft in `_scratch/`.
 2. Branch `<handle>/<topic>`.
 3. Create the page here from the `meeting` template.
 4. Open a pull request and mark it ready for review.

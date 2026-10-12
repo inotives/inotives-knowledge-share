@@ -6,7 +6,7 @@ description: One folder per company or client, one subfolder per project. Curate
 
 ## Purpose
 
-Content about one company or client, kept in one folder per organisation and one subfolder per project. Material about a client stays inside that client's folder.
+Content about one company or client, kept in one folder per organisation and one subfolder per project. Material about a client stays inside that client's folder. Our own organisation is one of the organisations, so an internal project goes in `company/<our-organisation>/<project>/`.
 
 ## What goes here
 
@@ -30,7 +30,7 @@ A change needs a pull request, a passing `validate-docs` check, and one approval
 
 ## How to add a page
 
-1. Draft in `_scratch/<handle>/`.
+1. Draft in `_scratch/`.
 2. Branch `<handle>/<topic>`.
 3. Move the page into the project folder and fill the frontmatter.
 4. Open a pull request and mark it ready for review.
