@@ -5,7 +5,9 @@ Curated folders: concept, company, workflow, memo, generated_output (README only
 skill/<name>/SKILL.md is checked separately: name must equal the folder, description required.
 _scratch/ holds personal notes that are never checked; only its own README.md is, and it must exist.
 README.md files need only title and description.
-Every folder under a curated folder needs a README.md, except inside a skill or a workflow.
+Every folder under a curated folder needs a README.md, except inside skill/<name>/ and
+workflow/<name>/, where SKILL.md and workflow.md stand in for it. Each skill folder needs a
+SKILL.md and each workflow folder needs a workflow.md.
 A top-level folder that is not in TOP_LEVEL fails: a new one is the owner's decision.
 A page must not contain a personal local path such as /Users/<name>/ or /home/<name>/;
 write ~/ or a repo-relative path instead. Fenced code blocks are checked too.
@@ -56,11 +58,26 @@ def unknown_top_level_folders():
     ]
 
 
+def workflows_without_workflow_md():
+    """Each workflow is a folder workflow/<name>/ with a workflow.md, like a skill with SKILL.md."""
+    base = ROOT / "workflow"
+    if not base.is_dir():
+        return []
+    return [
+        f"{p.relative_to(ROOT)}: missing workflow.md; a workflow is a folder with a workflow.md "
+        "(see workflow/README.md)"
+        for p in sorted(base.iterdir())
+        if p.is_dir() and not p.name.startswith(".") and not (p / "workflow.md").exists()
+    ]
+
+
 def folders_without_readme():
     """Every folder under a curated folder (and skill/) needs a README.md.
 
-    Hidden folders such as .ok are skipped. A folder inside a skill or a workflow
-    is described by its SKILL.md or workflow.md, so it needs no README.
+    Hidden folders such as .ok are skipped. A folder inside skill/<name>/ or
+    workflow/<name>/ is described by that folder's SKILL.md or workflow.md, which
+    the checks below require, so it needs no README. The exemption is by position,
+    so a stray SKILL.md or workflow.md elsewhere does not excuse a folder.
     """
     problems = []
     scratch = ROOT / "_scratch"
@@ -75,13 +92,7 @@ def folders_without_readme():
             rel = folder.relative_to(ROOT)
             if any(part.startswith(".") for part in rel.parts):
                 continue
-            inside_skill_or_workflow = False
-            probe = folder
-            while probe != ROOT:
-                if (probe / "SKILL.md").exists() or (probe / "workflow.md").exists():
-                    inside_skill_or_workflow = True
-                    break
-                probe = probe.parent
+            inside_skill_or_workflow = top in ("skill", "workflow") and len(rel.parts) >= 2
             if not inside_skill_or_workflow and not (folder / "README.md").exists():
                 problems.append(
                     f"{rel}: folder has no README.md; create it from the folder-readme "
@@ -142,6 +153,7 @@ def main():
             errors.append(f"{rel}/SKILL.md: 'name' must equal folder name '{folder.name}'")
         if not fm.get("description"):
             errors.append(f"{rel}/SKILL.md: missing 'description'")
+    errors.extend(workflows_without_workflow_md())
     errors.extend(unknown_top_level_folders())
     errors.extend(folders_without_readme())
     for e in errors:

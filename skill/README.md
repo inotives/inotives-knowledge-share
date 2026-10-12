@@ -40,7 +40,7 @@ skill/<skill-name>/
 - The folder name equals the `name` in the frontmatter: lowercase letters, digits and hyphens.
 - `description` says **when to use** the skill. It is what an agent reads to decide whether to load it, so write it for that.
 - Keep `SKILL.md` short. Put depth in `references/`.
-- **A skill folder has no README of its own.** Every other folder needs one, because a README is how a folder says what it is for and what its rules are. For a skill, `SKILL.md` does exactly that, so a second file would only repeat it and drift out of date. The docs check therefore skips `skill/<name>/` and everything inside it, including `scripts/`, `references/` and `assets/`. This page is the README for the `skill/` folder itself.
+- **A skill folder has no README of its own.** Every other folder needs one, because a README is how a folder says what it is for and what its rules are. For a skill, `SKILL.md` does exactly that, so a second file would only repeat it and drift out of date. The docs check therefore fails a skill folder without a `SKILL.md`, and skips the README rule for `skill/<name>/` and everything inside it, including `scripts/`, `references/` and `assets/`. This page is the README for the `skill/` folder itself.
 
 To list the skills, use OpenKnowledge's folder view or search. This page keeps no hand-written index, because every new skill would edit it and two people adding skills at once would conflict.
 
