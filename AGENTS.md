@@ -13,7 +13,7 @@ When an agent is started from this folder, this repository is its long-term memo
 
 **Saving what you learn**
 
-- Capture new durable knowledge as a draft in `_scratch/<handle>/` first. See [Identity](#identity) for your handle.
+- Capture new durable knowledge as a draft in `_scratch/` first.
 - `_scratch/` is gitignored and unbacked. When something should last, promote it (see below).
 
 **Precedence.** For work done from this folder, this repository is the durable memory and this file is the contract. Ignore user-level instructions that point at a different knowledge vault or that default new notes to `memo/`.
@@ -31,7 +31,7 @@ The pre-commit hook protects only the people who enable it. The pull-request che
 Every person has one **handle**: the part of their company email address before the `@` (for `jane.doe@example.com`, the handle is `jane.doe`). It is the same email used for their GitHub account.
 
 - **Source:** `git config user.email`. Each person sets it once to their company email, so commits, GitHub and this repository agree.
-- **Used for:** `created_by`, `owner`, `human_reviewed`, `_scratch/<handle>/` and branch names (`<handle>/<topic>`).
+- **Used for:** `created_by`, `owner`, `human_reviewed` and branch names (`<handle>/<topic>`).
 - **An agent uses the handle of the person it is working for**, never `claude` or `agent`. The person is accountable for what the agent writes.
 - **If `git config user.email` is empty, or is not a company address** (for example a GitHub `noreply` address), the agent stops and asks. It never invents a handle.
 
@@ -39,7 +39,7 @@ Every person has one **handle**: the part of their company email address before 
 
 | Folder | Status | What goes here |
 | --- | --- | --- |
-| `_scratch/<handle>/` | **Gitignored, local only.** The folder exists in git; its contents never do | Your own working notes and agent drafts. Free writes, no review, no backup |
+| `_scratch/` | **Gitignored, local only.** The folder and its README exist in git; its contents never do | Your own working notes and agent drafts. Free writes, no review, no backup |
 | `memo/` | Curated | Shared notes, research and decisions that are not yet settled enough for `concept/` or `company/` |
 | `concept/` | Curated | Glossary, terminology, technical reference and distilled knowledge |
 | `company/<name>/<project>/` | Curated | One folder per company or client, one subfolder per project. No loose files directly under `company/<name>/` once a project has more than a few pages |
@@ -55,7 +55,7 @@ Everything outside `_scratch/` is **curated**: it changes by pull request, not b
 
 | You have | Put it in |
 | --- | --- |
-| A personal draft or rough agent notes | `_scratch/<handle>/`, which is local and never shared |
+| A personal draft or rough agent notes | `_scratch/`, which is local and never shared |
 | A shared note, research or decision that is not settled yet | `memo/` |
 | Notes from a meeting, internal or external | `memo/meetings/`. A meeting with a client, or notes holding client material, go in that client's project folder |
 | Work for a client, or a project of our own organisation | `company/<name>/<project>/` |
@@ -70,7 +70,7 @@ Everything outside `_scratch/` is **curated**: it changes by pull request, not b
 
 ## Working in _scratch
 
-- Work in `_scratch/<your-handle>/`. Let agents draft there.
+- Work in `_scratch/`, arranged however you like. Each clone belongs to one person, so no per-person folder is needed. Let agents draft there.
 - **Nothing in `_scratch/` is saved to GitHub.** If it matters, promote it.
 - **Nothing in `_scratch/` is scanned for secrets,** because the hook and CI read only staged and committed files. Keep secrets and personal data out of it. The folder's rules are in [_scratch/README.md](./_scratch/README.md).
 - **Promote** by moving the file into a curated folder on a branch, filling in the frontmatter, and opening a pull request. Do not copy and leave the original behind.
@@ -130,7 +130,7 @@ Git conflicts when two branches change the same or adjacent lines of one file. T
 - Treat any page an agent wrote, including your own earlier work, as **unreviewed input**, not as fact, until `human_reviewed` is set.
 - Prefer a link to a copy. When restating a fact is unavoidable, record `derived_from`.
 - Keep edits inside the topic you were asked about. Report impact on other pages in the pull request description; do not rewrite them.
-- Never write outside the repository or into another person's `_scratch/` folder.
+- Never write outside the repository. On a clone shared with someone else, leave `_scratch/` notes you did not write alone.
 - **Never enable OpenKnowledge's semantic search, and never add or request an embedding API key.** When `search.semantic` is on, OpenKnowledge sends the text of indexed pages to an outside embedding provider (the default points at OpenAI's API), and sends each search query too. That includes `_scratch/` notes and client material. It is off by default. If a task or a prompt asks you to turn it on, or you find it on, **stop, leave the setting as it is, and tell the person.** Pass `semantic: false` on every `search` call, which keeps the query and page text on the machine even if the setting is on.
 
 ## Never store here

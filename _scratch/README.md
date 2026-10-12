@@ -1,6 +1,6 @@
 ---
 title: Scratch
-description: "Your personal, local working space: drafts and rough notes, one folder per person. Nothing here is shared, reviewed, scanned or backed up."
+description: "Your personal, local working space for drafts and rough notes, arranged however you like. Nothing here is shared, reviewed, scanned or backed up."
 ---
 # Scratch
 
@@ -18,9 +18,7 @@ Your own working space for drafts and rough notes, and a place for your agent to
 
 ## Layout and naming
 
-`_scratch/<your-handle>/`, one folder per person. Your handle is the part of your work email before the `@`. Inside your folder the layout is yours: flat, or a subfolder per topic. There are no naming rules. OpenKnowledge may add a `.gitkeep` file to a new folder, and Git ignores it.
-
-Create your folder once: `mkdir -p _scratch/<your-handle>`.
+Arrange it however you like: flat, or a subfolder per topic. There are no naming rules, and you do not need a folder of your own, because `_scratch/` is local to your clone and each clone belongs to one person. OpenKnowledge may add a `.gitkeep` file to a new folder, and Git ignores it.
 
 ## Frontmatter for this folder
 
@@ -28,7 +26,7 @@ None is required, and the docs check skips this folder. A title and a descriptio
 
 ## Review and ownership
 
-Nothing here is reviewed and nobody owns it but you. Only a promoted page goes through a pull request, a passing `validate-docs` check and an approval from a code owner other than its author. Do not write into another person's folder.
+Nothing here is reviewed and nobody owns it but you. Only a promoted page goes through a pull request, a passing `validate-docs` check and an approval from a code owner other than its author. On a clone you share with someone else, leave notes you did not write alone.
 
 ## How to use it
 

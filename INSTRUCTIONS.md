@@ -12,7 +12,7 @@ Every command here was run during the test unless it is marked **[not run]**. Re
 
 ```mermaid
 flowchart LR
-    S["_scratch/handle/<br/>draft, local only"] --> B["branch<br/>handle/topic"]
+    S["_scratch/<br/>draft, local only"] --> B["branch<br/>handle/topic"]
     B --> W["write the page<br/>OpenKnowledge tools"]
     W --> C["git commit<br/>hook checks it"]
     C --> P["git push<br/>never ok sync"]
@@ -186,11 +186,9 @@ The files it generates (`.claude/`, `.mcp.json`, and others) are gitignored and 
 
 **Keep semantic search off.** OpenKnowledge has an optional `search.semantic` setting. When it is on, OpenKnowledge sends the text of your pages to an outside embedding provider to build its search index (the default points at OpenAI's API), and sends each search query too. That includes `_scratch/` notes and any client material in `company/`. It is **off by default**: do not turn it on, and do not add an embedding API key. A person's own OpenKnowledge settings can switch it on for their machine, and nothing in this repository stops that, so check that `search.semantic.enabled` reads `false`. Agents are told the same in [AGENTS.md](./AGENTS.md#rules-for-agents). Whether to allow it later, with an approved provider, is open for the real rollout.
 
-### 2.5 Create your scratch folder
+### 2.5 Know your scratch folder
 
-```bash
-mkdir -p _scratch/<your-handle>
-```
+`_scratch/` already exists in your clone. Arrange it however you like: you do not need a folder of your own, because each clone belongs to one person.
 
 Everything in `_scratch/` stays on your machine. It is never committed, reviewed or backed up, and nothing in it is scanned for secrets. Read [_scratch/README.md](./_scratch/README.md) for the folder's rules.
 
@@ -269,7 +267,7 @@ If the server was started on a different branch, restart it.
 
 ### 4.2 Draft in scratch
 
-Write rough notes in `_scratch/<your-handle>/`. Let the agent draft there. Nothing in it is checked or shared, so write freely.
+Write rough notes in `_scratch/`. Let the agent draft there. Nothing in it is checked or shared, so write freely.
 
 ### 4.3 Start a branch for what you want to share
 

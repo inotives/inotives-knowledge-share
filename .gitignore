@@ -2,7 +2,7 @@
 .DS_Store
 
 # Personal scratch workspaces (_scratch/): only the folder and its README exist in git.
-# Each person works in _scratch/<handle>/ ; nothing in it is shared or reviewed.
+# _scratch/ is local to one clone, so it needs no per-person folder; nothing in it is shared or reviewed.
 _scratch/*
 !_scratch/.gitkeep
 !_scratch/README.md

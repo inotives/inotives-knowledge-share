@@ -54,7 +54,7 @@ A change needs a pull request, a passing `validate-docs` check, and one approval
 
 ## How to add a skill
 
-1. Draft in `_scratch/<handle>/`.
+1. Draft in `_scratch/`.
 2. Branch `<handle>/<topic>`.
 3. Create `skill/<skill-name>/SKILL.md` and fill the frontmatter.
 4. Open a pull request and mark it ready for review.

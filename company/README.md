@@ -30,7 +30,7 @@ A change needs a pull request, a passing `validate-docs` check, and one approval
 
 ## How to add a page
 
-1. Draft in `_scratch/<handle>/`.
+1. Draft in `_scratch/`.
 2. Branch `<handle>/<topic>`.
 3. Move the page into the project folder and fill the frontmatter.
 4. Open a pull request and mark it ready for review.

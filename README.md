@@ -33,7 +33,7 @@ flowchart LR
         B["Contributor B<br/>+ agent"]
     end
     OK["OpenKnowledge<br/>read, write and search tools"]
-    S["_scratch/handle/<br/>local, gitignored,<br/>free writes"]
+    S["_scratch/<br/>local, gitignored,<br/>free writes"]
     BR["Branch<br/>handle/topic"]
     PR["Pull request"]
     CI["Required check:<br/>frontmatter, links,<br/>secret scan"]
@@ -58,7 +58,7 @@ Everything outside `_scratch/` is **curated**: it changes by pull request, not b
 ```mermaid
 flowchart TD
     ROOT["repository root<br/>AGENTS.md = the team contract"]
-    ROOT --> SC["_scratch/handle/<br/>personal drafts<br/>NOT in git"]
+    ROOT --> SC["_scratch/<br/>personal drafts<br/>NOT in git"]
     ROOT --> ME["memo/<br/>shared notes, not yet settled"]
     ROOT --> CO["concept/<br/>glossary, distilled knowledge"]
     ROOT --> CP["company/name/project/<br/>one folder per org or client"]
@@ -74,7 +74,7 @@ flowchart TD
 
 | Folder | Status | Purpose |
 | --- | --- | --- |
-| `_scratch/<handle>/` | Gitignored, local only | Personal notes and agent drafts. No review, no backup |
+| `_scratch/` | Gitignored, local only | Personal notes and agent drafts. No review, no backup |
 | `memo/` | Curated | Shared notes that are not yet settled |
 | `concept/` | Curated | Glossary and distilled reference |
 | `company/<name>/<project>/` | Curated | Content per organisation and project |
@@ -168,6 +168,6 @@ The full steps are in [INSTRUCTIONS.md](./INSTRUCTIONS.md). In short:
 2. `git config user.email '<verified address>'` and `git config user.name '<name>'`.
 3. `git config core.hooksPath .githooks` to enable the local pre-commit check. It scans staged changes for secrets with gitleaks. If gitleaks is not installed, the hook downloads a pinned, checksum-checked copy into `.bin/` on the first commit (macOS and Linux, needs `curl` and `tar`). CI scans every pull request either way.
 4. `ok init` to set up OpenKnowledge and the agent tool config. Generated files are gitignored.
-5. Work in `_scratch/<handle>/`, then promote to a curated folder by pull request. Publish with `git push` and `gh pr create`, never with the editor's sync.
+5. Work in `_scratch/`, then promote to a curated folder by pull request. Publish with `git push` and `gh pr create`, never with the editor's sync.
 
 Do not store passwords, tokens, keys or any real company or personal data here. This repository is public.
