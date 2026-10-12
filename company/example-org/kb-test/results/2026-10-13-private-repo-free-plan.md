@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # A Private Repo on the Free Plan
 
-Run on 2026-10-13 as `inotives`, on a free personal account, in a throwaway private repository created for the test. The question came from the plan's Phase 4: does this setup work on a private repo, given that every test so far used a public one? The cases are in the [test plan](../test-plan.md), and this run is case X-8. Everything below was observed in this run **[V]**.
+Run on 2026-10-13 as `inotives`, on a free personal account, in a throwaway private repository created for the test. The question came from the plan's Phase 4: does this setup work on a private repo, given that every test so far used a public one? The cases are in the [test plan](../test-plan.md), and this run is case X-8. The exact commands are in the [test steps](../test-steps.md), so the run can be repeated, for example on an Enterprise repo. Everything below was observed in this run **[V]**.
 
 ## Summary
 

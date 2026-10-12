@@ -108,6 +108,66 @@ Run as `inotives-inoai` on 2026-10-12. The rule is in `.github/scripts/check_doc
 
 Also check that `~/...` and an angle-bracket placeholder pass.
 
+### X-8: a private repo on a free personal account
+
+Run once on 2026-10-13 as `inotives`. Results are in the [private repo report](./results/2026-10-13-private-repo-free-plan.md). Use an isolated clone so the real clone's remotes are not touched. Replace `<owner>`, `<repo>` and `<ssh-alias>` with your own, and `<path-to-this-repo>` with the real clone.
+
+1. **Create the repo.**
+   ```
+   gh repo create <owner>/<repo> --private --description "Throwaway test. Safe to delete."
+   ```
+2. **Push `main` from an isolated clone.**
+   ```
+   git clone <path-to-this-repo> kbp && cd kbp
+   git remote remove origin
+   git remote add origin git@<ssh-alias>:<owner>/<repo>.git
+   git push -u origin main
+   ```
+3. **Try the ruleset.**
+   ```
+   gh api -X POST repos/<owner>/<repo>/rulesets --input .github/ruleset-main.json
+   ```
+   **Expect on a free account:** `403`, `Upgrade to GitHub Pro or make this repository public to enable this feature.` If the plan allows rulesets, it creates one, and the pull request rules then apply as in the public repo.
+4. **Try classic branch protection.**
+   ```
+   gh api -X PUT repos/<owner>/<repo>/branches/main/protection --input - <<'EOF'
+   {"required_status_checks":null,"enforce_admins":true,"required_pull_request_reviews":{"required_approving_review_count":1},"restrictions":null}
+   EOF
+   ```
+   **Expect on a free account:** the same `403`.
+5. **Open a probe pull request.**
+   ```
+   git switch -c ci-probe
+   printf '\nprobe\n' >> memo/README.md
+   git -c core.hooksPath=/dev/null commit -am "CI probe"
+   git push -u origin ci-probe
+   gh pr create -R <owner>/<repo> --base main --head ci-probe --title "CI probe" --body "Throwaway."
+   ```
+6. **Read the CI run.**
+   ```
+   gh run list -R <owner>/<repo> --limit 1
+   gh run view <run-id> -R <owner>/<repo> --json jobs --jq '.jobs[0].steps[]|"\(.conclusion // .status)  \(.name)"'
+   gh run view <run-id> -R <owner>/<repo> --log-failed
+   ```
+   **Expect:** the workflow runs. Checkout, Python setup and the docs check pass. The `CODEOWNERS` step fails with `Unknown owner` for any account that is not a collaborator in the new repo, and the secret scan is skipped.
+7. **Fix `CODEOWNERS` and push again.** Name only an account that exists in the repo, for example `* @<owner>`, commit and push. **Expect:** every step passes, including the Docker `gitleaks` scan.
+8. **Check that nothing is enforced.**
+   ```
+   gh pr view 1 -R <owner>/<repo> --json mergeStateStatus,reviewDecision
+   gh pr merge 1 -R <owner>/<repo> --squash
+   git switch main && git pull origin main
+   printf 'direct\n' > direct.txt && git add direct.txt && git -c core.hooksPath=/dev/null commit -m "direct push probe"
+   git push origin main
+   ```
+   **Expect on a free account:** the pull request is `CLEAN` with no review decision, it merges, and the direct push is accepted.
+9. **Clean up.**
+   ```
+   gh repo archive <owner>/<repo> --yes
+   gh auth refresh -h github.com -s delete_repo
+   gh repo delete <owner>/<repo> --yes
+   ```
+   Archiving needs no extra permission. Deleting needs the `delete_repo` scope, which the first `gh auth login` does not grant.
+
 ## Open cases
 
 Nothing here has been run. Each one must get its own dated report before its status changes in the plan.
@@ -155,4 +215,4 @@ Nothing here has been run. Each one must get its own dated report before its sta
 
 ### Phase 4: GitHub Enterprise smoke test
 
-Re-run P1-1, P1-5 to P1-7 and P2-1, then add SSO and an organisation ruleset. Free accounts cannot show these.
+Re-run P1-1, P1-5 to P1-7 and P2-1, then add SSO and an organisation ruleset. Free accounts cannot show these. Also repeat the X-8 steps above on a private repo in the Enterprise organisation: the ruleset should be accepted, and the unapproved merge and the direct push should be refused.
