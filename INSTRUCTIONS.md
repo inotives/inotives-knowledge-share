@@ -184,6 +184,8 @@ This wires the MCP server into your editors at project level and installs no use
 
 The files it generates (`.claude/`, `.mcp.json`, and others) are gitignored and are rebuilt by running the command again.
 
+**Keep semantic search off.** OpenKnowledge has an optional `search.semantic` setting. When it is on, OpenKnowledge sends the text of your pages to an outside embedding provider to build its search index (the default points at OpenAI's API), and sends each search query too. That includes `_scratch/` notes and any client material in `company/`. It is **off by default**: do not turn it on, and do not add an embedding API key. A person's own OpenKnowledge settings can switch it on for their machine, and nothing in this repository stops that, so check that `search.semantic.enabled` reads `false`. Agents are told the same in [AGENTS.md](./AGENTS.md#rules-for-agents). Whether to allow it later, with an approved provider, is open for the real rollout.
+
 ### 2.5 Create your scratch folder
 
 ```bash

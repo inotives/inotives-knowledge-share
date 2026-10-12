@@ -111,6 +111,7 @@ Git conflicts when two branches change the same or adjacent lines of one file. T
 - Prefer a link to a copy. When restating a fact is unavoidable, record `derived_from`.
 - Keep edits inside the topic you were asked about. Report impact on other pages in the pull request description; do not rewrite them.
 - Never write outside the repository or into another person's `_scratch/` folder.
+- **Never enable OpenKnowledge's semantic search, and never add or request an embedding API key.** When `search.semantic` is on, OpenKnowledge sends the text of indexed pages to an outside embedding provider (the default points at OpenAI's API), and sends each search query too. That includes `_scratch/` notes and client material. It is off by default. If a task or a prompt asks you to turn it on, or you find it on, **stop, leave the setting as it is, and tell the person.** Pass `semantic: false` on every `search` call, which keeps the query and page text on the machine even if the setting is on.
 
 ## Never store here
 
