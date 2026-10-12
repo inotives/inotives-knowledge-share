@@ -31,7 +31,7 @@ flowchart LR
 | `git` | Branches, commits, pushes |
 | `gh` (GitHub CLI) | Creating, reviewing and merging pull requests |
 | Python 3 | The frontmatter and link check (`.github/scripts/check_docs.py`, standard library only) |
-| `gitleaks` (optional) | The local secret scan in the pre-commit hook. You do not need to install it: if it is not on your PATH, the hook downloads a pinned release (8.30.1) once into `.bin/` (gitignored, about 21 MB) and checks its SHA-256 first. That needs `curl`, `tar` and access to github.com, on macOS or Linux. On Windows or offline the hook warns and skips the scan. CI scans every pull request regardless |
+| `gitleaks` (optional) | The local secret scan in the pre-commit hook. You do not need to install it: if it is not on your PATH, the hook downloads a pinned release (8.30.1) once into `.bin/` (gitignored, about 21 MB) and checks its SHA-256 first. That needs `curl`, `tar` and access to github.com, on macOS or Linux. On Windows or offline the hook refuses the commit; to skip the scan once, run `SKIP_SECRET_SCAN=1 git commit`. CI scans every pull request regardless |
 | OpenKnowledge: the desktop app, or Node.js 24 or later | Gives agents the read, write and search tools for the pages |
 | Claude Code | The agent you work with in the terminal |
 | A GitHub account with a verified email | Your identity. Your handle is the part of the email before the `@` |

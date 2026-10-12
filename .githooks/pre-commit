@@ -52,7 +52,7 @@ find_gitleaks() {
 
   echo "pre-commit: downloading gitleaks $GITLEAKS_VERSION ($os $arch) once into .bin/" >&2
   if ! curl -fsSL --max-time 120 -o "$tmp/$archive" "$url"; then
-    echo "pre-commit: WARNING gitleaks download failed; secret scan skipped (CI still scans)" >&2
+    echo "pre-commit: gitleaks download failed" >&2
     return 1
   fi
   got="$(sha256_of "$tmp/$archive")"

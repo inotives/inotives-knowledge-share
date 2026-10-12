@@ -43,7 +43,7 @@ Tests with gitleaks removed from PATH, all **[V]** on macOS Apple Silicon:
 | Second run | Used the cached copy with no download |
 | `git commit` with a staged fake token | Refused: `leaks found: 1`. No commit was created |
 | Wrong pinned checksum | `checksum mismatch, commit refused`, exit 1. No binary was installed |
-| Download fails (404) | Warned that the scan was skipped and let the commit through, exit 0 |
+| Download fails (404), first version of the script | Warned that the scan was skipped and let the commit through, exit 0. After the merge with the refuse rule (below) the same case is refused, exit 1, and `SKIP_SECRET_SCAN=1` lets it through with a warning, exit 0 |
 
 A first draft of the script only warned on a checksum mismatch, because the exit happened inside a subshell. It was fixed before the tests above.
 
@@ -51,9 +51,11 @@ Full scans with the pinned binary: the git history (26 commits) and the working-
 
 **Not tested:** Linux, Intel Mac and Windows (the Linux and Intel Mac checksums are in the script and unrun; Windows has no pinned build and only warns).
 
-## Open conflict: fail open or refuse
+## Resolved: fail open or refuse
 
-The `inotives-inoai` branch changes the same hook to **refuse** when no scanner is found, with `SKIP_SECRET_SCAN=1` as a one-off override. The change here **warns and skips** when the download fails. Given that CI blocked a planted secret in that run, the two can be combined: auto-download the pinned scanner, and refuse unless `SKIP_SECRET_SCAN=1` when the download is not possible. That combination is a proposal and is untested.
+The `inotives-inoai` change (pull request 39, merged first) makes the hook **refuse** when no scanner is found, with `SKIP_SECRET_SCAN=1` as a one-off override. This change first **warned and skipped** when the download failed. The two were combined: auto-download the pinned scanner, and refuse unless `SKIP_SECRET_SCAN=1` when no scanner can be had.
+
+Tested after the merge, with gitleaks off PATH, all **[V]** on macOS Apple Silicon: the cached pinned scanner passes a clean index (exit 0); a failed download is refused (exit 1) and passes with `SKIP_SECRET_SCAN=1` plus a warning (exit 0); a wrong checksum is refused (exit 1); and a real `git commit` of a staged fake token is refused with `HEAD` unchanged.
 
 ## Decisions recorded
 
