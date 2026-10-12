@@ -14,5 +14,11 @@ elif command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
   docker run --rm -v "$ROOT:/repo" zricethezav/gitleaks:latest \
     protect --source /repo --staged --no-banner --redact
 else
-  echo "pre-commit: WARNING gitleaks and docker are not available; secret scan skipped" >&2
+  if [ "${SKIP_SECRET_SCAN:-}" = "1" ]; then
+    echo "pre-commit: WARNING secret scan skipped because SKIP_SECRET_SCAN=1; CI still scans" >&2
+  else
+    echo "pre-commit: ERROR neither gitleaks nor a running docker was found, so staged changes cannot be scanned." >&2
+    echo "pre-commit: install gitleaks (brew install gitleaks) or start docker. To skip once, run: SKIP_SECRET_SCAN=1 git commit" >&2
+    exit 1
+  fi
 fi

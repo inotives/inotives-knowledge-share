@@ -80,31 +80,37 @@ Run as `inotives-inoai`, with the server from R-1 still running.
 
 **Expect:** the branch does not move and is not pushed. An `Auto-save` commit appears on local `main`. Only `refs/heads/main` is on the remote.
 
-## Open cases
-
-Nothing here has been run. Each one must get its own dated report before its status changes in the plan.
-
 ### X-3: a planted fake secret
 
-The local hook prints `gitleaks and docker are not available; secret scan skipped` on the current machine, so run the local half on a machine with `gitleaks` or Docker.
+Run as `inotives-inoai` on 2026-10-12. Results are in the [X-3 and X-4 report](./results/2026-10-12-x3-x4-secret-and-path-checks.md).
 
-1. On a branch, add a file with a dummy key such as `AKIAIOSFODNN7EXAMPLE` and a matching secret line.
-2. `git add` it and `git commit`. **Expect:** refused by the hook on a machine with the scanner. Record the warning if the scan is skipped.
-3. Commit with `--no-verify`, push, open a PR. **Expect:** the `Scan for secrets` step in `validate-docs` fails and the merge stays blocked.
-4. Remove the secret, push, and confirm `check` passes. The key stays in the branch history, so close the PR unmerged and delete the branch.
+1. `git checkout -b inotives-inoai/x3-secret-probe`. Add a page under `concept/` with valid frontmatter and two lines: an AWS-shaped access key and a secret key line. Both must be fake.
+2. `git add` and `git commit`. **Expect:** refused by the hook. With no scanner the hook now refuses too. Before the fix it printed `secret scan skipped` and let the commit through.
+3. Push, then `gh pr create --draft`. Wait for CI, then read `gh pr checks <n>` and the `Scan for secrets` step log.
+4. As `inotivesgames`, `gh pr review <n> --approve`. **Expect:** still `BLOCKED`.
+5. Delete the key lines in a new commit and push. **Expect:** `check` still fails, because the scan reads history.
+6. Rewrite the branch: `git reset --soft origin/main`, recommit the page without the key, `git push --force-with-lease`. **Expect:** `check` passes and the approval is dismissed.
+7. `gh pr close <n> -d`. Never merge a probe.
+
+A real secret that reached GitHub must be rotated. A rewrite does not remove it from GitHub's records.
 
 ### X-4: a personal local path
 
-The rule is in `.github/scripts/check_docs.py`. It flags `/Users/<name>`, `/home/<name>` and `C:\Users\<name>` anywhere in a curated page, code fences included.
+Run as `inotives-inoai` on 2026-10-12. The rule is in `.github/scripts/check_docs.py` and flags a macOS, Linux or Windows home path with a user name anywhere in a curated page, code fences included. A page that documents the rule cannot quote a real-looking path, because it would fail itself. Use `<name>` in documentation.
 
-1. On a branch, add a page whose body has a home-directory path of a real person, once in prose and once in a code fence.
-2. `python3 .github/scripts/check_docs.py`. **Expect:** one error per line, with file and line number, exit 1.
+1. `git checkout -b inotives-inoai/x4-path-probe`. Add a page whose body has a home path once in prose and once in a code fence.
+2. `python3 .github/scripts/check_docs.py`. **Expect:** one error per line and exit 1.
 3. `git commit`. **Expect:** refused by the hook.
-4. Commit with `--no-verify`, push, open a PR. **Expect:** `check` fails and the merge stays blocked, even after approval.
-5. Replace the paths with `~/...`, push. **Expect:** `check` passes and the old approval is dismissed.
-6. Close the PR unmerged. The path stays in the branch history, so never merge it.
+4. `git commit --no-verify`, push, `gh pr create --draft`. **Expect:** `check` fails in the step `Check frontmatter, links and skills`.
+5. As `inotivesgames`, approve. **Expect:** still `BLOCKED`.
+6. Replace the paths with `~`, push. **Expect:** `check` passes and the approval is dismissed.
+7. `gh pr close <n> -d`.
 
-Also check that a page holding `/Users/<name>/` as a placeholder passes, because `<` is not part of a name.
+Also check that `~/...` and an angle-bracket placeholder pass.
+
+## Open cases
+
+Nothing here has been run. Each one must get its own dated report before its status changes in the plan.
 
 ### P2-2: the unverified email
 
