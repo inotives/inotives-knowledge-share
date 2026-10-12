@@ -23,7 +23,7 @@ A wizard (`onboard.py`, run with `uv run onboard.py`) is planned to do steps 5 t
 ## Before you start (by hand, once)
 
 - A GitHub account with a verified company email, and an accepted invitation to this repository with write access.
-- You have already cloned the repository. That needs `git` and a GitHub sign-in, which the [README](./README.md) explains under "Before you clone".
+- You have already cloned the repository. That needs `git`, `gh` and a GitHub sign-in, which the [README](./README.md) explains under "Before you clone".
 
 ## Step 1: Check what you already have
 
@@ -32,7 +32,7 @@ Run each check. A tool that is missing or too old goes on your install list for 
 | Tool | Used for | Check | Expected |
 | --- | --- | --- | --- |
 | `git` | Branches and commits | `git --version` | `git version 2.` or later |
-| `gh` | Pull requests | `gh --version` | `gh version 2.` or later |
+| `gh` | Sign-in, clone and pull requests (required) | `gh --version` | `gh version 2.` or later |
 | `uv` | Runs the wizard and brings its own Python | `uv --version` | `uv 0.` and a number |
 | `python3` | The docs check and the hook, if you do not use `uv` | `python3 --version` | `Python 3.9` or later |
 | Node.js | OpenKnowledge, unless you use its desktop app | `node --version` | `v24` or later |
@@ -62,7 +62,9 @@ OpenKnowledge and Claude Code have their own installers. Use each one's own inst
 gh auth login
 ```
 
-Choose GitHub.com. Choose HTTPS if your remote is HTTPS. If your remote is SSH, say no when it offers to set up git credentials. `gh` is used for pull requests, and `git` uses your SSH key.
+Choose GitHub.com, choose HTTPS, and say yes when it offers to set up git credentials. That one sign-in covers `git` and `gh`, so no SSH key is needed. If you already use SSH keys and prefer them, see [INSTRUCTIONS.md](./INSTRUCTIONS.md#22-ssh-key); say no to the credentials offer in that case.
+
+**On GitHub Enterprise** you will sign in to your company's host instead of github.com, and you may need to authorise your token for single sign-on. This page will give the exact command once the Enterprise details are known.
 
 **Check:** `gh auth status` says you are logged in to github.com.
 

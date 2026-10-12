@@ -167,7 +167,7 @@ Each account has its own SSH key and its own clone, so every action is attributa
 Cloning needs two things first, which the rest of the setup cannot do for you:
 
 1. **`git`.** Check with `git --version`. On macOS, `xcode-select --install` installs it. On Windows, `winget install Git.Git`. On Linux, use your package manager.
-2. **A GitHub sign-in with access to this repository.** You need a GitHub account with a verified company email and an accepted invitation. Sign in with `gh auth login` (the GitHub CLI) or with an SSH key, then run `git clone` (or `gh repo clone <owner>/<repo>`).
+2. **The GitHub CLI (`gh`) and a sign-in.** `gh` does the sign-in, the clone and the pull requests, and it is what you will use to sign in to GitHub Enterprise later. Install it (macOS `brew install gh`, Windows `winget install GitHub.cli`, Linux your package manager), then run `gh auth login`, choose HTTPS, and say yes when it offers to set up git credentials. You need a GitHub account with a verified company email and an accepted invitation. Then run `gh repo clone <owner>/<repo>`. On GitHub Enterprise you will sign in to your company's host; this page will say which once it is known.
 
 Then open [SETUP.md](./SETUP.md) and follow it, or tell your agent to.
 
