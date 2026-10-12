@@ -32,11 +32,11 @@ This page lists what we test and what each result means. Evidence for every resu
 
 These come first because their answers do not depend on the GitHub plan. They are about OpenKnowledge and the workflow, and they carry over to Enterprise unchanged.
 
-1. X-1, searching a `_scratch/` note and an agent writing there.
-2. P1-2b, whether the sync button shows error details when clicked.
-3. X-5, onboarding on a clean machine.
-4. X-6, a teammate pulling merged pages.
-5. P3-1b, contradicting facts on different lines.
+1. P1-2b, whether the sync button shows error details when clicked.
+2. X-5, onboarding on a clean machine.
+3. X-6, a teammate pulling merged pages.
+4. P3-1b, contradicting facts on different lines.
+5. Promoting a note from `_scratch/` into a curated folder, which X-1 did not cover.
 
 **Deferred to Phase 4:** P2-2, P3-3 and the re-runs listed under [Phase 4](#phase-4-enterprise-smoke-test), because they depend on how identity and organisations work and the pilot's free personal accounts cannot show that.
 
@@ -105,7 +105,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 
 | ID | Case | Steps | Expected | Status |
 | --- | --- | --- | --- | --- |
-| X-1 | `_scratch/` is searchable in OpenKnowledge, writable by agents, and ignored by Git | Write and search a scratch note | Indexed, not tracked | Partly observed **[V]**: `ok audit` reported a dead link inside a copy under `_scratch/`, so OpenKnowledge indexes it, and `git check-ignore` confirmed Git ignores it. Searching a scratch note and an agent write there were not tested |
+| X-1 | `_scratch/` is searchable in OpenKnowledge, writable by agents, and ignored by Git | Write and search a scratch note | Indexed, not tracked | Observed **[V]**: an agent wrote and edited a note under `_scratch/<handle>/` through the OpenKnowledge tools, search found it (including text added by the edit), `git status` stayed silent and `git check-ignore` named `.gitignore:6`. `check_docs.py` skips `_scratch/`, and `ok audit` does read it and flags a dead link. Semantic search is off, so no scratch text leaves the machine. Promotion to a curated folder was not tested. See the [report](./results/2026-10-12-x1-scratch-search.md) |
 | X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Observed **[V]** for invalid frontmatter: refused with four errors. Broken link also refused in P3-4: `broken link './note__p3-4-does-not-exist.md'`, exit 1. The hook checks the whole working tree, so an untracked bad page blocks unrelated commits. The owner clone had no hook enabled |
 | X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Observed **[V]** in part: **CI** blocked PR 37 on both planted secrets (`aws-access-token`, `generic-api-key`), and approval did not unblock it. A fix commit did not clear it, because the scan reads history. A rewritten branch did. The **local hook failed open**: with no scanner the commit went through with a warning. The hook was changed to refuse, with `SKIP_SECRET_SCAN=1` as a one-time override. On the owner's machine, once a scanner was available, the hook did find the secret: with gitleaks installed it refused a staged fake token, and with gitleaks off PATH it downloaded a pinned, checksum-verified copy and refused too. A failed download or a wrong checksum is refused, and `SKIP_SECRET_SCAN=1` skips it once. The git history and the working tree scanned clean. See the [CI report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) and the [local hook report](./results/2026-10-12-x3-local-hook-and-test-status.md) |
 | X-4 | A personal local path is refused and must be written as `~/` | Commit a page containing a home-directory path, in prose and in a code fence. Then open a PR with it | The hook refuses the commit and `validate-docs` fails the PR. A `~/` path passes | Observed **[V]**: the hook refused with both lines named. CI failed PR 38 on both and approval did not unblock it. The fix to `~` turned the check green. A `~/` path and an angle-bracket placeholder passed. See the [report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) |
