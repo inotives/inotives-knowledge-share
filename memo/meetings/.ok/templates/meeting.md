@@ -1,8 +1,8 @@
 ---
 template:
   title: Meeting
-  description: Notes from an internal team meeting, with attendees, agenda,
-    decisions and actions.
+  description: Notes from a team meeting, internal or external, with attendees,
+    agenda, decisions and actions.
   tags:
     - template
 type: note
@@ -19,7 +19,7 @@ tags:
 
 ## Attendees
 
-- <handle>
+- <handle, or organisation and role for an external attendee>
 
 ## Agenda
 

@@ -1,18 +1,18 @@
 ---
 title: Meetings
-description: "Notes from internal team meetings: what was discussed, decided and assigned. One page per meeting. Curated by pull request."
+description: "Notes from team meetings, internal or external: what was discussed, decided and assigned. One page per meeting. Curated by pull request."
 ---
 # Meetings
 
 ## Purpose
 
-A record of internal team meetings: what was discussed, what was decided and who owns each action. Meeting notes are records, so they stay here. Decisions that matter are pulled out into their own pages.
+A record of team meetings, internal or external (a vendor, partner or prospect call, for example): what was discussed, what was decided and who owns each action. Meeting notes are records, so they stay here. Decisions that matter are pulled out into their own pages.
 
 ## What goes here
 
 | Goes here | Does not go here (put it in) |
 | --- | --- |
-| Notes from an internal or cross-cutting team meeting | A meeting about one client or project: `company/<name>/<project>/meetings/`, because client material stays in that client's folder |
+| Notes from any meeting, internal or external | Notes of a meeting with a client, or any notes that hold a client's material: `company/<name>/<project>/meetings/`, because client material stays in that client's folder |
 | | A decision that others must rely on: its own `decision` page in [company](../../company/README.md) or [concept](../../concept/README.md), linked from the meeting note |
 | | Personal notes: `_scratch/<handle>/` |
 
@@ -24,7 +24,7 @@ This page keeps no index of meetings. Use OpenKnowledge's folder view or search,
 
 ## Frontmatter for this folder
 
-`type: note`, `status: draft`, `owner` and `created_by` set to the note-taker's handle, and `tags: [meeting]`. Set `ai_assisted: true` when an agent wrote or summarised the page. Add `project` when it applies. Put the attendees, as handles, in the body. The full table is in [AGENTS.md](../../AGENTS.md#frontmatter).
+`type: note`, `status: draft`, `owner` and `created_by` set to the note-taker's handle, and `tags: [meeting]`. Set `ai_assisted: true` when an agent wrote or summarised the page. Add `project` when it applies. Put the attendees in the body: a handle for an internal person, and organisation and role for an external one. The full table is in [AGENTS.md](../../AGENTS.md#frontmatter).
 
 This folder has a `meeting` template with the fields and headings filled in.
 
@@ -45,9 +45,9 @@ The commands are in [INSTRUCTIONS.md](../../INSTRUCTIONS.md).
 
 ## Rules for this folder
 
-- Record people by handle, not by name, and leave out personal remarks. No personal data about individuals.
+- Record internal attendees by handle. Record external attendees by organisation and role, not by name or contact details. Leave out personal remarks. No personal data about individuals.
 - No passwords, tokens or keys. Point to where a secret lives.
-- Everyone with repository access can read this folder. Do not put client material here.
+- Everyone with repository access can read this folder. Do not put client material here, or another party's confidential information from an external meeting.
 - A real decision gets its own page, linked from the note. Do not leave it only inside the meeting record.
 - Keep an agent summary's `ai_assisted: true`, and read it before it goes up for review.
 

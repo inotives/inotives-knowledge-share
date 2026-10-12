@@ -13,13 +13,13 @@ Shared captures that need review but are not yet canonical. A memo is a staging 
 | Goes here | Does not go here (put it in) |
 | --- | --- |
 | Shared notes, research and decisions that are not yet settled | Personal drafts: `_scratch/<handle>/` |
-| Internal team meeting notes: [meetings](./meetings/README.md) | A meeting about one client or project: `company/<name>/<project>/meetings/` |
+| Meeting notes, internal or external: [meetings](./meetings/README.md) | Notes of a client meeting, or notes that hold a client's material: `company/<name>/<project>/meetings/` |
 | | Stable reference or glossary: [concept](../concept/README.md) |
 | | Anything about one client or project: [company](../company/README.md) |
 
 ## Layout and naming
 
-A flat folder, with one subfolder: [meetings](./meetings/README.md) for internal team meeting notes. Lowercase kebab-case, for example `onboarding-checklist.md`. Use a date prefix (`2026-10-06-slug.md`) only for a record tied to a time, such as a decision.
+A flat folder, with one subfolder: [meetings](./meetings/README.md) for meeting notes, internal or external. Lowercase kebab-case, for example `onboarding-checklist.md`. Use a date prefix (`2026-10-06-slug.md`) only for a record tied to a time, such as a decision.
 
 ## Frontmatter for this folder
 
