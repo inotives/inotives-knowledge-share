@@ -99,7 +99,7 @@ stateDiagram-v2
 
 ## What we are testing
 
-The contract makes promises that depend on how GitHub and OpenKnowledge behave. Each question links to its cases in the [test plan](./company/example-org/kb-test/test-plan.md). Answers are from one run on free accounts with one person operating all three, so none is **Confirmed** yet.
+The contract makes promises that depend on how GitHub and OpenKnowledge behave. Each question links to its cases in the [test plan](./company/example-org/kb-test/test-plan.md). Answers are from one run on free accounts with one person operating all three. Only P1-1, P1-6, P1-8 and P1-9 are **Confirmed**, by the reruns R-1 to R-3 in a fresh clone with a different account.
 
 | # | Question | Status |
 | --- | --- | --- |
@@ -128,10 +128,10 @@ flowchart LR
     style P0 fill:#e8f4ee,stroke:#2f7d57
     style P1 fill:#e8f4ee,stroke:#2f7d57
     style P2 fill:#e8f4ee,stroke:#2f7d57
-    style P3 fill:#fff4e5,stroke:#c77700
+    style P3 fill:#e8f4ee,stroke:#2f7d57
 ```
 
-Phases 0 to 2 are done (green). **Phase 3 is in progress** (amber). `main` is protected by a ruleset: pull request and 1 approval, code-owner review, a required `validate-docs` check, approvals dismissed on every new push, no bypass actors. The ruleset is in [.github/ruleset-main.json](./.github/ruleset-main.json). `.github/CODEOWNERS` names two owners for everything.
+Phases 0 to 3 are done (green). Phase 4 waits for a GitHub Enterprise account. `main` is protected by a ruleset: pull request and 1 approval, code-owner review, a required `validate-docs` check, approvals dismissed on every new push, no bypass actors. The ruleset is in [.github/ruleset-main.json](./.github/ruleset-main.json). `.github/CODEOWNERS` names two owners for everything.
 
 ## Accounts used in the test
 
@@ -151,10 +151,12 @@ Each account has its own SSH key and its own clone, so every action is attributa
 
 ## Status
 
-- **Done:** Phases 0 to 2. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./company/example-org/kb-test/results/2026-10-09-phase-2-summary.md) for the evidence and the open items.
+- **Done:** Phases 0 to 3. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./company/example-org/kb-test/results/2026-10-09-phase-2-summary.md) for the evidence and the open items.
 - **Main finding:** GitHub's controls held, including for the admin. OpenKnowledge's sync did not fit the contract, so pages are written with its tools and published with git.
 - **Phase 2 finding:** a mistyped code owner fails silently and removes review for its path. A CI check on `codeowners/errors` now catches it.
-- **In progress:** Phase 3. P3-1 to P3-4 are observed. See the [Phase 3 report](./company/example-org/kb-test/results/2026-10-09-phase-3-two-contributors.md). P3-5 is parked. Fixes are to be discussed.
+- **Phase 3 finding:** edits on different lines merge cleanly and edits on the same line give a visible conflict that is never auto-resolved. Only the hook and CI refuse bad frontmatter and a broken link. See the [Phase 3 summary](./company/example-org/kb-test/results/2026-10-12-phase-3-summary.md) and the [Phase 3 report](./company/example-org/kb-test/results/2026-10-09-phase-3-two-contributors.md). P3-5 is not applicable, because each person runs OpenKnowledge locally and shares only through git.
+- **Confirmation reruns:** R-1 to R-3 are done. See the [confirmation report](./company/example-org/kb-test/results/2026-10-12-confirmation-reruns.md).
+- **Open:** the cases in the execution order of the [test plan](./company/example-org/kb-test/test-plan.md), starting with the `/skill/` path rule, and Phase 4.
 - Findings are added here only when they are observed, not before.
 
 ## Using this repository

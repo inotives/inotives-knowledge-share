@@ -14,7 +14,7 @@ This page lists what we test and what each result means. Evidence for every resu
 
 **Markers:** **[V]** observed first-hand in a run with evidence in a report. **[?]** not yet observed.
 
-**Status values:** `Pending` (not run), `Observed` (run once, result recorded), `Confirmed` (repeated or reviewed by a second person), `Parked` (cannot be tested in the pilot setup, with the reason given).
+**Status values:** `Pending` (not run), `Observed` (run once, result recorded), `Confirmed` (repeated or reviewed by a second person), `Parked` (cannot be tested in the pilot setup, with the reason given), `Not applicable` (the planned setup makes the case irrelevant, with the reason given).
 
 ## Accounts
 
@@ -26,11 +26,17 @@ This page lists what we test and what each result means. Evidence for every resu
 
 ## Execution order
 
-1. Phase 1 follow-ups: make `validate-docs` a required check (P1-11, P1-12), then P1-5b and P1-2b. Contributor 2 authors the pull requests for P1-11 and P1-12.
-2. Phase 2 prerequisites (P2-0), then P2-1 to P2-7.
-3. Phase 3 and the cross-cutting cases.
-4. Confirmation reruns R-1 to R-3.
-5. Phase 4 when GitHub Enterprise is available.
+**Done:** Phases 0 to 3 (P3-5 is not applicable), the cross-cutting cases and the confirmation reruns R-1 to R-3.
+
+**Open, in the order to run:**
+
+1. P2-3, the `/skill/` path rule. Skills execute and get the closest review.
+2. P2-2, the unverified-email failure case.
+3. P3-3, whether `require_extra_approval_for_unattributed_changes` has an effect.
+4. P1-2b, whether the sync button shows error details when clicked.
+5. X-1, searching a `_scratch/` note and an agent writing there.
+6. P3-1b, contradicting facts on different lines.
+7. Phase 4 when GitHub Enterprise is available.
 
 ## Phase 0: baseline, no protection
 
@@ -87,10 +93,11 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | ID | Case | Steps | Expected | Status |
 | --- | --- | --- | --- | --- |
 | P3-1 | Same page, different lines | Both edit one page on separate branches | Clean merge, facts may still disagree | Observed **[V]**: pull requests 27 (`inotivesgames`, Section A) and 28 (`inotives-inoai`, Section B) both merged without conflict, as `d05192f` and `9fcab2d`. The second stayed `MERGEABLE` after the first landed, and the ruleset does not require an up-to-date branch. The two edits did not contradict each other, so "facts may disagree" is untested |
+| P3-1b | Contradicting facts on different lines | Two accounts edit different lines of one page, each stating a conflicting fact, on separate branches. Merge both | A clean merge of a page that contradicts itself, which shows that Git cannot catch a factual conflict | Pending. P3-1 used independent edits, so this was not tested |
 | P3-2 | Same lines | Both edit the same lines | Conflict is visible, never auto-resolved | Observed **[V]**: pull requests 30 (`inotivesgames`, 07:00) and 31 (`inotives-inoai`, 05:30) both passed CI and were `MERGEABLE` alone. After 30 merged as `63ccd47`, 31 became `CONFLICTING` and `DIRTY`, and `main` kept 07:00. A local merge showed conflict markers. After the resolving push, 31 went from `APPROVED` to `REVIEW_REQUIRED` with the approval `DISMISSED`, and merged as `e5ecff2` |
 | P3-3 | Attribution in history | Compare commit author, `created_by` and `ai_assisted` | Author matches the account **[?]** | Observed **[V]** in part: for pull requests 26, 27, 28, 30 and 31 the git author, the pull request author and the clone's `git config` agree, and the committer is `GitHub`. The merger is only in the pull request. The page says `ai_assisted: false` although an agent wrote every commit, and nothing checks it. The squash title of 31 says 05:30 while its diff says 07:00. Whether `require_extra_approval_for_unattributed_changes` matters here is not shown |
 | P3-4 | Agent edit with and without OpenKnowledge | One agent edits a page with plain files and git, another through the OpenKnowledge tools. Compare what each catches: broken links, orphan pages, frontmatter, attribution | Shows what OpenKnowledge adds beyond Git | Observed **[V]**: the plain agent's hook and `check_docs.py` refused the broken link and the invalid frontmatter. The OpenKnowledge `write` reply warned about the broken link, and `audit` and `links` found the link and the orphan page. OpenKnowledge did not flag the invalid frontmatter (`lint` ran no checks) and neither side flagged the false `ai_assisted`. `history` recorded the editor as the agent `claude-code`, which git does not show. Details are in the Phase 3 report |
-| P3-5 | Two people on one live OpenKnowledge server | Two people edit the same page at the same time on one server | Not testable in the pilot setup. The server binds to localhost by default, and shared multi-user use is unverified **[?]** | Parked |
+| P3-5 | Two people on one live OpenKnowledge server | Two people edit the same page at the same time on one server | Not testable in the pilot setup. The server binds to localhost by default, and shared multi-user use is unverified **[?]** | Not applicable. In the planned setup each person runs OpenKnowledge on their own machine and shares work only through git, so two people never edit one live server. Concurrent edits are covered by P3-1 and P3-2 |
 
 ## Cross-cutting
 
@@ -113,7 +120,7 @@ Run on 2026-10-12, with steps in [test steps](./test-steps.md). A full rerun is 
 
 ## Phase 4: Enterprise smoke test
 
-Re-run P1-1, P1-5 to P1-7 and P2-1 on GitHub Enterprise once it is available, plus SSO and organisation-level rulesets, which free accounts cannot show.
+Re-run P1-1, P1-5 to P1-7 and P2-1 on GitHub Enterprise once it is available, plus SSO and organisation-level rulesets, which free accounts cannot show. Waiting for the GitHub Enterprise account to be set up.
 
 ## How to add a result
 
