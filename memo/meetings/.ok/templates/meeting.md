@@ -1,8 +1,9 @@
 ---
 template:
   title: Meeting
-  description: Notes from a team meeting, internal or external, with a meeting
-    link, attendees, agenda, decisions and actions.
+  description: Notes from a team meeting, internal or external, in person or
+    online, with attendees, agenda, decisions and actions. The meeting link is
+    optional.
   tags:
     - template
 type: note
@@ -17,9 +18,9 @@ tags:
 
 # <Meeting topic>
 
-## Meeting link
+## Meeting link (optional)
 
-- <Calendar event link, if any. No passcodes or dial-in PINs. Remove this section when there is no link>
+- <Calendar event link, if there is one. No passcodes or dial-in PINs. Delete this section for an in-person meeting or one with no invite>
 
 ## Attendees
 
