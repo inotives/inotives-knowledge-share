@@ -16,7 +16,7 @@ A new subfolder under a curated folder (`memo/`, `concept/`, `company/`, `genera
 
 ## The rule
 
-- **Every folder under a curated folder has a `README.md`.** The docs check fails a folder without one.
+- **Every folder under a curated folder has a `README.md`, always.** The README is how a folder explains what it is for and what its rules and conventions are, so it is never optional. The docs check fails a folder without one.
 - **Create it from the `folder-readme` template.** It has the eight sections the folder READMEs use: purpose, what goes here, layout and naming, frontmatter, review and ownership, how to add, rules, related.
 - **Exemptions.** The inside of a skill (`skill/<name>/`) is described by its `SKILL.md`, and the inside of a workflow (`workflow/<name>/`) by its `workflow.md`. Neither needs a README.
 - **A new top-level folder is not covered here.** It changes the contract's folder list, so it needs the owner's decision first.
