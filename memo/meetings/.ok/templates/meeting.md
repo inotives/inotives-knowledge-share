@@ -1,8 +1,8 @@
 ---
 template:
   title: Meeting
-  description: Notes from a team meeting, internal or external, with attendees,
-    agenda, decisions and actions.
+  description: Notes from a team meeting, internal or external, with a meeting
+    link, attendees, agenda, decisions and actions.
   tags:
     - template
 type: note
@@ -16,6 +16,10 @@ tags:
 ---
 
 # <Meeting topic>
+
+## Meeting link
+
+- <Calendar event link, if any. No passcodes or dial-in PINs. Remove this section when there is no link>
 
 ## Attendees
 

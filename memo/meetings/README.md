@@ -28,6 +28,14 @@ This page keeps no index of meetings. Use OpenKnowledge's folder view or search,
 
 This folder has a `meeting` template with the fields and headings filled in.
 
+## Meeting link and calendar details
+
+If the meeting has a link, put it in the page's **Meeting link** section. Prefer the calendar event link to the join link, because an event link needs a sign-in to open. Leave the section empty or remove it when there is no link.
+
+- **No passcodes or dial-in PINs.** A join link with an embedded passcode is a credential. Everyone with repository access can read this page, so do not paste one.
+- **Agents may fill the page from a calendar.** If the person's agent is connected to a Google Calendar connector, it can read the event for the title, time, agenda and attendees, and draft the page from that. Treat the draft as unreviewed until the note-taker has read it, and set `ai_assisted: true`. This has **not been tested** in this repository **[?]**.
+- **Do not copy the whole invite.** Map internal attendees to handles and external ones to organisation and role. Leave out guest email addresses, phone numbers and the event description if it holds anything confidential.
+
 ## Review and ownership
 
 A change needs a pull request, a passing `validate-docs` check, and one approval from someone other than the author, including a code owner. Code owners are set in `.github/CODEOWNERS`. Today the owners of `*` cover every folder, so this folder has no stricter review. A draft pull request requests no code owners, so mark it ready for review.
