@@ -22,7 +22,7 @@ Arrange it however you like: flat, or a subfolder per topic. There are no naming
 
 ## Frontmatter for this folder
 
-None is required, and the docs check skips this folder. A title and a description are enough while drafting. When you promote a note, fill in the fields in [AGENTS.md](../AGENTS.md#frontmatter); the docs check then names any that are missing.
+Give every note a **`title` and a `description`**. That is the same minimum a folder README carries, and the contract says OpenKnowledge requires it. Nothing else is needed while drafting. This is a convention: the docs check skips this folder, so nothing enforces it, and a rough note never blocks a commit. When you promote a note, add the rest of the fields in [AGENTS.md](../AGENTS.md#frontmatter); the docs check then names any that are missing.
 
 ## Review and ownership
 

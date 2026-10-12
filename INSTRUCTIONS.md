@@ -267,7 +267,7 @@ If the server was started on a different branch, restart it.
 
 ### 4.2 Draft in scratch
 
-Write rough notes in `_scratch/`. Let the agent draft there. Nothing in it is checked or shared, so write freely.
+Write rough notes in `_scratch/`. Let the agent draft there. Nothing in it is checked or shared, so write freely, but give each note a `title` and a `description`. The rest of the frontmatter is added when you promote it.
 
 ### 4.3 Start a branch for what you want to share
 
