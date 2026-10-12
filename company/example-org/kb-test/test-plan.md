@@ -30,13 +30,12 @@ This page lists what we test and what each result means. Evidence for every resu
 
 **Open, in the order to run:**
 
-1. P2-3, the `/skill/` path rule. Skills execute and get the closest review.
-2. P2-2, the unverified-email failure case.
-3. P3-3, whether `require_extra_approval_for_unattributed_changes` has an effect.
-4. P1-2b, whether the sync button shows error details when clicked.
-5. X-1, searching a `_scratch/` note and an agent writing there.
-6. P3-1b, contradicting facts on different lines.
-7. Phase 4 when GitHub Enterprise is available.
+1. P2-2, the unverified-email failure case.
+2. P3-3, whether `require_extra_approval_for_unattributed_changes` has an effect.
+3. P1-2b, whether the sync button shows error details when clicked.
+4. X-1, searching a `_scratch/` note and an agent writing there.
+5. P3-1b, contradicting facts on different lines.
+6. Phase 4 when GitHub Enterprise is available.
 
 ## Phase 0: baseline, no protection
 
@@ -79,7 +78,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P2-0 | Prerequisite: the throwaway emails are verified on their accounts | Owner checks Settings, Emails, for `inotivesgames` and `inotives-inoai` and records the result | Both verified. If not, P2-2 can show only the failure case | Observed **[V]**: both emails verified, checked by the owner on the GitHub pages |
 | P2-1 | Owner by `@username` resolves | Add `CODEOWNERS`, open a PR | Owner is requested as reviewer | Observed **[V]**: PR 12 got no reviewer, because GitHub reads CODEOWNERS from the base branch and `main` had none. After merge, PR 13 requested `inotives`. The file must be on `main` before it applies |
 | P2-2 | Owner by work email resolves | Use a verified email instead | Resolves only if the email is verified on the account **[?]** | Observed **[V]**: PR 15 requested `inotivesgames` from `/memo/ inotives.games@gmail.com`, not `inotives`. The path rule replaced `*`. The failure case (unverified email) was not tested |
-| P2-3 | Path-specific rule, last match wins | Add a rule for `/skill/` | Contributor owns that path | Partly observed **[V]**: the `/memo/` rule from P2-2 overrode `*` (last match wins). The `/skill/` rule itself was not run |
+| P2-3 | Path-specific rule, last match wins | Add a rule for `/skill/` | Contributor owns that path | Observed **[V]**: the `/memo/` rule from P2-2 overrode `*` (last match wins). The `/skill/` rule was then run with `/skill/ @inotives-inoai`, who is not an owner of `*`. PR 43 requested only `inotives-inoai`, stayed `BLOCKED` after approval by `inotives` (owner of `*`) and went `CLEAN` after approval by `inotives-inoai`. A control PR on `concept/` behaved the other way round. A draft PR requested nobody. See the [report](./results/2026-10-12-p2-3-skill-path-rule.md) |
 | P2-4 | Code-owner review is enforced | Turn on `require_code_owner_review` | Merge blocked without owner approval | Observed **[V]**: with the setting on, PR 15 went from `CLEAN` to `BLOCKED` although `inotives` had approved. Approval by the owner `inotivesgames` made it `CLEAN` |
 | P2-5 | A nonexistent owner | Add a line with an account that does not exist | GitHub flags an error on the file. Whether it blocks a PR is unknown **[?]** | Observed **[V]**: the codeowners errors API reports `Unknown owner` for the line. The PR 16 that added it passed CI and merged. A PR touching the path (17) got no reviewer and went `CLEAN` after one ordinary approval. The line also replaced `*` for that path |
 | P2-6 | The owner authors a PR on a path only they own | With `* @inotives` and code-owner review required, `inotives` opens a PR | Nobody can satisfy the rule, so the PR deadlocks **[?]** | Observed **[V]**: **no deadlock.** PR 19 by the sole owner `inotives` went `CLEAN` after approval by `inotivesgames`, who is not an owner. When the author is the only owner, the code-owner rule seems to be waived **[?]** |
@@ -105,7 +104,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | --- | --- | --- | --- | --- |
 | X-1 | `_scratch/` is searchable in OpenKnowledge, writable by agents, and ignored by Git | Write and search a scratch note | Indexed, not tracked | Partly observed **[V]**: `ok audit` reported a dead link inside a copy under `_scratch/`, so OpenKnowledge indexes it, and `git check-ignore` confirmed Git ignores it. Searching a scratch note and an agent write there were not tested |
 | X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Observed **[V]** for invalid frontmatter: refused with four errors. Broken link also refused in P3-4: `broken link './note__p3-4-does-not-exist.md'`, exit 1. The hook checks the whole working tree, so an untracked bad page blocks unrelated commits. The owner clone had no hook enabled |
-| X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Observed **[V]** in part: **CI** blocked PR 37 on both planted secrets (`aws-access-token`, `generic-api-key`), and approval did not unblock it. A fix commit did not clear it, because the scan reads history. A rewritten branch did. The **local hook failed open**: with no scanner the commit went through with a warning. The hook was changed to refuse, with `SKIP_SECRET_SCAN=1` as a one-time override. The hook finding a real secret was not observed, because this machine has no scanner. See the [report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) |
+| X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Observed **[V]** in part: **CI** blocked PR 37 on both planted secrets (`aws-access-token`, `generic-api-key`), and approval did not unblock it. A fix commit did not clear it, because the scan reads history. A rewritten branch did. The **local hook failed open**: with no scanner the commit went through with a warning. The hook was changed to refuse, with `SKIP_SECRET_SCAN=1` as a one-time override. On the owner's machine, once a scanner was available, the hook did find the secret: with gitleaks installed it refused a staged fake token, and with gitleaks off PATH it downloaded a pinned, checksum-verified copy and refused too. A failed download or a wrong checksum is refused, and `SKIP_SECRET_SCAN=1` skips it once. The git history and the working tree scanned clean. See the [CI report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) and the [local hook report](./results/2026-10-12-x3-local-hook-and-test-status.md) |
 | X-4 | A personal local path is refused and must be written as `~/` | Commit a page containing a home-directory path, in prose and in a code fence. Then open a PR with it | The hook refuses the commit and `validate-docs` fails the PR. A `~/` path passes | Observed **[V]**: the hook refused with both lines named. CI failed PR 38 on both and approval did not unblock it. The fix to `~` turned the check green. A `~/` path and an angle-bracket placeholder passed. See the [report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) |
 
 ## Confirmation reruns

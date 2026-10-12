@@ -40,5 +40,7 @@ skill/<skill-name>/
 ## Rules
 
 - A new skill or a change to one goes through pull request. A code owner approves, because a skill can run commands.
+- **Who can approve today:** there is no `/skill/` code-owner rule, so any owner of `*` can approve a skill change, the same as for any other folder. Anyone with write access can propose a change, but nobody can push to `main`, and a merge needs a passing check and an approval from someone other than the author. A `/skill/` rule naming one or two owners would make only their approval count (see the [P2-3 report](../company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md)). This is not decided and can wait until the team is set.
+- Mark a pull request ready for review. A draft pull request requests no code owners.
 - No credentials in a skill. Point to where a secret lives.
 - Author skills through OpenKnowledge, not by hand-editing copies in `.claude/skills/`, which are generated and gitignored.
