@@ -132,6 +132,8 @@ Open a pull request and see the `check` job run. Then try a direct push to `main
 
 ## Part 2: Join as a contributor (once per machine)
 
+**The guided path is [SETUP.md](./SETUP.md).** It checks what you have, installs what is missing, signs you in, configures the clone and proves the checks work, and it is written so your agent can follow it. This part keeps the detail behind each step, including the ones that apply to several accounts on one machine.
+
 ### 2.1 Identity
 
 Use your company email, verified on your GitHub account. The contract takes your **handle** from it: for `jane.doe@example.com` the handle is `jane.doe`. The handle names your scratch folder and your branches. A GitHub `noreply` address is not accepted.
