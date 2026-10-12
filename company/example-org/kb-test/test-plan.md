@@ -99,6 +99,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | X-1 | `_scratch/` is searchable in OpenKnowledge, writable by agents, and ignored by Git | Write and search a scratch note | Indexed, not tracked | Partly observed **[V]**: `ok audit` reported a dead link inside a copy under `_scratch/`, so OpenKnowledge indexes it, and `git check-ignore` confirmed Git ignores it. Searching a scratch note and an agent write there were not tested |
 | X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Observed **[V]** for invalid frontmatter: refused with four errors. Broken link also refused in P3-4: `broken link './note__p3-4-does-not-exist.md'`, exit 1. The hook checks the whole working tree, so an untracked bad page blocks unrelated commits. The owner clone had no hook enabled |
 | X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Pending |
+| X-4 | A personal local path is refused and must be written as `~/` | Commit a page containing a home-directory path such as `/Users/<name>/...`, in prose and in a code fence. Then open a PR with it | The hook refuses the commit and `validate-docs` fails the PR. A `~/` path passes | Pending. The rule was added to `check_docs.py` and its four cases pass locally with a probe page. The CI half is not run |
 
 ## Confirmation reruns
 

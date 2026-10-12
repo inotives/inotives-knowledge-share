@@ -4,6 +4,8 @@
 Curated folders: concept, company, workflow, memo, generated_output (README only).
 skill/<name>/SKILL.md is checked separately: name must equal the folder, description required.
 _scratch/ is never checked. README.md files need only title and description.
+A page must not contain a personal local path such as /Users/<name>/ or /home/<name>/;
+write ~/ or a repo-relative path instead. Fenced code blocks are checked too.
 Standard library only.
 """
 import re
@@ -20,6 +22,7 @@ STATUSES = {"draft", "reviewed", "verified", "deprecated"}
 HANDLE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 NOT_PEOPLE = {"claude", "agent", "ai", "bot"}
 LINK = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)\)")
+LOCAL_PATH = re.compile(r"(?:/Users/|/home/|[A-Za-z]:\\Users\\)[A-Za-z0-9._-]+")
 FENCE = re.compile(r"^(```|~~~).*?^\1", re.S | re.M)
 
 
@@ -44,6 +47,10 @@ def main():
     for path in sorted(files):
         rel = path.relative_to(ROOT)
         text = path.read_text(encoding="utf-8")
+        for n, line in enumerate(text.splitlines(), 1):
+            m = LOCAL_PATH.search(line)
+            if m:
+                errors.append(f"{rel}:{n}: local path '{m.group(0)}', write ~/ or a relative path")
         fm = frontmatter(text)
         if fm is None:
             errors.append(f"{rel}: missing frontmatter")
