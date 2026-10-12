@@ -4,6 +4,7 @@
 Curated folders: concept, company, workflow, memo, generated_output (README only).
 skill/<name>/SKILL.md is checked separately: name must equal the folder, description required.
 _scratch/ is never checked. README.md files need only title and description.
+Every folder under a curated folder needs a README.md, except inside a skill or a workflow.
 A page must not contain a personal local path such as /Users/<name>/ or /home/<name>/;
 write ~/ or a repo-relative path instead. Fenced code blocks are checked too.
 Standard library only.
@@ -38,6 +39,35 @@ def frontmatter(text):
         if m:
             fields[m.group(1)] = m.group(2).strip().strip("\"'")
     return fields
+
+
+def folders_without_readme():
+    """Every folder under a curated folder (and skill/) needs a README.md.
+
+    Hidden folders such as .ok are skipped. A folder inside a skill or a workflow
+    is described by its SKILL.md or workflow.md, so it needs no README.
+    """
+    problems = []
+    for top in CURATED + ["skill"]:
+        base = ROOT / top
+        if not base.is_dir():
+            continue
+        for folder in [base] + sorted(p for p in base.rglob("*") if p.is_dir()):
+            rel = folder.relative_to(ROOT)
+            if any(part.startswith(".") for part in rel.parts):
+                continue
+            inside_skill_or_workflow = False
+            probe = folder
+            while probe != ROOT:
+                if (probe / "SKILL.md").exists() or (probe / "workflow.md").exists():
+                    inside_skill_or_workflow = True
+                    break
+                probe = probe.parent
+            if not inside_skill_or_workflow and not (folder / "README.md").exists():
+                problems.append(
+                    f"{rel}: folder has no README.md; create it from the folder-readme "
+                    "template (see workflow/new-folder/workflow.md)")
+    return problems
 
 
 def main():
@@ -90,6 +120,7 @@ def main():
             errors.append(f"{rel}/SKILL.md: 'name' must equal folder name '{folder.name}'")
         if not fm.get("description"):
             errors.append(f"{rel}/SKILL.md: missing 'description'")
+    errors.extend(folders_without_readme())
     for e in errors:
         print(e)
     print(f"checked {len(files)} files and {len(skills)} skills, {len(errors)} problems")

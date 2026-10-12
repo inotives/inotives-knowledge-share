@@ -283,6 +283,8 @@ One branch per task, named `<handle>/<topic>`. Keep it short-lived. Restart the 
 
 Move the draft into a curated folder (`memo/`, `concept/`, `company/<name>/<project>/`, `skill/`, `workflow/`) and fill in the frontmatter. Ask Claude to do it, or use the OpenKnowledge tools yourself.
 
+If the page needs a new folder, create the folder's `README.md` first, from the `folder-readme` template, by following [Add a new folder](./workflow/new-folder/workflow.md). Every folder needs a README, and the docs check fails without one.
+
 Every curated page needs `title`, `description`, `type`, `status`, `owner` and `created_at`. Set `ai_assisted: true` when an agent wrote most of it, and `created_by` to your handle. The full table is in [AGENTS.md](./AGENTS.md#frontmatter). Link to other pages instead of copying their content.
 
 ### 4.5 Confirm it reached the disk
