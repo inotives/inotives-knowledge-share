@@ -10,8 +10,8 @@ ai_assisted: true
 ---
 # X-4 path probe
 
-Prose path: /Users/someone.else/workspaces/notes
+Prose path: ~/workspaces/notes
 
 ```
-cd /home/someone.else/repo
+cd ~/repo
 ```
