@@ -25,6 +25,8 @@ workflow/<workflow-name>/
 
 Lowercase kebab-case folder names.
 
+**A workflow folder has no README of its own.** Every other folder needs one, because a README is how a folder says what it is for and what its rules are. For a workflow, `workflow.md` does exactly that: it states the objective, the ordered steps, the hand-offs and the skills it invokes. A second file would only repeat it and drift out of date. The docs check therefore skips `workflow/<name>/` and everything inside it, including `resources/`. This page is the README for the `workflow/` folder itself.
+
 ## Frontmatter for this folder
 
 The usual `type` is `playbook` or `runbook`. A new page starts at `status: draft`. The full table is in [AGENTS.md](../AGENTS.md#frontmatter).
