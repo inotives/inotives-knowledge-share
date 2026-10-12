@@ -14,7 +14,7 @@ This page lists what we test and what each result means. Evidence for every resu
 
 **Markers:** **[V]** observed first-hand in a run with evidence in a report. **[?]** not yet observed.
 
-**Status values:** `Pending` (not run), `Observed` (run once, result recorded), `Confirmed` (repeated or reviewed by a second person), `Parked` (cannot be tested in the pilot setup, with the reason given), `Not applicable` (the planned setup makes the case irrelevant, with the reason given).
+**Status values:** `Pending` (not run), `Observed` (run once, result recorded), `Confirmed` (repeated or reviewed by a second person), `Parked` (cannot be tested in the pilot setup, with the reason given), `Not applicable` (the planned setup makes the case irrelevant, with the reason given), `Deferred` (it can be run, but on the pilot setup the answer would not carry over to GitHub Enterprise, so it is re-run in Phase 4, with the reason given).
 
 ## Accounts
 
@@ -30,12 +30,15 @@ This page lists what we test and what each result means. Evidence for every resu
 
 **Open, in the order to run:**
 
-1. P2-2, the unverified-email failure case.
-2. P3-3, whether `require_extra_approval_for_unattributed_changes` has an effect.
-3. P1-2b, whether the sync button shows error details when clicked.
-4. X-1, searching a `_scratch/` note and an agent writing there.
+These come first because their answers do not depend on the GitHub plan. They are about OpenKnowledge and the workflow, and they carry over to Enterprise unchanged.
+
+1. X-1, searching a `_scratch/` note and an agent writing there.
+2. P1-2b, whether the sync button shows error details when clicked.
+3. X-5, onboarding on a clean machine.
+4. X-6, a teammate pulling merged pages.
 5. P3-1b, contradicting facts on different lines.
-6. Phase 4 when GitHub Enterprise is available.
+
+**Deferred to Phase 4:** P2-2, P3-3 and the re-runs listed under [Phase 4](#phase-4-enterprise-smoke-test), because they depend on how identity and organisations work and the pilot's free personal accounts cannot show that.
 
 ## Phase 0: baseline, no protection
 
@@ -77,7 +80,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | --- | --- | --- | --- | --- |
 | P2-0 | Prerequisite: the throwaway emails are verified on their accounts | Owner checks Settings, Emails, for `inotivesgames` and `inotives-inoai` and records the result | Both verified. If not, P2-2 can show only the failure case | Observed **[V]**: both emails verified, checked by the owner on the GitHub pages |
 | P2-1 | Owner by `@username` resolves | Add `CODEOWNERS`, open a PR | Owner is requested as reviewer | Observed **[V]**: PR 12 got no reviewer, because GitHub reads CODEOWNERS from the base branch and `main` had none. After merge, PR 13 requested `inotives`. The file must be on `main` before it applies |
-| P2-2 | Owner by work email resolves | Use a verified email instead | Resolves only if the email is verified on the account **[?]** | Observed **[V]**: PR 15 requested `inotivesgames` from `/memo/ inotives.games@gmail.com`, not `inotives`. The path rule replaced `*`. The failure case (unverified email) was not tested |
+| P2-2 | Owner by work email resolves | Use a verified email instead | Resolves only if the email is verified on the account **[?]** | Observed **[V]**: PR 15 requested `inotivesgames` from `/memo/ inotives.games@gmail.com`, not `inotives`. The path rule replaced `*`. The failure case (unverified email) was not tested. **Deferred** to Phase 4: it needs an account with an unverified email, and the answer depends on how identity works on Enterprise. A nonexistent owner is already covered by P2-5 and P2-8 |
 | P2-3 | Path-specific rule, last match wins | Add a rule for `/skill/` | Contributor owns that path | Observed **[V]**: the `/memo/` rule from P2-2 overrode `*` (last match wins). The `/skill/` rule was then run with `/skill/ @inotives-inoai`, who is not an owner of `*`. PR 43 requested only `inotives-inoai`, stayed `BLOCKED` after approval by `inotives` (owner of `*`) and went `CLEAN` after approval by `inotives-inoai`. A control PR on `concept/` behaved the other way round. A draft PR requested nobody. See the [report](./results/2026-10-12-p2-3-skill-path-rule.md) |
 | P2-4 | Code-owner review is enforced | Turn on `require_code_owner_review` | Merge blocked without owner approval | Observed **[V]**: with the setting on, PR 15 went from `CLEAN` to `BLOCKED` although `inotives` had approved. Approval by the owner `inotivesgames` made it `CLEAN` |
 | P2-5 | A nonexistent owner | Add a line with an account that does not exist | GitHub flags an error on the file. Whether it blocks a PR is unknown **[?]** | Observed **[V]**: the codeowners errors API reports `Unknown owner` for the line. The PR 16 that added it passed CI and merged. A PR touching the path (17) got no reviewer and went `CLEAN` after one ordinary approval. The line also replaced `*` for that path |
@@ -94,7 +97,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | P3-1 | Same page, different lines | Both edit one page on separate branches | Clean merge, facts may still disagree | Observed **[V]**: pull requests 27 (`inotivesgames`, Section A) and 28 (`inotives-inoai`, Section B) both merged without conflict, as `d05192f` and `9fcab2d`. The second stayed `MERGEABLE` after the first landed, and the ruleset does not require an up-to-date branch. The two edits did not contradict each other, so "facts may disagree" is untested |
 | P3-1b | Contradicting facts on different lines | Two accounts edit different lines of one page, each stating a conflicting fact, on separate branches. Merge both | A clean merge of a page that contradicts itself, which shows that Git cannot catch a factual conflict | Pending. P3-1 used independent edits, so this was not tested |
 | P3-2 | Same lines | Both edit the same lines | Conflict is visible, never auto-resolved | Observed **[V]**: pull requests 30 (`inotivesgames`, 07:00) and 31 (`inotives-inoai`, 05:30) both passed CI and were `MERGEABLE` alone. After 30 merged as `63ccd47`, 31 became `CONFLICTING` and `DIRTY`, and `main` kept 07:00. A local merge showed conflict markers. After the resolving push, 31 went from `APPROVED` to `REVIEW_REQUIRED` with the approval `DISMISSED`, and merged as `e5ecff2` |
-| P3-3 | Attribution in history | Compare commit author, `created_by` and `ai_assisted` | Author matches the account **[?]** | Observed **[V]** in part: for pull requests 26, 27, 28, 30 and 31 the git author, the pull request author and the clone's `git config` agree, and the committer is `GitHub`. The merger is only in the pull request. The page says `ai_assisted: false` although an agent wrote every commit, and nothing checks it. The squash title of 31 says 05:30 while its diff says 07:00. Whether `require_extra_approval_for_unattributed_changes` matters here is not shown |
+| P3-3 | Attribution in history | Compare commit author, `created_by` and `ai_assisted` | Author matches the account **[?]** | Observed **[V]** in part: for pull requests 26, 27, 28, 30 and 31 the git author, the pull request author and the clone's `git config` agree, and the committer is `GitHub`. The merger is only in the pull request. The page says `ai_assisted: false` although an agent wrote every commit, and nothing checks it. The squash title of 31 says 05:30 while its diff says 07:00. Whether `require_extra_approval_for_unattributed_changes` matters here is not shown. **Deferred** to Phase 4: the setting is about commits whose email is linked to no account, and that mapping differs on Enterprise, so a result on free personal accounts would not carry over |
 | P3-4 | Agent edit with and without OpenKnowledge | One agent edits a page with plain files and git, another through the OpenKnowledge tools. Compare what each catches: broken links, orphan pages, frontmatter, attribution | Shows what OpenKnowledge adds beyond Git | Observed **[V]**: the plain agent's hook and `check_docs.py` refused the broken link and the invalid frontmatter. The OpenKnowledge `write` reply warned about the broken link, and `audit` and `links` found the link and the orphan page. OpenKnowledge did not flag the invalid frontmatter (`lint` ran no checks) and neither side flagged the false `ai_assisted`. `history` recorded the editor as the agent `claude-code`, which git does not show. Details are in the Phase 3 report |
 | P3-5 | Two people on one live OpenKnowledge server | Two people edit the same page at the same time on one server | Not testable in the pilot setup. The server binds to localhost by default, and shared multi-user use is unverified **[?]** | Not applicable. In the planned setup each person runs OpenKnowledge on their own machine and shares work only through git, so two people never edit one live server. Concurrent edits are covered by P3-1 and P3-2 |
 
@@ -106,6 +109,8 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Observed **[V]** for invalid frontmatter: refused with four errors. Broken link also refused in P3-4: `broken link './note__p3-4-does-not-exist.md'`, exit 1. The hook checks the whole working tree, so an untracked bad page blocks unrelated commits. The owner clone had no hook enabled |
 | X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Observed **[V]** in part: **CI** blocked PR 37 on both planted secrets (`aws-access-token`, `generic-api-key`), and approval did not unblock it. A fix commit did not clear it, because the scan reads history. A rewritten branch did. The **local hook failed open**: with no scanner the commit went through with a warning. The hook was changed to refuse, with `SKIP_SECRET_SCAN=1` as a one-time override. On the owner's machine, once a scanner was available, the hook did find the secret: with gitleaks installed it refused a staged fake token, and with gitleaks off PATH it downloaded a pinned, checksum-verified copy and refused too. A failed download or a wrong checksum is refused, and `SKIP_SECRET_SCAN=1` skips it once. The git history and the working tree scanned clean. See the [CI report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) and the [local hook report](./results/2026-10-12-x3-local-hook-and-test-status.md) |
 | X-4 | A personal local path is refused and must be written as `~/` | Commit a page containing a home-directory path, in prose and in a code fence. Then open a PR with it | The hook refuses the commit and `validate-docs` fails the PR. A `~/` path passes | Observed **[V]**: the hook refused with both lines named. CI failed PR 38 on both and approval did not unblock it. The fix to `~` turned the check green. A `~/` path and an angle-bracket placeholder passed. See the [report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) |
+| X-5 | A new contributor can set up on a clean machine | In a fresh clone, follow [INSTRUCTIONS.md](../../../INSTRUCTIONS.md): set the git identity, enable `core.hooksPath`, run `ok init`, then commit a page | The hook runs on the commit, downloads the pinned gitleaks once if none is installed, passes a good page and refuses a bad one | Pending |
+| X-6 | A teammate receives merged pages | While a local OpenKnowledge server is running, another account's pull request is merged. Run `git pull`, then search for and open the new page through OpenKnowledge | The page appears without a restart, or the report records that a restart is needed | Pending |
 
 ## Confirmation reruns
 
@@ -119,7 +124,21 @@ Run on 2026-10-12, with steps in [test steps](./test-steps.md). A full rerun is 
 
 ## Phase 4: Enterprise smoke test
 
-Re-run P1-1, P1-5 to P1-7 and P2-1 on GitHub Enterprise once it is available, plus SSO and organisation-level rulesets, which free accounts cannot show. Waiting for the GitHub Enterprise account to be set up.
+Waiting for the GitHub Enterprise account to be set up. The pilot runs on a public repository with free personal accounts, so it shows how the GitHub rules behave but not how identity and organisations work.
+
+**Why some cases wait.** Rulesets, required checks and code-owner review are the same features on Enterprise, so those results should carry over. What can differ is identity: with SSO, verified company domains or managed accounts, a commit email maps to an account differently, and code owners can be teams. Two cases depend on that, so a result on free accounts would say little: P2-2 (an unverified email) and P3-3 (`require_extra_approval_for_unattributed_changes`). Cases about OpenKnowledge itself (X-1, P1-2b, X-5, X-6) do not depend on the GitHub plan, so they are run now.
+
+**To run on Enterprise:**
+
+- Re-run P1-1, P1-5 to P1-7 and P2-1.
+- Re-run P2-3 (a path rule for `skill/`) and P1-15 (a contributor merges their own approved pull request). P1-15 was seen only before code-owner review was switched on.
+- Run the deferred cases P2-2 and P3-3.
+- Test code owners that are teams.
+- Test SSO and organisation-level rulesets.
+- Check that the Actions `GITHUB_TOKEN` can read the `codeowners/errors` API on a private repository.
+- Check whether secret push protection, if available, changes the X-3 result.
+
+These rest on my expectation of how Enterprise behaves and should be checked against GitHub's current plan table **[?]**.
 
 ## How to add a result
 
