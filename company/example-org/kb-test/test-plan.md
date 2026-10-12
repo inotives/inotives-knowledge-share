@@ -110,6 +110,7 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | X-5 | A new contributor can set up on a clean machine | In a fresh clone, follow [INSTRUCTIONS.md](../../../INSTRUCTIONS.md): set the git identity, enable `core.hooksPath`, run `ok init`, then commit a page | The hook runs on the commit, downloads the pinned gitleaks once if none is installed, passes a good page and refuses a bad one | Pending. **Run last.** It needs a deployment wizard to be designed first, so that onboarding is one guided flow and not a list of commands |
 | X-6 | A teammate receives merged pages | While a local OpenKnowledge server is running, another account's pull request is merged. Run `git pull`, then search for and open the new page through OpenKnowledge | The page appears without a restart, or the report records that a restart is needed | Observed **[V]**: after `git pull` on the same branch, with the server running, search found the new page and `cat` read it at once, and after a later pull that deleted it, search stopped finding it. No restart was needed. One pull on one branch, so not a guarantee. See the [report](./results/2026-10-12-rehearsal-scratch-to-merged.md) |
 | X-7 | A note can be promoted from `_scratch/` into a curated folder | Draft in `_scratch/<handle>/`, then move it into a curated folder with the OpenKnowledge `move` tool on a branch, fill the frontmatter, and open a pull request | The old path is gone, the new file is a plain untracked file until added, and the docs check names any missing fields | Observed **[V]**: `move` removed the scratch file and left `memo/rehearsal-note.md` untracked with its two original frontmatter fields. `check_docs.py` named the four missing fields (`type`, `status`, `owner`, `created_at`). After the fields were added it passed, and the page merged by pull request. See the [report](./results/2026-10-12-rehearsal-scratch-to-merged.md) |
+| X-8 | The setup works on a private repo on a free personal account | Create a private repo, push `main`, try the ruleset and classic branch protection, open a pull request and read the CI result, then try an unapproved merge and a direct push | If rulesets are available they apply as in the public repo | Observed **[V]**: the ruleset and branch protection were refused with `Upgrade to GitHub Pro or make this repository public`. CI ran and passed (docs check, `CODEOWNERS` check, Docker `gitleaks`), and the `GITHUB_TOKEN` could read `codeowners/errors`. An unapproved PR merged and a direct push to `main` was accepted, so nothing is enforced. `CODEOWNERS` owners must already have write access in the repo. See the [report](./results/2026-10-13-private-repo-free-plan.md) |
 
 ## Confirmation reruns
 
@@ -134,10 +135,23 @@ Waiting for the GitHub Enterprise account to be set up. The pilot runs on a publ
 - Run the deferred cases P2-2 and P3-3.
 - Test code owners that are teams.
 - Test SSO and organisation-level rulesets.
-- Check that the Actions `GITHUB_TOKEN` can read the `codeowners/errors` API on a private repository.
+- Confirm that the Actions `GITHUB_TOKEN` can still read the `codeowners/errors` API. It could on a private repo on a free account (X-8).
 - Check whether secret push protection, if available, changes the X-3 result.
 
 These rest on my expectation of how Enterprise behaves and should be checked against GitHub's current plan table **[?]**.
+
+**Observed on a free personal account (X-8).** A private repository refuses both the ruleset and classic branch protection (`Upgrade to GitHub Pro or make this repository public`). CI still runs and passes there, but nothing is enforced: an unapproved pull request merges and a direct push to `main` is accepted. So a private repo needs a plan that enforces the ruleset before it holds real content. See the [report](./results/2026-10-13-private-repo-free-plan.md).
+
+**Questions for the Enterprise admin.** None of these is known yet, and each one decides part of the setup.
+
+1. Is it GitHub Enterprise Cloud or Enterprise Server, and which version? Server gets features by version.
+2. Are repository rulesets and required status checks available on private repos in the plan, and can a ruleset be set at the organisation level?
+3. What is the Actions policy? Are `actions/checkout` and `actions/setup-python` allowed, can a workflow run a Docker image, and are the runners hosted or self-hosted with Docker?
+4. How do SSO and verified domains map a commit email to an account, and can a managed account push as the person?
+5. Can code owners be teams, and who are the approvers for each path?
+6. Does the company network allow downloads from GitHub release assets? The hook fetches `gitleaks` from there.
+7. Is secret push protection available, and is it on?
+8. Which collaborators and teams can be added to the repo before the move? Every account named in `CODEOWNERS` must have write access first, or `validate-docs` fails.
 
 ## How to add a result
 

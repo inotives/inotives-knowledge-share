@@ -36,7 +36,7 @@ flowchart LR
 | Claude Code | The agent you work with in the terminal |
 | A GitHub account with a verified email | Your identity. Your handle is the part of the email before the `@` |
 
-**GitHub plan.** Rulesets and required checks worked on a **public** repository on a free account. Private repositories on a free account do not get them, and need a paid plan **[not run, check GitHub's current plan table]**. GitHub Enterprise has not been tested.
+**GitHub plan.** Rulesets and required checks worked on a **public** repository on a free account. A private repository on a free account refuses them: GitHub answers `Upgrade to GitHub Pro or make this repository public` (tested 2026-10-13, case X-8). CI still runs there and passes, but nothing is enforced, so an unapproved pull request merges and a direct push to `main` is accepted. Do not put real content in a private repo on a free account. Paid plans and GitHub Enterprise have not been tested.
 
 ---
 
