@@ -10,6 +10,9 @@ _scratch/*
 .ok/local
 .claude/settings.local.json
 
+# Pinned gitleaks downloaded by .githooks/pre-commit
+.bin/
+
 # Never commit credentials
 .env
 .env.*
