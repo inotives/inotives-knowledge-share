@@ -93,6 +93,19 @@ The local hook prints `gitleaks and docker are not available; secret scan skippe
 3. Commit with `--no-verify`, push, open a PR. **Expect:** the `Scan for secrets` step in `validate-docs` fails and the merge stays blocked.
 4. Remove the secret, push, and confirm `check` passes. The key stays in the branch history, so close the PR unmerged and delete the branch.
 
+### X-4: a personal local path
+
+The rule is in `.github/scripts/check_docs.py`. It flags `/Users/<name>`, `/home/<name>` and `C:\Users\<name>` anywhere in a curated page, code fences included.
+
+1. On a branch, add a page whose body has a home-directory path of a real person, once in prose and once in a code fence.
+2. `python3 .github/scripts/check_docs.py`. **Expect:** one error per line, with file and line number, exit 1.
+3. `git commit`. **Expect:** refused by the hook.
+4. Commit with `--no-verify`, push, open a PR. **Expect:** `check` fails and the merge stays blocked, even after approval.
+5. Replace the paths with `~/...`, push. **Expect:** `check` passes and the old approval is dismissed.
+6. Close the PR unmerged. The path stays in the branch history, so never merge it.
+
+Also check that a page holding `/Users/<name>/` as a placeholder passes, because `<` is not part of a name.
+
 ### P2-2: the unverified email
 
 1. On a branch, add a `CODEOWNERS` line that names an email not verified on any account.
