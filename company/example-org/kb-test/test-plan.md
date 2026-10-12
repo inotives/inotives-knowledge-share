@@ -47,7 +47,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 
 | ID | Case | Steps | Expected | Status |
 | --- | --- | --- | --- | --- |
-| P1-1 | Ruleset blocks the editor's push | Write a page, run `ok sync` | Push rejected | Observed **[V]** |
+| P1-1 | Ruleset blocks the editor's push | Write a page, run `ok sync` | Push rejected | Confirmed **[V]** by R-1: rejected again on a fresh clone as `inotives-inoai` |
 | P1-2 | The user is told it failed | Read the CLI output after P1-1 | A clear error | Observed **[V]**: the CLI printed success. UI not checked **[?]** |
 | P1-2b | The editor UI shows the failure | After a deliberately rejected sync, open the page with `ok open <doc>` and read what the UI shows. Done by the owner, because the UI cannot be driven from the CLI | A visible error. If nothing is shown, checking `git status` becomes mandatory in the contract | Observed **[V]**: the button spun for about 1 second, then returned to `! Sync paused`. No error, banner or reason. The tooltip said only `sync paused`. Whether clicking the button shows details was not checked |
 | P1-3 | OpenKnowledge moves work to a branch or opens a PR | Look for a new branch or PR after P1-1 | Either, or neither | Observed **[V]**: neither |
@@ -55,10 +55,10 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-5 | The owner cannot approve their own PR | Approve as `inotives` | Blocked | Observed **[V]**: approval refused |
 | P1-5b | The owner cannot merge before any approval | Open a PR as `inotives`, then run `gh pr merge` with no approval | Blocked by the ruleset | Observed **[V]**: refused, `base branch policy prohibits the merge` |
 | P1-5c | An admin cannot override the ruleset | Run `gh pr merge --admin` on a low-stakes PR with no approval. Run by the owner, because it tries to override a review rule | Refused, since the ruleset has no bypass actors **[?]**. If it merges, "no bypass" does not hold | Observed **[V]**: refused, `At least 1 approving review is required by reviewers with write access` |
-| P1-6 | A contributor's approval satisfies the rule | Approve as `inotivesgames`, then merge as `inotives` | Merge allowed | Observed **[V]**: merged as `b15c96e` |
+| P1-6 | A contributor's approval satisfies the rule | Approve as `inotivesgames`, then merge as `inotives` | Merge allowed | Confirmed **[V]** by R-2: PR 34 by `inotives-inoai`, approved by `inotivesgames`, merged by `inotives` as `56127f0`. Earlier: merged as `b15c96e` |
 | P1-7 | A non-admin cannot push to `main` | Push directly to `main` as `inotivesgames` | Rejected | Observed **[V]**: rejected |
-| P1-8 | Editor on a feature branch | Switch to a branch, write, run `ok sync` | Pushes the branch, no `main` change | Observed **[V]**: branch not pushed, sync still targeted `main` and switched itself off. Plain git push of the branch worked |
-| P1-9 | Where the editor commits | After P1-8, run `git log origin/main..main` | Nothing, if the editor respects the checked-out branch | Observed **[V]**: an `Auto-save` commit sat on local `main` |
+| P1-8 | Editor on a feature branch | Switch to a branch, write, run `ok sync` | Pushes the branch, no `main` change | Confirmed **[V]** by R-3. Earlier: branch not pushed, sync still targeted `main` and switched itself off. Plain git push of the branch worked |
+| P1-9 | Where the editor commits | After P1-8, run `git log origin/main..main` | Nothing, if the editor respects the checked-out branch | Confirmed **[V]** by R-3: `Auto-save` commit `7ebb120` sat on local `main` while a feature branch was checked out. Earlier: an `Auto-save` commit sat on local `main` |
 | P1-10 | Editor after a branch switch | Switch branches under a running server, then edit a page it already had open | The edit reaches disk | Observed **[V]**: five edits reported applied but never reached disk. A server restart fixed it |
 | P1-11 | A failing check blocks the merge once it is required | Add `validate-docs` (job `check`) as a required status check. As `inotives-inoai`, open a PR with broken frontmatter | CI fails and the merge is blocked even after approval | Observed **[V]**: approved but `BLOCKED`, merge refused |
 | P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Observed **[V]**: CI passed, merged as `4713188` |
@@ -102,13 +102,13 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 
 ## Confirmation reruns
 
-A full rerun is not worth the cost for a pilot. These three carry the design, so they are repeated with a different account in a fresh clone to move them from `Observed` to `Confirmed`.
+Run on 2026-10-12, with steps in [test steps](./test-steps.md). A full rerun is not worth the cost for a pilot. These three carry the design, so they are repeated with a different account in a fresh clone to move them from `Observed` to `Confirmed`.
 
 | ID | Repeats | Steps | Status |
 | --- | --- | --- | --- |
-| R-1 | P1-1 | `inotives-inoai` writes a page in a fresh clone and runs `ok sync` on `main` | Pending |
-| R-2 | P1-5 and P1-6 | `inotives-inoai` authors a PR, `inotivesgames` approves, `inotives` merges | Pending |
-| R-3 | P1-8 | `inotives-inoai` writes on a feature branch and runs `ok sync` | Pending |
+| R-1 | P1-1 | `inotives-inoai` writes a page in a fresh clone and runs `ok sync` on `main` | Observed **[V]**: push rejected, CLI printed success, `Auto-save` commit `25d6741` left on local `main`. Case P1-1 is now Confirmed. See the [confirmation report](./results/2026-10-12-confirmation-reruns.md) |
+| R-2 | P1-5 and P1-6 | `inotives-inoai` authors a PR, `inotivesgames` approves, `inotives` merges | Observed **[V]** in part: PR 34 was `BLOCKED` before approval, `CLEAN` after, and merged as `56127f0`. The owner's own approval (P1-5) and a merge before approval were not repeated, so P1-6 is Confirmed and P1-5 stays Observed |
+| R-3 | P1-8 | `inotives-inoai` writes on a feature branch and runs `ok sync` | Observed **[V]**: branch not pushed, sync targeted `main`, `Auto-save` commit `7ebb120` landed on local `main`. Cases P1-8 and P1-9 are now Confirmed |
 
 ## Phase 4: Enterprise smoke test
 
