@@ -107,7 +107,7 @@ The contract makes promises that depend on how GitHub and OpenKnowledge behave. 
 | 2 | Can an approver's own pull request be merged (bypass or second approver)? | **Answered.** Authors cannot approve their own pull request and admins cannot override with `--admin`. A second person must approve, and a write-access author can then merge |
 | 3 | Do code owners resolve, by work email and by `@username`? | **Answered.** Both resolve, and a path rule replaces `*`. CODEOWNERS applies from `main`, so its own pull request is not covered. A nonexistent owner fails silently, so `validate-docs` now checks owners. A sole owner does not block their own pull request |
 | 4 | Is `_scratch/` indexed by OpenKnowledge, and can agents write to it, while Git ignores it? | **Partly answered.** It is indexed and Git ignores it. Searching and agent writes are not tested yet (X-1) |
-| 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook and CI script refused invalid frontmatter and a broken link. A planted secret is not tested. The hook is per clone, and the owner's clone had it off |
+| 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook and CI script refused invalid frontmatter and a broken link. A planted fake secret was caught by the hook when a scanner was present, and the hook let it through when none was, so it now downloads a pinned one ([report](./company/example-org/kb-test/results/2026-10-12-x3-local-hook-and-test-status.md)). The hook is per clone, so CI is the enforced check |
 | 6 | What happens when two contributors edit the same page? | **Answered for text.** Edits on different lines merged cleanly. Same-line edits gave a visible conflict that was never auto-resolved. Attribution matched the account, but `ai_assisted` is not checked. With and without OpenKnowledge, an agent's broken link and orphan page were caught only with it, and bad frontmatter only by the hook and CI. `ok lint` ran no checks |
 | 7 | Does it still work on GitHub Enterprise, where org rulesets and SSO apply? | Pending (Phase 4). Free accounts cannot show this |
 
@@ -163,7 +163,7 @@ The full steps are in [INSTRUCTIONS.md](./INSTRUCTIONS.md). In short:
 
 1. Read [AGENTS.md](./AGENTS.md). It is the contract for people and agents.
 2. `git config user.email '<verified address>'` and `git config user.name '<name>'`.
-3. `git config core.hooksPath .githooks` to enable the local pre-commit check.
+3. `git config core.hooksPath .githooks` to enable the local pre-commit check. It scans staged changes for secrets with gitleaks. If gitleaks is not installed, the hook downloads a pinned, checksum-checked copy into `.bin/` on the first commit (macOS and Linux, needs `curl` and `tar`). CI scans every pull request either way.
 4. `ok init` to set up OpenKnowledge and the agent tool config. Generated files are gitignored.
 5. Work in `_scratch/<handle>/`, then promote to a curated folder by pull request. Publish with `git push` and `gh pr create`, never with the editor's sync.
 

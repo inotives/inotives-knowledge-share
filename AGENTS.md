@@ -21,7 +21,7 @@ When an agent is started from this folder, this repository is its long-term memo
 ## One-time setup per clone
 
 1. `git config user.email "<you>@example.com"` and `git config user.name "<Your Name>"` (see [Identity](#identity)).
-2. `git config core.hooksPath .githooks` to turn on the local pre-commit check. It runs the same frontmatter, link and skill checks as CI, and scans staged changes for secrets with gitleaks (directly, or through Docker).
+2. `git config core.hooksPath .githooks` to turn on the local pre-commit check. It runs the same frontmatter, link and skill checks as CI, and scans staged changes for secrets with gitleaks, from your PATH or from a pinned, checksum-checked copy it downloads into `.bin/` (see [INSTRUCTIONS.md](./INSTRUCTIONS.md)). Docker is not needed.
 3. `ok init` to set up OpenKnowledge and the agent tool config. Those generated files are gitignored.
 
 The pre-commit hook protects only the people who enable it. The pull-request checks on GitHub are the ones that cannot be skipped.

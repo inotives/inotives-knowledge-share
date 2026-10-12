@@ -61,7 +61,8 @@ The `inotives-inoai` branch changes the same hook to **refuse** when no scanner 
 - **If CI flags a secret, rotate it.** A follow-up commit does not clear the failure, and a rewrite does not make the leak safe (see the X-3 and X-4 report).
 - **P3-5 is not applicable.** Each person runs OpenKnowledge locally and shares work only through git, so two people never edit one live server. Concurrent edits go through git, which P3-1 and P3-2 covered.
 - **Phase 4 stays parked** until the GitHub Enterprise account is set up.
-- The plan and `AGENTS.md` were **not edited here**, to avoid conflicting with the `inotives-inoai` change to the same rows. The owner should update the X-3 and P3-5 rows and the contract wording.
+- The test plan was **not edited here**, to avoid conflicting with the `inotives-inoai` change to the same rows. The owner should update the X-3 and P3-5 rows.
+- The setup notes were updated for the pinned download: `README.md` (hook step and the secret-scan row), `INSTRUCTIONS.md` (gitleaks is optional, first-commit download, rotate a flagged secret) and the one setup sentence in `AGENTS.md`. The contract wording that CI is the enforced secret check, and the rotate rule, still need the owner's decision.
 
 ## What is left to test, ranked
 
