@@ -72,6 +72,7 @@ Everything outside `_scratch/` is **curated**: it changes by pull request, not b
 
 - Work in `_scratch/<your-handle>/`. Let agents draft there.
 - **Nothing in `_scratch/` is saved to GitHub.** If it matters, promote it.
+- **Nothing in `_scratch/` is scanned for secrets,** because the hook and CI read only staged and committed files. Keep secrets and personal data out of it. The folder's rules are in [_scratch/README.md](./_scratch/README.md).
 - **Promote** by moving the file into a curated folder on a branch, filling in the frontmatter, and opening a pull request. Do not copy and leave the original behind.
 
 ## Images, data files and generated outputs

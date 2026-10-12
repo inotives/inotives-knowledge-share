@@ -3,7 +3,8 @@
 
 Curated folders: concept, company, workflow, memo, generated_output (README only).
 skill/<name>/SKILL.md is checked separately: name must equal the folder, description required.
-_scratch/ is never checked. README.md files need only title and description.
+_scratch/ holds personal notes that are never checked; only its own README.md is, and it must exist.
+README.md files need only title and description.
 Every folder under a curated folder needs a README.md, except inside a skill or a workflow.
 A top-level folder that is not in TOP_LEVEL fails: a new one is the owner's decision.
 A page must not contain a personal local path such as /Users/<name>/ or /home/<name>/;
@@ -62,6 +63,10 @@ def folders_without_readme():
     is described by its SKILL.md or workflow.md, so it needs no README.
     """
     problems = []
+    scratch = ROOT / "_scratch"
+    if scratch.is_dir() and not (scratch / "README.md").exists():
+        problems.append("_scratch: folder has no README.md; create it from the folder-readme "
+                        "template (see workflow/new-folder/workflow.md)")
     for top in CURATED + ["skill"]:
         base = ROOT / top
         if not base.is_dir():
@@ -88,6 +93,9 @@ def main():
     errors = []
     files = [p for d in CURATED for p in (ROOT / d).rglob("*.md")
              if ".ok" not in p.parts]
+    scratch_readme = ROOT / "_scratch" / "README.md"
+    if scratch_readme.exists():
+        files.append(scratch_readme)
     for path in sorted(files):
         rel = path.relative_to(ROOT)
         text = path.read_text(encoding="utf-8")

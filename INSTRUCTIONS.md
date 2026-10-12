@@ -73,8 +73,8 @@ The copy must contain:
 | `.github/pull_request_template.md` | The pull request checklist |
 | `.github/ruleset-main.json` | The branch protection rules, used in step 1.4 |
 | `.githooks/pre-commit` | The same checks plus a secret scan, run on your machine |
-| `.gitignore`, `.okignore` | `_scratch/` content stays out of git. `.okignore` is meant to keep it searchable in OpenKnowledge, which has not been tested yet (case X-1) |
-| `_scratch/.gitkeep`, `memo/`, `concept/`, `company/`, `skill/`, `workflow/`, `generated_output/` | The folders, each with a `README.md` |
+| `.gitignore`, `.okignore` | `_scratch/` content stays out of git. `.okignore` keeps it searchable in OpenKnowledge, which case X-1 confirmed |
+| `_scratch/.gitkeep`, `_scratch/README.md`, `memo/`, `concept/`, `company/`, `skill/`, `workflow/`, `generated_output/` | The folders, each with a `README.md` |
 
 ### 1.3 First push
 
@@ -192,7 +192,7 @@ The files it generates (`.claude/`, `.mcp.json`, and others) are gitignored and 
 mkdir -p _scratch/<your-handle>
 ```
 
-Everything in `_scratch/` stays on your machine. It is never committed, reviewed or backed up.
+Everything in `_scratch/` stays on your machine. It is never committed, reviewed or backed up, and nothing in it is scanned for secrets. Read [_scratch/README.md](./_scratch/README.md) for the folder's rules.
 
 ### 2.6 Log in for pull requests
 
