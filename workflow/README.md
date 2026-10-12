@@ -6,7 +6,7 @@ description: Orchestrated sequences of decisions and actions that achieve a broa
 
 ## Purpose
 
-A workflow is an **orchestrated sequence of decisions and actions that defines how to achieve a broader, end-to-end objective**, for example turning an evaluation into a shareable report. It tends to invoke several [skills](../skill/README.md) as it runs.
+A workflow is an **orchestrated sequence of decisions and actions that defines how to achieve a broader, end-to-end objective**, for example turning an evaluation into a shareable report. It tends to invoke several [skills](../skill/README.md) as it runs. A procedure that people follow, such as a how-to, a runbook or an onboarding guide, is a workflow too.
 
 ## What goes here
 

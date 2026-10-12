@@ -49,7 +49,24 @@ Every person has one **handle**: the part of their company email address before 
 
 Everything outside `_scratch/` is **curated**: it changes by pull request, not by direct push.
 
-**Every folder under a curated folder has a `README.md`, always.** It is how a folder says what it is for and what its rules and conventions are, so a folder without one is not allowed. Create it from the `folder-readme` template, which has the same eight sections in every folder: purpose, what goes here, layout and naming, frontmatter, review and ownership, how to add, rules, related. Follow [Add a new folder](./workflow/new-folder/workflow.md). The docs check fails a folder without one. The inside of a skill (`skill/<name>/`) and of a workflow (`workflow/<name>/`) is described by its `SKILL.md` or `workflow.md` and needs no README. A new top-level folder changes this list and needs the owner's decision first.
+**Every folder under a curated folder has a `README.md`, always.** It is how a folder says what it is for and what its rules and conventions are, so a folder without one is not allowed. Create it from the `folder-readme` template, which has the same eight sections in every folder: purpose, what goes here, layout and naming, frontmatter, review and ownership, how to add, rules, related. Follow [Add a new folder](./workflow/new-folder/workflow.md). The docs check fails a folder without one. The inside of a skill (`skill/<name>/`) and of a workflow (`workflow/<name>/`) is described by its `SKILL.md` or `workflow.md` and needs no README. A new top-level folder changes this list and needs the owner's decision first. The docs check fails on an unknown top-level folder, and adding one means adding it to the list in `.github/scripts/check_docs.py`.
+
+### Where does this go?
+
+| You have | Put it in |
+| --- | --- |
+| A personal draft or rough agent notes | `_scratch/<handle>/`, which is local and never shared |
+| A shared note, research or decision that is not settled yet | `memo/` |
+| Notes from a meeting, internal or external | `memo/meetings/`. A meeting with a client, or notes holding client material, go in that client's project folder |
+| Work for a client, or a project of our own organisation | `company/<name>/<project>/` |
+| A decision others must rely on | A `type: decision` page next to the project it belongs to, linked from the meeting note |
+| A glossary entry, terminology or stable reference | `concept/` |
+| A procedure people follow: a how-to, runbook or onboarding guide | `workflow/<name>/workflow.md` |
+| An atomic capability for an agent | `skill/<name>/SKILL.md` |
+| A shareable report, deck or PDF | `generated_output/`, named `<subject>-<kind>-<YYYY-MM-DD>.<ext>` |
+| A page that is no longer true, or has been replaced | Leave it where it is. Set `status: deprecated` and point to what replaced it. Do not move it |
+| Something that fits none of these | Ask the owner. A new top-level folder is the owner's decision |
+| A password, token, or personal data about an individual | Nowhere in this repository |
 
 ## Working in _scratch
 

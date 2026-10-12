@@ -5,6 +5,7 @@ Curated folders: concept, company, workflow, memo, generated_output (README only
 skill/<name>/SKILL.md is checked separately: name must equal the folder, description required.
 _scratch/ is never checked. README.md files need only title and description.
 Every folder under a curated folder needs a README.md, except inside a skill or a workflow.
+A top-level folder that is not in TOP_LEVEL fails: a new one is the owner's decision.
 A page must not contain a personal local path such as /Users/<name>/ or /home/<name>/;
 write ~/ or a repo-relative path instead. Fenced code blocks are checked too.
 Standard library only.
@@ -15,6 +16,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CURATED = ["concept", "company", "workflow", "memo", "generated_output"]
+# Every top-level folder that may exist. Hidden folders (.github, .ok, ...) are always allowed.
+# Adding a new top-level folder changes the contract's folder list, so it is the owner's decision.
+TOP_LEVEL = set(CURATED) | {"skill", "_scratch"}
 REQUIRED = ["title", "description", "type", "status", "owner", "created_at"]
 LIGHT = ["title", "description"]
 TYPES = {"note", "research", "decision", "spec", "runbook", "playbook", "skill",
@@ -39,6 +43,16 @@ def frontmatter(text):
         if m:
             fields[m.group(1)] = m.group(2).strip().strip("\"'")
     return fields
+
+
+def unknown_top_level_folders():
+    """A top-level folder that is not in TOP_LEVEL escapes every check above, so it fails."""
+    return [
+        f"{p.name}/: unknown top-level folder; a new one needs the owner's decision, "
+        "then add it to TOP_LEVEL in .github/scripts/check_docs.py"
+        for p in sorted(ROOT.iterdir())
+        if p.is_dir() and not p.name.startswith(".") and p.name not in TOP_LEVEL
+    ]
 
 
 def folders_without_readme():
@@ -120,6 +134,7 @@ def main():
             errors.append(f"{rel}/SKILL.md: 'name' must equal folder name '{folder.name}'")
         if not fm.get("description"):
             errors.append(f"{rel}/SKILL.md: missing 'description'")
+    errors.extend(unknown_top_level_folders())
     errors.extend(folders_without_readme())
     for e in errors:
         print(e)

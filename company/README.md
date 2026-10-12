@@ -6,7 +6,7 @@ description: One folder per company or client, one subfolder per project. Curate
 
 ## Purpose
 
-Content about one company or client, kept in one folder per organisation and one subfolder per project. Material about a client stays inside that client's folder.
+Content about one company or client, kept in one folder per organisation and one subfolder per project. Material about a client stays inside that client's folder. Our own organisation is one of the organisations, so an internal project goes in `company/<our-organisation>/<project>/`.
 
 ## What goes here
 
