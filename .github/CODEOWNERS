@@ -3,6 +3,3 @@
 
 # P2-2 probe: owner by verified email
 /memo/ inotives.games@gmail.com
-
-# P2-3 probe: path rule for skill/, last match wins. Temporary, reverted after the test
-/skill/ @inotives-inoai
