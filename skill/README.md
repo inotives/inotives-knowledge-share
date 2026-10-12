@@ -1,8 +1,10 @@
 ---
 title: Skill
-description: "Custom agent skills: atomic capabilities that define how to perform one specific task. Each skill is a folder with a SKILL.md. Curated by pull request with the closest review, because skills execute."
+description: "Custom agent skills: atomic capabilities that define how to perform one specific task. Each skill is a folder with a SKILL.md. Curated by pull request, and reviewed closely because skills execute."
 ---
 # Skill
+
+## Purpose
 
 A skill is an **atomic capability that defines how to perform a specific task**: convert a table to a chart, check a frontmatter block, summarise a PDF. It does one thing and does not decide what happens next.
 
@@ -18,13 +20,15 @@ A [workflow](../workflow/README.md) is an **orchestrated sequence of decisions a
 
 If a skill starts to need decisions or a sequence of steps, split it: keep the atomic capability here and move the orchestration to `workflow/`.
 
-## Available skills
+## What goes here
 
-| Skill | Use it for |
+| Goes here | Does not go here (put it in) |
 | --- | --- |
-| [interactive-pitch-deck](./interactive-pitch-deck/SKILL.md) | Building a self-contained, interactive reveal.js pitch deck from a story outline |
+| One atomic capability, with its scripts and references | A sequence of steps or decisions: [workflow](../workflow/README.md) |
+| | Background knowledge: [concept](../concept/README.md) |
+| | Generated copies in `.claude/skills/`, which are gitignored |
 
-## Layout
+## Layout and naming
 
 ```text
 skill/<skill-name>/
@@ -37,10 +41,30 @@ skill/<skill-name>/
 - `description` says **when to use** the skill. It is what an agent reads to decide whether to load it, so write it for that.
 - Keep `SKILL.md` short. Put depth in `references/`.
 
-## Rules
+To list the skills, use OpenKnowledge's folder view or search. This page keeps no hand-written index, because every new skill would edit it and two people adding skills at once would conflict.
 
-- A new skill or a change to one goes through pull request. A code owner approves, because a skill can run commands.
-- **Who can approve today:** there is no `/skill/` code-owner rule, so any owner of `*` can approve a skill change, the same as for any other folder. Anyone with write access can propose a change, but nobody can push to `main`, and a merge needs a passing check and an approval from someone other than the author. A `/skill/` rule naming one or two owners would make only their approval count (see the [P2-3 report](../company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md)). This is not decided and can wait until the team is set.
-- Mark a pull request ready for review. A draft pull request requests no code owners.
+## Frontmatter for this folder
+
+A skill's `SKILL.md` uses `type: skill` and the fields in [AGENTS.md](../AGENTS.md#frontmatter), plus `name` and `description`. A new page starts at `status: draft`.
+
+## Review and ownership
+
+A change needs a pull request, a passing `validate-docs` check, and one approval from someone other than the author, including a code owner. The contract asks for the closest review here because a skill can run commands. **GitHub does not enforce more today.** There is no `/skill/` rule in `.github/CODEOWNERS`, so any owner of `*` can approve a skill change. A `/skill/` rule naming one or two owners would make only their approval count (see the [P2-3 report](../company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md)). This is not decided. A draft pull request requests no code owners, so mark it ready for review.
+
+## How to add a skill
+
+1. Draft in `_scratch/<handle>/`.
+2. Branch `<handle>/<topic>`.
+3. Create `skill/<skill-name>/SKILL.md` and fill the frontmatter.
+4. Open a pull request and mark it ready for review.
+
+The commands are in [INSTRUCTIONS.md](../INSTRUCTIONS.md). Author skills through OpenKnowledge, not by hand-editing copies in `.claude/skills/`.
+
+## Rules for this folder
+
 - No credentials in a skill. Point to where a secret lives.
-- Author skills through OpenKnowledge, not by hand-editing copies in `.claude/skills/`, which are generated and gitignored.
+- A skill that needs decisions or ordered steps is a workflow.
+
+## Related
+
+[workflow](../workflow/README.md), [concept](../concept/README.md), [AGENTS.md](../AGENTS.md)
