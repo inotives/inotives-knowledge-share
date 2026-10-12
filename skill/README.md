@@ -42,3 +42,5 @@ skill/<skill-name>/
 - A new skill or a change to one goes through pull request. A code owner approves, because a skill can run commands.
 - No credentials in a skill. Point to where a secret lives.
 - Author skills through OpenKnowledge, not by hand-editing copies in `.claude/skills/`, which are generated and gitignored.
+
+P2-3 probe line. Throwaway, close without merging.
