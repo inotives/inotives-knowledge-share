@@ -26,17 +26,15 @@ This page lists what we test and what each result means. Evidence for every resu
 
 ## Execution order
 
-**Done:** Phases 0 to 3 (P3-5 is not applicable), the cross-cutting cases and the confirmation reruns R-1 to R-3.
+**Done:** Phases 0 to 3 (P3-5 is not applicable), the cross-cutting cases, the confirmation reruns R-1 to R-3, P2-3, X-1 and the scratch-to-merged rehearsal (X-6 and X-7).
 
 **Open, in the order to run:**
 
 These come first because their answers do not depend on the GitHub plan. They are about OpenKnowledge and the workflow, and they carry over to Enterprise unchanged.
 
 1. P1-2b, whether the sync button shows error details when clicked.
-2. X-5, onboarding on a clean machine.
-3. X-6, a teammate pulling merged pages.
-4. P3-1b, contradicting facts on different lines.
-5. Promoting a note from `_scratch/` into a curated folder, which X-1 did not cover.
+2. P3-1b, contradicting facts on different lines.
+3. X-5, onboarding on a clean machine. Last, because a deployment wizard has to be designed first.
 
 **Deferred to Phase 4:** P2-2, P3-3 and the re-runs listed under [Phase 4](#phase-4-enterprise-smoke-test), because they depend on how identity and organisations work and the pilot's free personal accounts cannot show that.
 
@@ -72,7 +70,7 @@ The ruleset as first created does not require `validate-docs`, so a failing chec
 | P1-12 | Fixing the failure allows the merge | Push a fix to the same PR, get approval, merge | CI passes and the merge is allowed | Observed **[V]**: CI passed, merged as `4713188` |
 | P1-13 | An approval survives a later push | After approval, push a content change to the same PR | Whether the approval stands depends on `dismiss_stale_reviews_on_push` | Observed **[V]**: approval stood, because the setting is off |
 | P1-14 | Dismiss stale approvals on push | Turn on `dismiss_stale_reviews_on_push`, approve a PR, then push another commit | The approval is dismissed and the PR needs a new review | Observed **[V]**: approval became `DISMISSED`, PR `REVIEW_REQUIRED` and `BLOCKED`. Repeated cleanly on PR 31 in P3-2 with both reads: `APPROVED` before the push, then `REVIEW_REQUIRED` with the approval `DISMISSED` after. Also seen on PR 24 in P2-8, where a failing check was blocking too |
-| P1-15 | A contributor merges their own approved PR | A non-admin author gets one approval and a passing check, then runs `gh pr merge` | Merge allowed, if write access is enough | Observed **[V]**: `inotives-inoai` merged PR 8 as `5b5dda0` after `inotivesgames` approved |
+| P1-15 | A contributor merges their own approved PR | A non-admin author gets one approval and a passing check, then runs `gh pr merge` | Merge allowed, if write access is enough | Observed **[V]**: `inotives-inoai` merged PR 8 as `5b5dda0` after `inotivesgames` approved. Seen again with code-owner review on: `inotivesgames` merged its own PRs 52 and 53 after `inotives` approved (merge commits `0b2b0a7` and `d68ee1f`). See the [rehearsal report](./results/2026-10-12-rehearsal-scratch-to-merged.md) |
 
 ## Phase 2: code owners
 
@@ -109,8 +107,9 @@ Contributor 2 (`inotives-inoai`) and contributor 1 (`inotivesgames`) are the two
 | X-2 | Pre-commit hook blocks bad frontmatter and a broken link | Commit a bad page | Commit refused | Observed **[V]** for invalid frontmatter: refused with four errors. Broken link also refused in P3-4: `broken link './note__p3-4-does-not-exist.md'`, exit 1. The hook checks the whole working tree, so an untracked bad page blocks unrelated commits. The owner clone had no hook enabled |
 | X-3 | Pre-commit and CI catch a planted fake secret | Stage a dummy key pattern | Commit refused, CI fails | Observed **[V]** in part: **CI** blocked PR 37 on both planted secrets (`aws-access-token`, `generic-api-key`), and approval did not unblock it. A fix commit did not clear it, because the scan reads history. A rewritten branch did. The **local hook failed open**: with no scanner the commit went through with a warning. The hook was changed to refuse, with `SKIP_SECRET_SCAN=1` as a one-time override. On the owner's machine, once a scanner was available, the hook did find the secret: with gitleaks installed it refused a staged fake token, and with gitleaks off PATH it downloaded a pinned, checksum-verified copy and refused too. A failed download or a wrong checksum is refused, and `SKIP_SECRET_SCAN=1` skips it once. The git history and the working tree scanned clean. See the [CI report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) and the [local hook report](./results/2026-10-12-x3-local-hook-and-test-status.md) |
 | X-4 | A personal local path is refused and must be written as `~/` | Commit a page containing a home-directory path, in prose and in a code fence. Then open a PR with it | The hook refuses the commit and `validate-docs` fails the PR. A `~/` path passes | Observed **[V]**: the hook refused with both lines named. CI failed PR 38 on both and approval did not unblock it. The fix to `~` turned the check green. A `~/` path and an angle-bracket placeholder passed. See the [report](./results/2026-10-12-x3-x4-secret-and-path-checks.md) |
-| X-5 | A new contributor can set up on a clean machine | In a fresh clone, follow [INSTRUCTIONS.md](../../../INSTRUCTIONS.md): set the git identity, enable `core.hooksPath`, run `ok init`, then commit a page | The hook runs on the commit, downloads the pinned gitleaks once if none is installed, passes a good page and refuses a bad one | Pending |
-| X-6 | A teammate receives merged pages | While a local OpenKnowledge server is running, another account's pull request is merged. Run `git pull`, then search for and open the new page through OpenKnowledge | The page appears without a restart, or the report records that a restart is needed | Pending |
+| X-5 | A new contributor can set up on a clean machine | In a fresh clone, follow [INSTRUCTIONS.md](../../../INSTRUCTIONS.md): set the git identity, enable `core.hooksPath`, run `ok init`, then commit a page | The hook runs on the commit, downloads the pinned gitleaks once if none is installed, passes a good page and refuses a bad one | Pending. **Run last.** It needs a deployment wizard to be designed first, so that onboarding is one guided flow and not a list of commands |
+| X-6 | A teammate receives merged pages | While a local OpenKnowledge server is running, another account's pull request is merged. Run `git pull`, then search for and open the new page through OpenKnowledge | The page appears without a restart, or the report records that a restart is needed | Observed **[V]**: after `git pull` on the same branch, with the server running, search found the new page and `cat` read it at once, and after a later pull that deleted it, search stopped finding it. No restart was needed. One pull on one branch, so not a guarantee. See the [report](./results/2026-10-12-rehearsal-scratch-to-merged.md) |
+| X-7 | A note can be promoted from `_scratch/` into a curated folder | Draft in `_scratch/<handle>/`, then move it into a curated folder with the OpenKnowledge `move` tool on a branch, fill the frontmatter, and open a pull request | The old path is gone, the new file is a plain untracked file until added, and the docs check names any missing fields | Observed **[V]**: `move` removed the scratch file and left `memo/rehearsal-note.md` untracked with its two original frontmatter fields. `check_docs.py` named the four missing fields (`type`, `status`, `owner`, `created_at`). After the fields were added it passed, and the page merged by pull request. See the [report](./results/2026-10-12-rehearsal-scratch-to-merged.md) |
 
 ## Confirmation reruns
 
@@ -131,7 +130,7 @@ Waiting for the GitHub Enterprise account to be set up. The pilot runs on a publ
 **To run on Enterprise:**
 
 - Re-run P1-1, P1-5 to P1-7 and P2-1.
-- Re-run P2-3 (a path rule for `skill/`) and P1-15 (a contributor merges their own approved pull request). P1-15 was seen only before code-owner review was switched on.
+- Re-run P2-3 (a path rule for `skill/`) and P1-15 (a contributor merges their own approved pull request). P1-15 was seen before code-owner review was switched on, and again under it on free accounts on 2026-10-12.
 - Run the deferred cases P2-2 and P3-3.
 - Test code owners that are teams.
 - Test SSO and organisation-level rulesets.
