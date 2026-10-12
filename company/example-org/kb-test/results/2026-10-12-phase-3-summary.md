@@ -38,7 +38,7 @@ The open-items table in the Phase 3 report was written on 2026-10-09, before the
 | Item | State |
 | --- | --- |
 | Confirmation reruns R-1 to R-3 | Done on 2026-10-12. They confirm P1-1, P1-6, P1-8 and P1-9. See the [confirmation report](./2026-10-12-confirmation-reruns.md) |
-| X-3, a planted fake secret, and X-4, a personal local path | Run on 2026-10-12. Recorded in the X-3 and X-4 report and the X-3 local hook report, which are in open pull requests when this page is written |
+| X-3, a planted fake secret, and X-4, a personal local path | Run on 2026-10-12 and recorded in the [X-3 and X-4 report](./2026-10-12-x3-x4-secret-and-path-checks.md). A further local-hook run is in a separate report awaiting review |
 | P3-1b, contradicting facts on different lines | Not run. Added to the plan |
 | `require_extra_approval_for_unattributed_changes: true` | Effect still not shown by P3-3 |
 | X-1, scratch search and an agent write there | Only the audit half was seen |
