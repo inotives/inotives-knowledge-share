@@ -21,7 +21,7 @@ The evidence for every status in the [test plan](../test-plan.md). One report pe
 
 ## Frontmatter for this folder
 
-`type: report`, `status: draft`, and `ai_assisted: true` when an agent wrote most of it. Use `derived_from` when a report summarises others. The full table is in [AGENTS.md](../../../../AGENTS.md#frontmatter).
+`type: report`, `status: draft`, and `ai_assisted: true` when an agent wrote most of it. Use `derived_from` when a report summarises others. The full table is in [AGENTS.md](../../../AGENTS.md#frontmatter).
 
 ## Review and ownership
 
@@ -40,4 +40,4 @@ A change needs a pull request, a passing `validate-docs` check, and one approval
 
 ## Related
 
-[kb-test](../README.md), [test plan](../test-plan.md), [AGENTS.md](../../../../AGENTS.md)
+[test-knowledge-share](../README.md), [test plan](../test-plan.md), [AGENTS.md](../../../AGENTS.md)

@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # Phase 1 Results: Ruleset, Review and Editor Branches
 
-Run on 2026-10-08. Cases are defined in the [test plan](../test-plan.md). Earlier cases are in the [Phase 0 and 1 sync report](./2026-10-08-phase-0-1-sync-behaviour.md). Everything below was observed in this run **[V]**.
+Run on 2026-10-08. Cases are defined in the [test plan](../test-plan.md). Earlier cases are in the [Phase 0 and 1 sync report](2026-10-08-phase-0-1-sync-behaviour.md). Everything below was observed in this run **[V]**.
 
 Ruleset `phase-1-protect-main`: pull request required with 1 approval, force-push and deletion blocked, no bypass actors, code-owner review off.
 

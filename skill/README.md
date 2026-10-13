@@ -50,7 +50,7 @@ A skill's `SKILL.md` uses `type: skill` and the fields in [AGENTS.md](../AGENTS.
 
 ## Review and ownership
 
-A change needs a pull request, a passing `validate-docs` check, and one approval from someone other than the author, including a code owner. The contract asks for the closest review here because a skill can run commands. **GitHub does not enforce more today.** There is no `/skill/` rule in `.github/CODEOWNERS`, so any owner of `*` can approve a skill change. A `/skill/` rule naming one or two owners would make only their approval count (see the [P2-3 report](../company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md)). This is not decided. A draft pull request requests no code owners, so mark it ready for review.
+A change needs a pull request, a passing `validate-docs` check, and one approval from someone other than the author, including a code owner. The contract asks for the closest review here because a skill can run commands. **GitHub does not enforce more today.** There is no `/skill/` rule in `.github/CODEOWNERS`, so any owner of `*` can approve a skill change. A `/skill/` rule naming one or two owners would make only their approval count (see the [P2-3 report](../memo/test-knowledge-share/results/2026-10-12-p2-3-skill-path-rule.md)). This is not decided. A draft pull request requests no code owners, so mark it ready for review.
 
 ## How to add a skill
 

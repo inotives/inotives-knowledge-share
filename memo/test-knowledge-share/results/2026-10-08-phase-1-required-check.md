@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # Phase 1 Follow-up Results: Required CI Check
 
-Run on 2026-10-08. Cases are defined in the [test plan](../test-plan.md). Earlier results are in the [sync behaviour report](./2026-10-08-phase-0-1-sync-behaviour.md) and the [ruleset and review report](./2026-10-08-phase-1-ruleset-and-review.md). Everything below was observed in this run **[V]**.
+Run on 2026-10-08. Cases are defined in the [test plan](../test-plan.md). Earlier results are in the [sync behaviour report](2026-10-08-phase-0-1-sync-behaviour.md) and the [ruleset and review report](2026-10-08-phase-1-ruleset-and-review.md). Everything below was observed in this run **[V]**.
 
 ## Change made before the tests
 

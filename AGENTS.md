@@ -126,7 +126,7 @@ Git conflicts when two branches change the same or adjacent lines of one file. T
 3. Open a pull request. The `validate-docs` check must pass. A code owner reviews.
 4. Merge. Do not push curated changes straight to `main`.
 
-The rules below come from what the tests showed. The evidence is in the [test plan](./company/example-org/kb-test/test-plan.md).
+The rules below come from what the tests showed. The evidence is in the [test plan](./memo/test-knowledge-share/test-plan.md).
 
 ### Publishing
 
@@ -174,7 +174,7 @@ Passwords, tokens, API keys, connection strings with credentials, private keys, 
 
 - **Pilot scope:** open to Team A only, with `jane.doe` as the approver for every path. See the [pilot roster](company/example-org/pilot-roster.md). Per-folder owners come after the pilot.
 - Whether client material may be read by everyone with repository access. One repository means one read boundary.
-- **Hosting and plan.** The tests ran on a public repository on free personal accounts. A private repository on a free account refuses the ruleset, so nothing is enforced there, and real content needs a plan that enforces it. Which host (GitHub Enterprise, or another such as GitLab) and which plan is not decided. The questions for the admin are in the [Phase 4 section of the test plan](./company/example-org/kb-test/test-plan.md#phase-4-enterprise-smoke-test).
+- **Hosting and plan.** The tests ran on a public repository on free personal accounts. A private repository on a free account refuses the ruleset, so nothing is enforced there, and real content needs a plan that enforces it. Which host (GitHub Enterprise, or another such as GitLab) and which plan is not decided. The questions for the admin are in the [Phase 4 section of the test plan](./memo/test-knowledge-share/test-plan.md#phase-4-enterprise-smoke-test).
 - **Owners for `skill/` and `workflow/`.** None is named, so both get the same review as other pages.
 - **A status for archived pages.** `deprecated` is used for now. Revisit after the live test.
 - **Semantic search.** It is off. Whether to allow it later, with an approved provider, is open.

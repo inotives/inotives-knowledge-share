@@ -12,7 +12,7 @@ derived_from:
 ---
 # P2-3: A Path Rule for skill/
 
-Run on 2026-10-12. The case is in the [test plan](../test-plan.md). It completes the part of P2-3 that the [Phase 2 report](./2026-10-09-phase-2-code-owners.md) left open: the `/memo/` rule showed that the last matching rule wins, but the `/skill/` rule itself was never run. Everything below was observed in this run **[V]**.
+Run on 2026-10-12. The case is in the [test plan](../test-plan.md). It completes the part of P2-3 that the [Phase 2 report](2026-10-09-phase-2-code-owners.md) left open: the `/memo/` rule showed that the last matching rule wins, but the `/skill/` rule itself was never run. Everything below was observed in this run **[V]**.
 
 ## Summary
 

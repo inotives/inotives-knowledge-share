@@ -1,5 +1,3 @@
-# P2-1 probe: owner by @username
+# Owners of every path. Name at least two, because a path with one owner is not a gate.
+# A path rule added below replaces this line for that path, so list every owner there too.
 * @inotives @inotivesgames
-
-# P2-2 probe: owner by verified email
-/memo/ inotives.games@gmail.com

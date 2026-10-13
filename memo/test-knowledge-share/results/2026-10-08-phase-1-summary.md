@@ -14,7 +14,7 @@ derived_from:
 ---
 # Phase 1 Summary: Branch Protection and Review
 
-Run on 2026-10-08 on free GitHub accounts, in a public repository with dummy content. Cases are defined in the [test plan](../test-plan.md). Evidence is in the [sync behaviour report](./2026-10-08-phase-0-1-sync-behaviour.md), the [ruleset and review report](./2026-10-08-phase-1-ruleset-and-review.md) and the [required check report](./2026-10-08-phase-1-required-check.md). This page repeats no new numbers or claims. Where it adds a result, that result is marked and added to the plan.
+Run on 2026-10-08 on free GitHub accounts, in a public repository with dummy content. Cases are defined in the [test plan](../test-plan.md). Evidence is in the [sync behaviour report](2026-10-08-phase-0-1-sync-behaviour.md), the [ruleset and review report](2026-10-08-phase-1-ruleset-and-review.md) and the [required check report](2026-10-08-phase-1-required-check.md). This page repeats no new numbers or claims. Where it adds a result, that result is marked and added to the plan.
 
 ## Verdict
 

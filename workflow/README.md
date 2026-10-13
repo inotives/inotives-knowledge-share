@@ -33,7 +33,7 @@ The usual `type` is `playbook` or `runbook`. A new page starts at `status: draft
 
 ## Review and ownership
 
-A change needs a pull request, a passing `validate-docs` check, and one approval from someone other than the author, including a code owner. Code owners are set in `.github/CODEOWNERS`. Today the owners of `*` cover every folder, and there is no `/workflow/` rule, so a workflow change has no stricter review. A path rule would give workflows their own owner (see the [P2-3 report](../company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md) for how a path rule behaves). A draft pull request requests no code owners, so mark it ready for review.
+A change needs a pull request, a passing `validate-docs` check, and one approval from someone other than the author, including a code owner. Code owners are set in `.github/CODEOWNERS`. Today the owners of `*` cover every folder, and there is no `/workflow/` rule, so a workflow change has no stricter review. A path rule would give workflows their own owner (see the [P2-3 report](../memo/test-knowledge-share/results/2026-10-12-p2-3-skill-path-rule.md) for how a path rule behaves). A draft pull request requests no code owners, so mark it ready for review.
 
 ## How to add a workflow
 
