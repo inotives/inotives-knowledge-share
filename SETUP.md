@@ -8,7 +8,7 @@ This page takes a machine from "cloned the repo" to "ready to contribute". It ta
 
 > Follow `SETUP.md` from the top. Run each step's check and compare it with the expected result before moving on. Stop at the first step that fails and tell me. Ask me before you install anything.
 
-A wizard (`onboard.py`, run with `uv run onboard.py`) is planned to do steps 5 to 8 for you. It does not exist yet, so do them by hand below. They are exactly what the wizard will automate.
+A wizard, `onboard.py`, checks all of this for you and does steps 5 to 8 where it is safe to. Run `uv run onboard.py` (or `python3 onboard.py` without `uv`). It never installs system tools: it prints the command for each missing one. `--check` makes it read-only. The steps below are what it does, so you can also follow them by hand.
 
 ## Rules for an agent following this page
 
@@ -68,9 +68,15 @@ Choose GitHub.com, choose HTTPS, and say yes when it offers to set up git creden
 
 **Check:** `gh auth status` says you are logged in to github.com.
 
-## Step 4: The wizard (not written yet)
+## Step 4: Run the wizard
 
-Once `onboard.py` exists, this step is `uv run onboard.py` (or `python3 onboard.py` without `uv`), and it replaces steps 5 to 8. Until then, continue below.
+```
+uv run onboard.py          # or: python3 onboard.py
+```
+
+It goes through every step in one pass and prints one line each: `OK`, `FIXED` (it changed something local and safe), `TODO` (you must act, with the command) or `WARN`. It asks only for what it cannot know: your git name and email. Fix the `TODO` lines and run it again; a step that passes is skipped. `uv run onboard.py --check` changes nothing. It covers steps 5 to 8. The `ok init` step stays manual, because it wires your editors.
+
+**Check:** the summary ends with `Ready.` Not yet tested on a clean machine (case X-5), so treat a surprising result as a bug and tell the owner.
 
 ## Step 5: Set your identity
 
