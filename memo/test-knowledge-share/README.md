@@ -15,6 +15,7 @@ The record of testing whether the rules in the contract hold: the branch protect
 | The [test plan](test-plan.md): every case, its steps, expected result and status | A fact the team should rely on: [concept](../../concept/README.md) |
 | The [test steps](test-steps.md): the exact commands to run a case | A decision: its own `decision` page |
 | Dated reports of each run, in [results](results/README.md) | |
+| What is still open on v1: [v1 leftovers](v1-leftovers.md) | |
 
 ## Layout and naming
 
@@ -22,6 +23,7 @@ The record of testing whether the rules in the contract hold: the branch protect
 memo/test-knowledge-share/
   test-plan.md     # the cases and their status
   test-steps.md    # the commands for each case
+  v1-leftovers.md  # what is still open on v1
   results/         # one dated report per run
 ```
 
