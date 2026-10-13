@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # Knowledge Base Test Steps
 
-The [test plan](./test-plan.md) says what each case means. This page says how to run one. A result is recorded in a new dated file in `results/`, as the plan describes.
+The [test plan](test-plan.md) says what each case means. This page says how to run one. A result is recorded in a new dated file in `results/`, as the plan describes.
 
 ## Setup
 
@@ -39,7 +39,7 @@ Run once per account. Replace `<account>` with `inotivesgames` or `inotivesinoai
 
 ## Done: confirmation reruns
 
-These were run on 2026-10-12. Results are in the [confirmation report](./results/2026-10-12-confirmation-reruns.md).
+These were run on 2026-10-12. Results are in the [confirmation report](results/2026-10-12-confirmation-reruns.md).
 
 ### R-1: a write on `main`, then `ok sync`
 
@@ -82,7 +82,7 @@ Run as `inotives-inoai`, with the server from R-1 still running.
 
 ### X-3: a planted fake secret
 
-Run as `inotives-inoai` on 2026-10-12. Results are in the [X-3 and X-4 report](./results/2026-10-12-x3-x4-secret-and-path-checks.md).
+Run as `inotives-inoai` on 2026-10-12. Results are in the [X-3 and X-4 report](results/2026-10-12-x3-x4-secret-and-path-checks.md).
 
 1. `git checkout -b inotives-inoai/x3-secret-probe`. Add a page under `concept/` with valid frontmatter and two lines: an AWS-shaped access key and a secret key line. Both must be fake.
 2. `git add` and `git commit`. **Expect:** refused by the hook. With no scanner the hook now refuses too. Before the fix it printed `secret scan skipped` and let the commit through.
@@ -110,7 +110,7 @@ Also check that `~/...` and an angle-bracket placeholder pass.
 
 ### X-8: a private repo on a free personal account
 
-Run once on 2026-10-13 as `inotives`. Results are in the [private repo report](./results/2026-10-13-private-repo-free-plan.md). Use an isolated clone so the real clone's remotes are not touched. Replace `<owner>`, `<repo>` and `<ssh-alias>` with your own, and `<path-to-this-repo>` with the real clone.
+Run once on 2026-10-13 as `inotives`. Results are in the [private repo report](results/2026-10-13-private-repo-free-plan.md). Use an isolated clone so the real clone's remotes are not touched. Replace `<owner>`, `<repo>` and `<ssh-alias>` with your own, and `<path-to-this-repo>` with the real clone.
 
 1. **Create the repo.**
    ```

@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # X-1: Scratch Notes in OpenKnowledge and Git
 
-Run on 2026-10-12 as `inotives` in the owner clone, macOS on Apple Silicon, with a local OpenKnowledge server. The case is in the [test plan](../test-plan.md). It completes the part of X-1 that the [Phase 3 report](./2026-10-09-phase-3-two-contributors.md) left open: the audit had shown that OpenKnowledge indexes a copy under `_scratch/` and that Git ignores it, but searching a scratch note and an agent writing there were not tested. Everything below was observed in this run **[V]**.
+Run on 2026-10-12 as `inotives` in the owner clone, macOS on Apple Silicon, with a local OpenKnowledge server. The case is in the [test plan](../test-plan.md). It completes the part of X-1 that the [Phase 3 report](2026-10-09-phase-3-two-contributors.md) left open: the audit had shown that OpenKnowledge indexes a copy under `_scratch/` and that Git ignores it, but searching a scratch note and an agent writing there were not tested. Everything below was observed in this run **[V]**.
 
 ## Summary
 

@@ -35,13 +35,13 @@ Nothing here is reviewed and nobody owns it but you. Only a promoted page goes t
 3. Fill in the frontmatter, then open a pull request and mark it ready for review.
 4. Delete drafts you no longer need.
 
-The commands are in [INSTRUCTIONS.md](../INSTRUCTIONS.md). A run of the whole path is in the [rehearsal report](../company/example-org/kb-test/results/2026-10-12-rehearsal-scratch-to-merged.md).
+The commands are in [INSTRUCTIONS.md](../INSTRUCTIONS.md). A run of the whole path is in the [rehearsal report](../memo/test-knowledge-share/results/2026-10-12-rehearsal-scratch-to-merged.md).
 
 ## Rules for this folder
 
 - **It is local only.** Nothing here is committed or backed up. Deleting your clone deletes it.
 - **Nothing here is scanned for secrets.** The pre-commit hook and CI read staged and committed files only, and scratch is never staged. Keep secrets out anyway.
-- **Scratch is indexed.** OpenKnowledge reads it for search. Keep semantic search off, because it would send scratch text to an outside provider. See the [X-1 report](../company/example-org/kb-test/results/2026-10-12-x1-scratch-search.md).
+- **Scratch is indexed.** OpenKnowledge reads it for search. Keep semantic search off, because it would send scratch text to an outside provider. See the [X-1 report](../memo/test-knowledge-share/results/2026-10-12-x1-scratch-search.md).
 - **Promote or delete.** Scratch is not a shared place and not an archive.
 
 ## Related

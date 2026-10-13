@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # Phase 3 Results: Two Contributors
 
-Run on 2026-10-09. Cases are defined in the [test plan](../test-plan.md). **Phase 3 is done except P3-5, which is parked.** This page covers P3-1 to P3-4. Fixes are not decided yet and are not part of this page. Everything below was observed in this run **[V]** unless it is marked **[?]**. Earlier phases are in the [Phase 1 summary](./2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./2026-10-09-phase-2-summary.md).
+Run on 2026-10-09. Cases are defined in the [test plan](../test-plan.md). **Phase 3 is done except P3-5, which is parked.** This page covers P3-1 to P3-4. Fixes are not decided yet and are not part of this page. Everything below was observed in this run **[V]** unless it is marked **[?]**. Earlier phases are in the [Phase 1 summary](2026-10-08-phase-1-summary.md) and the [Phase 2 summary](2026-10-09-phase-2-summary.md).
 
 The two authors were `inotivesgames` and `inotives-inoai`. `inotives` approved and merged every pull request. The test page was `concept/note__p3-shared-page.md`, created by pull request 26 with three sections of three facts each. Ruleset state: pull request with 1 approval, code-owner review on, `validate-docs` required, approvals dismissed on push, `strict_required_status_checks_policy: false`.
 

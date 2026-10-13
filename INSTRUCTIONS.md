@@ -107,7 +107,7 @@ This creates these rules on the default branch, with **no bypass actors**:
 | Required status check `check` | A failing `validate-docs` blocks the merge |
 | Block force-push and deletion | History cannot be rewritten |
 
-What the test showed about these rules, with the evidence, is in the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md). Two things to know:
+What the test showed about these rules, with the evidence, is in the [Phase 1 summary](./memo/test-knowledge-share/results/2026-10-08-phase-1-summary.md). Two things to know:
 
 - The author cannot approve their own pull request, and an admin cannot override with `--admin`. A one-person team cannot merge anything. You need a second person.
 - Do not rename the CI job `check`. The ruleset waits for a check with that exact name, and a renamed job would leave every merge waiting for ever.
@@ -404,6 +404,6 @@ gh pr review <number> --approve          # or --request-changes --body '<why>'
 
 ## What has and has not been tested
 
-- **Tested:** the whole flow above on free GitHub accounts, in a public repository with dummy content, with one person operating three accounts. Branch protection, review, the required check, approval dismissal and the hook all behaved as described. See the [test plan](./company/example-org/kb-test/test-plan.md) and the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md).
+- **Tested:** the whole flow above on free GitHub accounts, in a public repository with dummy content, with one person operating three accounts. Branch protection, review, the required check, approval dismissal and the hook all behaved as described. See the [test plan](./memo/test-knowledge-share/test-plan.md) and the [Phase 1 summary](./memo/test-knowledge-share/results/2026-10-08-phase-1-summary.md).
 - **Not tested yet:** owners as teams, two contributors editing the same page, the editor UI beyond the sync button, the Claude desktop app and claude.ai, and GitHub Enterprise.
 - **Known weak spot:** the editor's sync. Nothing here depends on it.

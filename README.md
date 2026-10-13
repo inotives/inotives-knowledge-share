@@ -18,8 +18,8 @@ A **public test bed** for a team knowledge base where people and their AI agents
 | [SETUP.md](./SETUP.md) | Set up your machine after cloning: install the tools, sign in, configure the clone and prove the checks work. A person or their agent can follow it step by step |
 | [INSTRUCTIONS.md](./INSTRUCTIONS.md) | Set up from scratch (including creating the repository), start the tools, and the daily workflow |
 | [AGENTS.md](./AGENTS.md) | The contract for people and agents |
-| [Test plan](./company/example-org/kb-test/test-plan.md) | Every test case, with steps, expected result and status |
-| [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) | What Phase 1 showed, the decisions it led to, and what is still open |
+| [Test plan](./memo/test-knowledge-share/test-plan.md) | Every test case, with steps, expected result and status |
+| [Phase 1 summary](./memo/test-knowledge-share/results/2026-10-08-phase-1-summary.md) | What Phase 1 showed, the decisions it led to, and what is still open |
 
 ## What we want to achieve
 
@@ -100,7 +100,7 @@ stateDiagram-v2
 
 ## What we are testing
 
-The contract makes promises that depend on how GitHub and OpenKnowledge behave. Each question links to its cases in the [test plan](./company/example-org/kb-test/test-plan.md). Answers are from one run on free accounts with one person operating all three. Only P1-1, P1-6, P1-8 and P1-9 are **Confirmed**, by the reruns R-1 to R-3 in a fresh clone with a different account.
+The contract makes promises that depend on how GitHub and OpenKnowledge behave. Each question links to its cases in the [test plan](./memo/test-knowledge-share/test-plan.md). Answers are from one run on free accounts with one person operating all three. Only P1-1, P1-6, P1-8 and P1-9 are **Confirmed**, by the reruns R-1 to R-3 in a fresh clone with a different account.
 
 | # | Question | Status |
 | --- | --- | --- |
@@ -108,7 +108,7 @@ The contract makes promises that depend on how GitHub and OpenKnowledge behave. 
 | 2 | Can an approver's own pull request be merged (bypass or second approver)? | **Answered.** Authors cannot approve their own pull request and admins cannot override with `--admin`. A second person must approve, and a write-access author can then merge |
 | 3 | Do code owners resolve, by work email and by `@username`? | **Answered.** Both resolve, and a path rule replaces `*`. CODEOWNERS applies from `main`, so its own pull request is not covered. A nonexistent owner fails silently, so `validate-docs` now checks owners. A sole owner does not block their own pull request |
 | 4 | Is `_scratch/` indexed by OpenKnowledge, and can agents write to it, while Git ignores it? | **Partly answered.** It is indexed and Git ignores it. Searching and agent writes are not tested yet (X-1) |
-| 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook and CI script refused invalid frontmatter and a broken link. A planted fake secret was caught by the hook when a scanner was present, and the hook let it through when none was, so it now downloads a pinned one ([report](./company/example-org/kb-test/results/2026-10-12-x3-local-hook-and-test-status.md)). The hook is per clone, so CI is the enforced check |
+| 5 | Do the CI checks and the pre-commit hook catch bad frontmatter, broken links and a planted fake secret? | **Partly answered.** The required check blocks a failing pull request, and the hook and CI script refused invalid frontmatter and a broken link. A planted fake secret was caught by the hook when a scanner was present, and the hook let it through when none was, so it now downloads a pinned one ([report](./memo/test-knowledge-share/results/2026-10-12-x3-local-hook-and-test-status.md)). The hook is per clone, so CI is the enforced check |
 | 6 | What happens when two contributors edit the same page? | **Answered for text.** Edits on different lines merged cleanly. Same-line edits gave a visible conflict that was never auto-resolved. Attribution matched the account, but `ai_assisted` is not checked. With and without OpenKnowledge, an agent's broken link and orphan page were caught only with it, and bad frontmatter only by the hook and CI. `ok lint` ran no checks |
 | 7 | Does it still work on GitHub Enterprise, where org rulesets and SSO apply? | Pending (Phase 4). Free accounts cannot show this |
 
@@ -152,14 +152,14 @@ Each account has its own SSH key and its own clone, so every action is attributa
 
 ## Status
 
-- **Done:** Phases 0 to 3. See the [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./company/example-org/kb-test/results/2026-10-09-phase-2-summary.md) for the evidence and the open items.
+- **Done:** Phases 0 to 3. See the [Phase 1 summary](./memo/test-knowledge-share/results/2026-10-08-phase-1-summary.md) and the [Phase 2 summary](./memo/test-knowledge-share/results/2026-10-09-phase-2-summary.md) for the evidence and the open items.
 - **Main finding:** GitHub's controls held, including for the admin. OpenKnowledge's sync did not fit the contract, so pages are written with its tools and published with git.
 - **Phase 2 finding:** a mistyped code owner fails silently and removes review for its path. A CI check on `codeowners/errors` now catches it.
-- **Phase 3 finding:** edits on different lines merge cleanly and edits on the same line give a visible conflict that is never auto-resolved. Only the hook and CI refuse bad frontmatter and a broken link. See the [Phase 3 summary](./company/example-org/kb-test/results/2026-10-12-phase-3-summary.md) and the [Phase 3 report](./company/example-org/kb-test/results/2026-10-09-phase-3-two-contributors.md). P3-5 is not applicable, because each person runs OpenKnowledge locally and shares only through git.
-- **Confirmation reruns:** R-1 to R-3 are done. See the [confirmation report](./company/example-org/kb-test/results/2026-10-12-confirmation-reruns.md).
-- **Private repo on a free plan:** CI runs and passes, but GitHub refuses the ruleset and branch protection, so nothing is enforced. Real content needs a plan that enforces the ruleset. See the [report](./company/example-org/kb-test/results/2026-10-13-private-repo-free-plan.md).
-- **Open:** the cases in the execution order of the [test plan](./company/example-org/kb-test/test-plan.md), starting with P1-2b (the sync button's error details) and ending with X-5, onboarding on a clean machine, which waits for a deployment wizard to be designed. P2-2 and P3-3 wait for Phase 4, because they depend on how identity works on GitHub Enterprise and the pilot's free personal accounts cannot show that. Phase 4 also waits for the Enterprise account.
-- **Noted for later, not decided: skill owners.** `skill/` has no code-owner rule of its own, so the owners of `*` approve a skill change like any other change. Anyone with write access can propose one by pull request, but nobody can push to `main`, and a merge needs a passing check and an approval from someone other than the author. The contract says skills get the closest review, but GitHub does not enforce that today. A `/skill/` rule naming one or two owners would make only their approval count (case P2-3, see the [report](./company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md)). It is not needed for the pilot and can be decided when the team is set. A draft pull request requests no code owners, so mark it ready for review before expecting a review.
+- **Phase 3 finding:** edits on different lines merge cleanly and edits on the same line give a visible conflict that is never auto-resolved. Only the hook and CI refuse bad frontmatter and a broken link. See the [Phase 3 summary](./memo/test-knowledge-share/results/2026-10-12-phase-3-summary.md) and the [Phase 3 report](./memo/test-knowledge-share/results/2026-10-09-phase-3-two-contributors.md). P3-5 is not applicable, because each person runs OpenKnowledge locally and shares only through git.
+- **Confirmation reruns:** R-1 to R-3 are done. See the [confirmation report](./memo/test-knowledge-share/results/2026-10-12-confirmation-reruns.md).
+- **Private repo on a free plan:** CI runs and passes, but GitHub refuses the ruleset and branch protection, so nothing is enforced. Real content needs a plan that enforces the ruleset. See the [report](./memo/test-knowledge-share/results/2026-10-13-private-repo-free-plan.md).
+- **Open:** the cases in the execution order of the [test plan](./memo/test-knowledge-share/test-plan.md), starting with P1-2b (the sync button's error details) and ending with X-5, onboarding on a clean machine, which waits for a deployment wizard to be designed. P2-2 and P3-3 wait for Phase 4, because they depend on how identity works on GitHub Enterprise and the pilot's free personal accounts cannot show that. Phase 4 also waits for the Enterprise account.
+- **Noted for later, not decided: skill owners.** `skill/` has no code-owner rule of its own, so the owners of `*` approve a skill change like any other change. Anyone with write access can propose one by pull request, but nobody can push to `main`, and a merge needs a passing check and an approval from someone other than the author. The contract says skills get the closest review, but GitHub does not enforce that today. A `/skill/` rule naming one or two owners would make only their approval count (case P2-3, see the [report](./memo/test-knowledge-share/results/2026-10-12-p2-3-skill-path-rule.md)). It is not needed for the pilot and can be decided when the team is set. A draft pull request requests no code owners, so mark it ready for review before expecting a review.
 - Findings are added here only when they are observed, not before.
 
 ## Before you clone

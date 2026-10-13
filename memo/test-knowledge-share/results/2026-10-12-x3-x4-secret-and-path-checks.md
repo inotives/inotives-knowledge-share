@@ -27,7 +27,7 @@ Both probes were closed unmerged and their branches deleted, so no probe content
 
 ## How it was run
 
-- **Clone and identity:** the `inotives-inoai` clone, `user.email` `inotives.inoai@gmail.com`, `core.hooksPath` `.githooks`, as in the [confirmation report](./2026-10-12-confirmation-reruns.md).
+- **Clone and identity:** the `inotives-inoai` clone, `user.email` `inotives.inoai@gmail.com`, `core.hooksPath` `.githooks`, as in the [confirmation report](2026-10-12-confirmation-reruns.md).
 - **Scanner on this machine:** neither `gitleaks` nor a running `docker` was available, so the local secret scan could not run.
 - **Probes:** two draft PRs from branches `inotives-inoai/x3-secret-probe` (PR 37) and `inotives-inoai/x4-path-probe` (PR 38), each with one throwaway page under `concept/` with valid frontmatter, so that only the case under test could fail.
 - **Fake secret:** an AWS-shaped access key line and a secret key line. They are not real credentials and are not repeated here.

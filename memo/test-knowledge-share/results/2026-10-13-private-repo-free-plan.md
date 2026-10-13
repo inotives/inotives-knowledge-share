@@ -15,7 +15,7 @@ Run on 2026-10-13 as `inotives`, on a free personal account, in a throwaway priv
 ## Summary
 
 - **The workflow carries over, the enforcement does not.** CI, the docs checks and the Docker secret scan all ran and passed on a private repo. GitHub refused the ruleset and classic branch protection, so nothing stopped an unapproved merge or a direct push to `main`.
-- **The `GITHUB_TOKEN` can read the `codeowners/errors` API on a private repo.** This was an open item in the [Phase 2 summary](./2026-10-09-phase-2-summary.md).
+- **The `GITHUB_TOKEN` can read the `codeowners/errors` API on a private repo.** This was an open item in the [Phase 2 summary](2026-10-09-phase-2-summary.md).
 - **`CODEOWNERS` owners must already have write access to the repo they are named in.** A new private repo failed the owner check until the unknown owners were removed.
 
 ## Steps and observations

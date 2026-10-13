@@ -1,12 +1,12 @@
 ---
 title: Example org
-description: "The pilot organisation's folder: the pilot roster and the knowledge-base test project. Curated by pull request."
+description: "The pilot organisation's folder: the pilot roster, and room for projects of the example organisation. Curated by pull request."
 ---
 # Example org
 
 ## Purpose
 
-The stand-in organisation for the pilot. It holds the pilot roster and the project that tests this knowledge base. It holds dummy content only.
+The stand-in organisation for the pilot. It holds the pilot roster, and has room for projects of the example organisation. The record of testing this knowledge base is not here: it lives in [test-knowledge-share](../../memo/test-knowledge-share/README.md), because it is about the knowledge base and not about an organisation. It holds dummy content only.
 
 ## What goes here
 
@@ -18,7 +18,7 @@ The stand-in organisation for the pilot. It holds the pilot roster and the proje
 
 ## Layout and naming
 
-`company/example-org/<project>/` for a project, and loose pages for organisation-wide records such as the roster. The one project today is [kb-test](./kb-test/README.md). Lowercase kebab-case.
+`company/example-org/<project>/` for a project, and loose pages for organisation-wide records such as the roster. There is no project folder today. Lowercase kebab-case.
 
 ## Frontmatter for this folder
 
@@ -43,4 +43,4 @@ A new project folder follows [Add a new folder](../../workflow/new-folder/workfl
 
 ## Related
 
-[company](../README.md), [kb-test](./kb-test/README.md), [AGENTS.md](../../AGENTS.md)
+[company](../README.md), [test-knowledge-share](../../memo/test-knowledge-share/README.md), [AGENTS.md](../../AGENTS.md)

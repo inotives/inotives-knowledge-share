@@ -10,7 +10,7 @@ ai_assisted: true
 ---
 # Rehearsal: From Scratch to Merged to Pulled
 
-Run on 2026-10-12 on macOS, with a local OpenKnowledge server per clone. The cases are in the [test plan](../test-plan.md): X-6 (a teammate receives merged pages), X-7 (a note is promoted from `_scratch/` into a curated folder, added with this report), and a repeat of P1-15 under code-owner review. It follows the daily path in [INSTRUCTIONS.md](../../../../INSTRUCTIONS.md). Everything below was observed in this run **[V]**.
+Run on 2026-10-12 on macOS, with a local OpenKnowledge server per clone. The cases are in the [test plan](../test-plan.md): X-6 (a teammate receives merged pages), X-7 (a note is promoted from `_scratch/` into a curated folder, added with this report), and a repeat of P1-15 under code-owner review. It follows the daily path in [INSTRUCTIONS.md](../../../INSTRUCTIONS.md). Everything below was observed in this run **[V]**.
 
 ## Summary
 

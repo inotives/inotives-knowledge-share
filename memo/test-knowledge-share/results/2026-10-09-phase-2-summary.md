@@ -12,7 +12,7 @@ derived_from:
 ---
 # Phase 2 Summary: Code Owners
 
-Run on 2026-10-09 on free GitHub accounts, in a public repository with dummy content. Cases are defined in the [test plan](../test-plan.md). Evidence is in the [Phase 2 report](./2026-10-09-phase-2-code-owners.md). The [Phase 1 summary](./2026-10-08-phase-1-summary.md) covers the earlier phases. This page adds no new numbers or claims.
+Run on 2026-10-09 on free GitHub accounts, in a public repository with dummy content. Cases are defined in the [test plan](../test-plan.md). Evidence is in the [Phase 2 report](2026-10-09-phase-2-code-owners.md). The [Phase 1 summary](2026-10-08-phase-1-summary.md) covers the earlier phases. This page adds no new numbers or claims.
 
 ## Verdict
 
@@ -63,7 +63,7 @@ The verdict applies to one run on free accounts with one person operating all th
 
 ## Changes the contract needs
 
-None of these is in `AGENTS.md` yet. They follow the seven from the [Phase 1 summary](./2026-10-08-phase-1-summary.md).
+None of these is in `AGENTS.md` yet. They follow the seven from the [Phase 1 summary](2026-10-08-phase-1-summary.md).
 
 1. CODEOWNERS must be on `main` before it applies. Name a reviewer by hand on the pull request that adds it.
 2. A path rule replaces `*`. List every owner on that path.
@@ -79,7 +79,7 @@ None of these is in `AGENTS.md` yet. They follow the seven from the [Phase 1 sum
 | Owners as teams | Cannot be tested on a personal repository | Phase 4 |
 | Why a sole owner does not block their own pull request | Two cases support it. GitHub does not document it | To confirm **[?]** |
 | `GITHUB_TOKEN` on a private repository | Tested only on a public one | Phase 4 |
-| P1-14 repeat with both states captured | Done in P3-2: pull request 31 showed `APPROVED` before the push and `DISMISSED` after. See the [Phase 3 report](./2026-10-09-phase-3-two-contributors.md) | Closed |
+| P1-14 repeat with both states captured | Done in P3-2: pull request 31 showed `APPROVED` before the push and `DISMISSED` after. See the [Phase 3 report](2026-10-09-phase-3-two-contributors.md) | Closed |
 | `require_extra_approval_for_unattributed_changes: true` | Read back from the live ruleset. Its effect is unknown | To investigate |
 | `require_last_push_approval` | `false`, untested | To decide |
 | `AGENTS.md` changes (seven from Phase 1, four above) | Not written | After Phase 3 |
