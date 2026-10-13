@@ -202,7 +202,7 @@ def check_openknowledge(check_only):
         if wired:
             report(OK, "ok init", "editor wiring is present")
         else:
-            report(TODO, "ok init", "run: ok init --scope project --no-skills")
+            report(WARN, "ok init", "no editor wiring found in this clone. If your agent cannot see the OpenKnowledge tools, run: ok init --scope project --no-skills")
     on = [str(p) for p in (Path.home() / ".ok" / "global.yml", ROOT / ".ok" / "config.yml") if semantic_on(p)]
     if on:
         report(TODO, "semantic search", "is ON in " + ", ".join(on) + ". Turn it off: it sends page text to an "
