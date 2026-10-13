@@ -144,10 +144,10 @@ These rest on my expectation of how Enterprise behaves and should be checked aga
 
 **Questions for the Enterprise admin.** None of these is known yet, and each one decides part of the setup.
 
-1. Is it GitHub Enterprise Cloud or Enterprise Server, and which version? Server gets features by version.
+1. Is it GitHub Enterprise Cloud or Enterprise Server, and which version? Server gets features by version. What is the host name people sign in to (`github.com`, a `*.ghe.com` subdomain, or a self-hosted server)? `gh auth login` and the setup guide need it.
 2. Are repository rulesets and required status checks available on private repos in the plan, and can a ruleset be set at the organisation level?
 3. What is the Actions policy? Are `actions/checkout` and `actions/setup-python` allowed, can a workflow run a Docker image, and are the runners hosted or self-hosted with Docker?
-4. How do SSO and verified domains map a commit email to an account, and can a managed account push as the person?
+4. How do SSO and verified domains map a commit email to an account, and can a managed account push as the person? Does the `gh` token need to be authorised for single sign-on, and how?
 5. Can code owners be teams, and who are the approvers for each path?
 6. Does the company network allow downloads from GitHub release assets? The hook fetches `gitleaks` from there.
 7. Is secret push protection available, and is it on?

@@ -15,7 +15,8 @@ A **public test bed** for a team knowledge base where people and their AI agents
 
 | Read | For |
 | --- | --- |
-| [INSTRUCTIONS.md](./INSTRUCTIONS.md) | Set up from scratch, start the tools, and the daily workflow |
+| [SETUP.md](./SETUP.md) | Set up your machine after cloning: install the tools, sign in, configure the clone and prove the checks work. A person or their agent can follow it step by step |
+| [INSTRUCTIONS.md](./INSTRUCTIONS.md) | Set up from scratch (including creating the repository), start the tools, and the daily workflow |
 | [AGENTS.md](./AGENTS.md) | The contract for people and agents |
 | [Test plan](./company/example-org/kb-test/test-plan.md) | Every test case, with steps, expected result and status |
 | [Phase 1 summary](./company/example-org/kb-test/results/2026-10-08-phase-1-summary.md) | What Phase 1 showed, the decisions it led to, and what is still open |
@@ -161,9 +162,18 @@ Each account has its own SSH key and its own clone, so every action is attributa
 - **Noted for later, not decided: skill owners.** `skill/` has no code-owner rule of its own, so the owners of `*` approve a skill change like any other change. Anyone with write access can propose one by pull request, but nobody can push to `main`, and a merge needs a passing check and an approval from someone other than the author. The contract says skills get the closest review, but GitHub does not enforce that today. A `/skill/` rule naming one or two owners would make only their approval count (case P2-3, see the [report](./company/example-org/kb-test/results/2026-10-12-p2-3-skill-path-rule.md)). It is not needed for the pilot and can be decided when the team is set. A draft pull request requests no code owners, so mark it ready for review before expecting a review.
 - Findings are added here only when they are observed, not before.
 
+## Before you clone
+
+Cloning needs two things first, which the rest of the setup cannot do for you:
+
+1. **`git`.** Check with `git --version`. On macOS, `xcode-select --install` installs it. On Windows, `winget install Git.Git`. On Linux, use your package manager.
+2. **The GitHub CLI (`gh`) and a sign-in.** `gh` does the sign-in, the clone and the pull requests, and it is what you will use to sign in to GitHub Enterprise later. Install it (macOS `brew install gh`, Windows `winget install GitHub.cli`, Linux your package manager), then run `gh auth login`, choose HTTPS, and say yes when it offers to set up git credentials. You need a GitHub account with a verified company email and an accepted invitation. Then run `gh repo clone <owner>/<repo>`. On GitHub Enterprise you will sign in to your company's host; this page will say which once it is known.
+
+Then open [SETUP.md](./SETUP.md) and follow it, or tell your agent to.
+
 ## Using this repository
 
-The full steps are in [INSTRUCTIONS.md](./INSTRUCTIONS.md). In short:
+The full steps are in [INSTRUCTIONS.md](./INSTRUCTIONS.md), and the machine setup is in [SETUP.md](./SETUP.md). In short:
 
 1. Read [AGENTS.md](./AGENTS.md). It is the contract for people and agents.
 2. `git config user.email '<verified address>'` and `git config user.name '<name>'`.
